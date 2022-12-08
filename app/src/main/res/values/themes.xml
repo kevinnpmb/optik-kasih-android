@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.OPTIKKASIH" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="android:fontFamily">@font/poppins_font</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/primaryLighterColor</item>
+        <item name="colorSecondaryVariant">@color/primaryLightColor</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="app.title" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="app.bottomnav.text" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="app.bottomnav.text.active" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>
