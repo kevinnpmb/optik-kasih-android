@@ -10,4 +10,24 @@
     <string name="description">Deskripsi</string>
     <string name="subtotal">Subtotal</string>
     <string name="add">Tambah</string>
+    <string name="order_date">Tanggal Order</string>
+    <string name="done_date">Tanggal Selesai</string>
+    <string name="transaction_status">Status Transaksi</string>
+    <string name="payment_status">Status Pembayaran</string>
+    <string name="ordered_items">Barang yang diorder</string>
+    <string name="discount">Diskon</string>
+    <string name="paid">Bayar</string>
+    <string name="total">Total</string>
+    <string name="finish_order">Selesaikan Pesanan</string>
+    <string name="change_address">Ganti Alamat</string>
+    <string name="option">Option</string>
+    <string name="checkout">Checkout</string>
+    <string name="delivery_location">Lokasi Pengiriman</string>
+    <string name="choose_payment_method">Pilih Metode Pembayaran</string>
+    <string name="success">Sukses</string>
+    <string name="order_id">Order Id</string>
+    <string name="price">Harga</string>
+    <string name="virtual_account">Virtual Account</string>
+    <string name="time_left">Waktu tersisa</string>
+    <string name="track_transaction">Lacak Transaksi</string>
 </resources>

@@ -1,93 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="232dp"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    app:cardElevation="0dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="24dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/priceContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            app:cardBackgroundColor="@color/primaryColor"
-            app:cardCornerRadius="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingHorizontal="18dp">
-
-                <TextView
-                    android:id="@+id/bfrDiscPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:alpha="0.6"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="9k" />
-
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="9k" />
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/itemImg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:contentDescription="Item Image"
             app:layout_constraintDimensionRatio="H, 6:5"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="Item Image" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/itemImg"
             android:textAlignment="center"
-            android:textStyle="bold"
             android:textColor="@color/primaryColor"
-            tools:text="Gagang"/>
+            android:layout_marginHorizontal="16dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/itemImg"
+            tools:text="Gagang" />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
+        <include
+            android:id="@+id/price"
+            layout="@layout/price_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:maxLines="3"
-            android:minLines="3"
-            android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            android:textAlignment="center"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/materialButton2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
+            android:id="@+id/materialButton2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:padding="8dp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            app:cornerRadius="100dp"
-            app:layout_constraintTop_toBottomOf="@id/description"
-            android:text="@string/buy"/>
+            android:layout_marginEnd="16dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_add"
+            app:iconPadding="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/price" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

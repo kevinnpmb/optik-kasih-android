@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRemove"
@@ -13,8 +13,6 @@
         android:layout_height="wrap_content"
         android:minWidth="0dp"
         android:paddingVertical="0dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         android:paddingHorizontal="10dp"
         app:cornerRadius="12dp"
         app:icon="@drawable/ic_remove"
@@ -25,6 +23,7 @@
         android:id="@+id/quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         android:textSize="20sp"
         android:textStyle="bold"
         tools:text="2" />

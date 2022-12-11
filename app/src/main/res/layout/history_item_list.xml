@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="24dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,10 +29,10 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/statusContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textSize="12sp"
             tools:text="Senin, 9 Agustus 2022" />
 
         <com.google.android.material.card.MaterialCardView
@@ -50,9 +52,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingHorizontal="20dp"
-                android:textSize="12sp"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="Dikirim" />
         </com.google.android.material.card.MaterialCardView>

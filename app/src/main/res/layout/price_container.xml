@@ -1,44 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/priceContainer"
     android:layout_width="wrap_content"
-    android:layout_height="32dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    app:cardBackgroundColor="@color/primaryColor"
-    app:cardCornerRadius="16dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/bfrDiscPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingHorizontal="18dp">
+        android:layout_marginEnd="8dp"
+        android:alpha="0.6"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        tools:text="Rp. 10.000" />
 
-        <TextView
-            android:id="@+id/bfrDiscPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:alpha="0.6"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:text="9k" />
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:text="9k" />
-
-
-    </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        tools:text="Rp. 9.000" />
+</LinearLayout>

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    app:cardElevation="0dp"
-    app:cardCornerRadius="24dp">
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -36,39 +36,61 @@
             android:id="@+id/orderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/primaryColor"
             android:textStyle="bold"
-            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/price"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Gagang" />
 
         <include
-            layout="@layout/price_container"
             android:id="@+id/price"
+            layout="@layout/price_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/orderId"
-            tools:text="Rp. 20.000" />
+            app:layout_constraintTop_toBottomOf="@+id/orderId" />
 
-        <include
-            android:id="@+id/qtyChanger"
-            layout="@layout/quantity_changer"
+
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/primaryColor"
+            app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="2dp"
+                tools:text="2 Items" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/totalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rp. 18.000" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
