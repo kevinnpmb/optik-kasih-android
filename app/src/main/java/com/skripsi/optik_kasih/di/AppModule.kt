@@ -1,0 +1,106 @@
+package com.skripsi.optik_kasih.di
+
+import android.content.Context
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
+import com.google.gson.Gson
+import com.skripsi.optik_kasih.api.RequestInterceptor
+import com.skripsi.optik_kasih.api.model.RequestHeaders
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import okhttp3.CipherSuite
+import okhttp3.ConnectionSpec
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
+
+@InstallIn(SingletonComponent::class)
+@Module
+object AppModule {
+//    @Provides
+//    @Singleton
+//    fun provideJovaRestoDatabase(@ApplicationContext appContext: Context) = Room.databaseBuilder(
+//        appContext,
+//        JovaRestoDatabase::class.java,
+//        "jovaresto.db"
+//    ).fallbackToDestructiveMigration().build()
+//
+//    @Singleton
+//    @Provides
+//    fun provideAdminDao(database: JovaRestoDatabase) = database.adminDao()
+
+    @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        return logging
+    }
+
+    @Provides
+    @Singleton
+    fun provideRequestHeader(): RequestHeaders {
+        return RequestHeaders(languages = "application/json")
+    }
+
+    @Provides
+    @Singleton
+    fun provideRequestInterceptor(requestHeaders: RequestHeaders): RequestInterceptor {
+        return RequestInterceptor(requestHeaders)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkhttpClient(
+        logging: HttpLoggingInterceptor,
+        requestInterceptor: RequestInterceptor
+    ): OkHttpClient {
+        var cipherSuites: MutableList<CipherSuite>? =
+            ConnectionSpec.MODERN_TLS.cipherSuites as MutableList<CipherSuite>?
+        if (!cipherSuites!!.contains(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA)) {
+            cipherSuites = ArrayList(cipherSuites)
+            cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA)
+        }
+        val spec = listOf(ConnectionSpec.CLEARTEXT, ConnectionSpec.MODERN_TLS)
+        return OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+//                .connectionSpecs(Collections.singletonList(spec))
+            .connectionSpecs(spec)
+            .addInterceptor(logging)
+            .addInterceptor(requestInterceptor)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApolloClient(client: OkHttpClient): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl(Constants.GraphQL_URL)
+            .okHttpClient(client)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkResource(@ApplicationContext appContext: Context): NetworkResource {
+        return NetworkResource(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkConnectivityObserver(@ApplicationContext appContext: Context): NetworkConnectivityObserver {
+        return NetworkConnectivityObserver(appContext)
+    }
+}
