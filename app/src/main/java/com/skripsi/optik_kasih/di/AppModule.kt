@@ -4,8 +4,10 @@ import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.google.gson.Gson
+import com.skripsi.optik_kasih.BuildConfig
+import com.skripsi.optik_kasih.api.NetworkResource
 import com.skripsi.optik_kasih.api.RequestInterceptor
-import com.skripsi.optik_kasih.api.model.RequestHeaders
+import com.skripsi.optik_kasih.vo.RequestHeaders
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +16,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.CipherSuite
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -44,7 +47,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRequestHeader(): RequestHeaders {
-        return RequestHeaders(languages = "application/json")
+        return RequestHeaders(language = "application/json")
     }
 
     @Provides
@@ -73,6 +76,7 @@ object AppModule {
 //                .connectionSpecs(Collections.singletonList(spec))
             .connectionSpecs(spec)
             .addInterceptor(logging)
+            .retryOnConnectionFailure(true)
             .addInterceptor(requestInterceptor)
             .build()
     }
@@ -81,7 +85,7 @@ object AppModule {
     @Singleton
     fun provideApolloClient(client: OkHttpClient): ApolloClient {
         return ApolloClient.Builder()
-            .serverUrl(Constants.GraphQL_URL)
+            .serverUrl(BuildConfig.BASE_URL)
             .okHttpClient(client)
             .build()
     }
@@ -96,11 +100,5 @@ object AppModule {
     @Singleton
     fun provideNetworkResource(@ApplicationContext appContext: Context): NetworkResource {
         return NetworkResource(appContext)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNetworkConnectivityObserver(@ApplicationContext appContext: Context): NetworkConnectivityObserver {
-        return NetworkConnectivityObserver(appContext)
     }
 }

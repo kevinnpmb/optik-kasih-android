@@ -1,0 +1,8 @@
+fragment User on Customer {
+    id
+    customer_name
+    customer_gender
+    customer_birthday
+    phone_number
+    customer_email
+}

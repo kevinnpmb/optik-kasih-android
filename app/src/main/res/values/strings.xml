@@ -1,12 +1,11 @@
 <resources>
+    // view related resources
     <string name="app_name">Optik Kasih</string>
     <string name="cart">Keranjang</string>
     <string name="home">Utama</string>
     <string name="history">Riwayat</string>
     <string name="profile">Profil</string>
     <string name="buy">Beli</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description">Deskripsi</string>
     <string name="subtotal">Subtotal</string>
     <string name="add">Tambah</string>
@@ -63,4 +62,8 @@
     <string name="sub_district">Kecamatan</string>
     <string name="post_code">Kode Pos</string>
     <string name="phone_number">Nomor Telepon</string>
+
+    // connection resources
+    <string name="try_again">Mohon Coba Lagi</string>
+    <string name="connection_unstable">Koneksi tidak stabil</string>
 </resources>

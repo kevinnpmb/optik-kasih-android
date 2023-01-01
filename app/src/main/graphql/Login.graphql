@@ -1,0 +1,19 @@
+#mutation Login($loginParam: LoginParam!) {
+#    user {
+#        login(input: $loginParam) {
+#            token
+#            user {
+#                ...User
+#            }
+#        }
+#    }
+#}
+query Login {
+    product {
+        products {
+            nodes {
+                id
+            }
+        }
+    }
+}
