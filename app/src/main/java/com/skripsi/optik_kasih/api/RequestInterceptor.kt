@@ -10,7 +10,7 @@ class RequestInterceptor(private val requestHeaders: RequestHeaders) : Intercept
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
-        val builder: Request.Builder = if (requestHeaders.accessToken.isNullOrBlank()) {
+        val builder: Request.Builder = if (!requestHeaders.accessToken.isNullOrBlank()) {
             original.newBuilder()
                 .header("Connection", "close")
                 .header("Authorization", "Bearer " + requestHeaders.accessToken)

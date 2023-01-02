@@ -30,19 +30,19 @@ class LoginViewModel @Inject constructor(
         errorText: String
     ): Boolean {
         when (type) {
-            TextFieldType.EMAIL -> if (!text.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+            TextFieldType.EMAIL -> return if (text.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
                 textInputLayout.error = null
-                return true
+                true
             } else {
                 textInputLayout.error = errorText
-                return false
+                false
             }
-            TextFieldType.OTHER -> if (!text.isEmpty()) {
+            TextFieldType.OTHER -> return if (text.isNotEmpty()) {
                 textInputLayout.error = null
-                return true
+                true
             } else {
                 textInputLayout.error = errorText
-                return false
+                false
             }
         }
     }
