@@ -6,3 +6,16 @@ fragment User on Customer {
     phone_number
     customer_email
 }
+
+fragment Product on Product {
+    id
+    product_name
+    product_type
+    product_brand
+    product_description
+    product_price
+    unit
+    product_stock
+    supplier_id
+    isShown
+}

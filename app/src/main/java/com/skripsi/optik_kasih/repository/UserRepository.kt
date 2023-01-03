@@ -2,9 +2,10 @@ package com.skripsi.optik_kasih.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo3.ApolloClient
-import com.skripsi.optik_kasih.LoginQuery
+import com.skripsi.optik_kasih.LoginMutation
+//import com.skripsi.optik_kasih.LoginQuery
 import com.skripsi.optik_kasih.api.NetworkResource
-//import com.skripsi.optik_kasih.type.LoginParam
+import com.skripsi.optik_kasih.type.LoginParam
 import com.skripsi.optik_kasih.vo.RequestHeaders
 import com.skripsi.optik_kasih.utils.PreferencesHelper
 import com.skripsi.optik_kasih.vo.Resource
@@ -23,13 +24,13 @@ class UserRepository @Inject constructor(
     suspend fun loginUser(
         email: String,
         password: String,
-        loginUserLiveData: MutableLiveData<Resource<LoginQuery.Data>>
+        loginUserLiveData: MutableLiveData<Resource<LoginMutation.Data>>
     ) {
         withContext(Dispatchers.IO) {
-            networkResource.processQueryResponse(
+            networkResource.processMutationResponse(
                 apolloClient,
-//                LoginMutation(LoginParam(email, password)),
-                LoginQuery(),
+                LoginMutation(LoginParam(email, password)),
+//                LoginQuery(),
                 loginUserLiveData
             )
         }

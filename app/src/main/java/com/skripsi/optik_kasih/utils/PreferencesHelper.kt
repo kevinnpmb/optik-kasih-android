@@ -28,7 +28,7 @@ class PreferencesHelper @Inject constructor(@ApplicationContext context: Context
     val isLogin: Boolean get() = user?.accessToken != null
 
     fun saveAccount(userData: User) {
-        pref.edit().putString(PREF_KEY_USER, gson.toJson(user)).apply()
+        pref.edit().putString(PREF_KEY_USER, gson.toJson(userData)).apply()
     }
 
     fun signOut() {

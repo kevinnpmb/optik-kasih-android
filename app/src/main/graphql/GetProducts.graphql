@@ -1,0 +1,10 @@
+query GetProducts {
+    product {
+        products {
+            total
+            nodes {
+                ...Product
+            }
+        }
+    }
+}

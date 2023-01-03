@@ -8,8 +8,10 @@ import androidx.activity.viewModels
 import com.skripsi.optik_kasih.BuildConfig
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.databinding.ActivityLoginBinding
+import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.main.MainActivity
 import com.skripsi.optik_kasih.utils.PreferencesHelper
+import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.toUser
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,9 +19,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
-    @Inject
-    lateinit var preferencesHelper: PreferencesHelper
+class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +41,8 @@ class LoginActivity : AppCompatActivity() {
                 validationList.add(
                     viewModel.validate(
                         LoginViewModel.TextFieldType.EMAIL,
-                        tilPassword.editText?.text.toString(),
-                        tilPassword,
+                        tilEmail.editText?.text.toString(),
+                        tilEmail,
                         getString(R.string.email_invalid)
                     )
                 )
@@ -78,19 +78,22 @@ class LoginActivity : AppCompatActivity() {
     private fun initObserver() {
         viewModel.apply {
             loginMutableLiveData.observe(this@LoginActivity) {
+                binding.btnLogin.isEnabled = true
                 when (it.status) {
                     Status.SUCCESS -> {
-                        it.data?.user?.login?.let { (token, user) ->
+                        loadingDialog.dismiss()
+                        it.data?.customer?.login?.let { (token, user) ->
                             preferencesHelper.saveAccount(user.user.toUser(token))
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         }
                     }
                     Status.ERROR -> {
-
+                        loadingDialog.dismiss()
+                        Utilities.showToast(this@LoginActivity, binding.root, it.message)
                     }
                     Status.LOADING -> {
-
+                        loadingDialog.show()
                     }
                     Status.UNAUTHORIZED -> {
 

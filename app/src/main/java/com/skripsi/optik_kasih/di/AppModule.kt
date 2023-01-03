@@ -73,7 +73,6 @@ object AppModule {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-//                .connectionSpecs(Collections.singletonList(spec))
             .connectionSpecs(spec)
             .addInterceptor(logging)
             .retryOnConnectionFailure(true)

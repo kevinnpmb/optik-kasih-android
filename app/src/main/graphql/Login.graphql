@@ -1,8 +1,8 @@
 mutation Login($loginParam: LoginParam!) {
-    user {
+     customer {
         login(input: $loginParam) {
             token
-            user {
+            customer {
                 ...User
             }
         }

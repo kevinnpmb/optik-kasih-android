@@ -68,4 +68,6 @@
     <string name="connection_unstable">Koneksi tidak stabil</string>
     <string name="email_invalid">Email tidak valid</string>
     <string name="password_invalid">Password tidak valid</string>
+    <string name="toast_icon">Toast Icon</string>
+    <string name="toast_close_icon">Toast Close Icon</string>
 </resources>

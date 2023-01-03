@@ -12,13 +12,11 @@ class RequestInterceptor(private val requestHeaders: RequestHeaders) : Intercept
         val original = chain.request()
         val builder: Request.Builder = if (!requestHeaders.accessToken.isNullOrBlank()) {
             original.newBuilder()
-                .header("Connection", "close")
                 .header("Authorization", "Bearer " + requestHeaders.accessToken)
                 .header("Accept", requestHeaders.language)
                 .method(original.method, original.body)
         } else {
             original.newBuilder()
-                .header("Connection", "close")
                 .header("Accept", requestHeaders.language)
                 .method(original.method, original.body)
         }
