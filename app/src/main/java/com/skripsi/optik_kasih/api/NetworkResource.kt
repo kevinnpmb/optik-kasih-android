@@ -148,13 +148,7 @@ class NetworkResource(private val context: Context) {
         } catch (e: ApolloHttpException) {
             when (e.statusCode) {
                 401 -> {
-                    liveData.postValue(
-                        Resource(
-                            Status.UNAUTHORIZED,
-                            null,
-                            null
-                        )
-                    )
+
                 }
                 else -> {
                     //internal server error

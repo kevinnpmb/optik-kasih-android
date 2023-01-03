@@ -1,6 +1,8 @@
 <resources>
     // view related resources
     <string name="app_name">Optik Kasih</string>
+    <string name="unauthorized">Sesi anda telah berakhir, silahkan login ulang kembali.</string>
+    <string name="alert">Perhatian</string>
     <string name="cart">Keranjang</string>
     <string name="home">Utama</string>
     <string name="history">Riwayat</string>
@@ -70,4 +72,7 @@
     <string name="password_invalid">Password tidak valid</string>
     <string name="toast_icon">Toast Icon</string>
     <string name="toast_close_icon">Toast Close Icon</string>
+    <string name="something_wrong_msg">Terjadi kesalahan, refresh untuk memuat ulang</string>
+    <string name="no_data">Tidak ada data</string>
+    <string name="logout">Logout</string>
 </resources>

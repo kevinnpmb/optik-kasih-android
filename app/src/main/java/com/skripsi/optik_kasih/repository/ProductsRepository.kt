@@ -2,6 +2,8 @@ package com.skripsi.optik_kasih.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo3.ApolloClient
+import com.skripsi.optik_kasih.GetProductQuery
+import com.skripsi.optik_kasih.GetProductsQuery
 import com.skripsi.optik_kasih.LoginMutation
 //import com.skripsi.optik_kasih.LoginQuery
 import com.skripsi.optik_kasih.api.NetworkResource
@@ -14,20 +16,31 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserRepository @Inject constructor(
+class ProductsRepository @Inject constructor(
     var preferencesHelper: PreferencesHelper,
     var networkResource: NetworkResource,
     var apolloClient: ApolloClient,
 ) {
-    suspend fun loginUser(
-        email: String,
-        password: String,
-        liveData: MutableLiveData<Resource<LoginMutation.Data>>
+    suspend fun getListProducts(
+        liveData: MutableLiveData<Resource<GetProductsQuery.Data>>
     ) {
         withContext(Dispatchers.IO) {
-            networkResource.processMutationResponse(
+            networkResource.processQueryResponse(
                 apolloClient,
-                LoginMutation(LoginParam(email, password)),
+                GetProductsQuery(),
+                liveData
+            )
+        }
+    }
+
+    suspend fun getProduct(
+        productId: String,
+        liveData: MutableLiveData<Resource<GetProductQuery.Data>>
+    ) {
+        withContext(Dispatchers.IO) {
+            networkResource.processQueryResponse(
+                apolloClient,
+                GetProductQuery(productId),
                 liveData
             )
         }

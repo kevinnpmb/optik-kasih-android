@@ -1,60 +1,115 @@
 package com.skripsi.optik_kasih.ui.home
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.skripsi.optik_kasih.R
+import com.skripsi.optik_kasih.adapter.HomeAdapter
+import com.skripsi.optik_kasih.adapter.HomeAdapterType
+import com.skripsi.optik_kasih.adapter.HomeRow
+import com.skripsi.optik_kasih.databinding.FragmentHomeBinding
+import com.skripsi.optik_kasih.ui.common.BaseFragment
+import com.skripsi.optik_kasih.ui.detail.DetailActivity
+import com.skripsi.optik_kasih.utils.GridSpacesItemDecoration
+import com.skripsi.optik_kasih.utils.Utilities
+import com.skripsi.optik_kasih.utils.Utilities.dpToPx
+import com.skripsi.optik_kasih.vo.Status
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+@AndroidEntryPoint
+class HomeFragment : BaseFragment() {
+    private lateinit var binding: FragmentHomeBinding
+    private val viewModel: HomeViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.srlHome.setColorSchemeColors(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.primaryColor
+            )
+        )
+        binding.rvHome.apply {
+            adapter = HomeAdapter {
+                startActivity(Intent(requireActivity(), DetailActivity::class.java).apply {
+                    putExtra(DetailActivity.PRODUCT_ID, it.id)
+                })
+            }
+            layoutManager = GridLayoutManager(context, 2).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return when (HomeAdapterType.values()[(adapter as HomeAdapter).getItemViewType(position)]) {
+                            HomeAdapterType.List -> 1
+                            HomeAdapterType.Header -> 2
+                        }
+                    }
                 }
             }
+            addItemDecoration(GridSpacesItemDecoration(2.dpToPx.toInt()))
+        }
+        initObserver()
+        initListener()
+        viewModel.getProducts()
+    }
+
+    private fun initListener() {
+        binding.apply {
+            srlHome.setOnRefreshListener {
+                viewModel.getProducts()
+            }
+        }
+    }
+
+    private fun initObserver() {
+        viewModel.apply {
+            productsMutableLiveData.observe(
+                viewLifecycleOwner
+            ) {
+                binding.apply {
+                    loading.root.isVisible = it.status == Status.LOADING
+                    error.root.isVisible = it.status == Status.ERROR
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            srlHome.isRefreshing = false
+                            val products = it.data?.product?.products?.nodes?.filter { it.product.isShown == 1 }.orEmpty()
+                            rvHome.isVisible = products.isNotEmpty()
+                            empty.root.isVisible = !rvHome.isVisible
+                            if (products.isNotEmpty()) {
+                                (rvHome.adapter as HomeAdapter).submitList(products.groupBy { it.product.product_type }
+                                    .flatMap {
+                                        listOf(HomeRow.Header(it.key), *(it.value.map { item ->
+                                            (HomeRow.List(
+                                                item.product
+                                            ))
+                                        }).toTypedArray())
+                                    })
+                            }
+                        }
+                        Status.ERROR -> {
+                            srlHome.isRefreshing = false
+                            Utilities.showToast(requireActivity(), binding.root, it.message)
+                        }
+                        Status.LOADING -> {}
+                        Status.UNAUTHORIZED -> {
+                            Utilities.showInvalidApiKeyAlert(requireActivity())
+                        }
+                    }
+                }
+            }
+        }
     }
 }

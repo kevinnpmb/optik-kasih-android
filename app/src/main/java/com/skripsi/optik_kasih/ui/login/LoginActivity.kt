@@ -78,7 +78,7 @@ class LoginActivity : BaseActivity() {
     private fun initObserver() {
         viewModel.apply {
             loginMutableLiveData.observe(this@LoginActivity) {
-                binding.btnLogin.isEnabled = true
+                binding.btnLogin.isEnabled = it.status != Status.LOADING
                 when (it.status) {
                     Status.SUCCESS -> {
                         loadingDialog.dismiss()
@@ -96,7 +96,7 @@ class LoginActivity : BaseActivity() {
                         loadingDialog.show()
                     }
                     Status.UNAUTHORIZED -> {
-
+                        Utilities.showInvalidApiKeyAlert(this@LoginActivity)
                     }
                 }
             }

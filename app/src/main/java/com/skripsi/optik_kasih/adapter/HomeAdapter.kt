@@ -1,15 +1,19 @@
 package com.skripsi.optik_kasih.adapter
 
 import android.content.Context
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.skripsi.optik_kasih.databinding.HomeRowHeaderBinding
 import com.skripsi.optik_kasih.databinding.HomeRowListBinding
+import com.skripsi.optik_kasih.fragment.Product
+import com.skripsi.optik_kasih.utils.Utilities
 
-class HomeAdapter(private val buttonCallback: () -> Unit): ListAdapter<HomeRow, RecyclerView.ViewHolder>(DiffCallback()) {
+class HomeAdapter(private val buttonCallback: (Product) -> Unit): ListAdapter<HomeRow, RecyclerView.ViewHolder>(DiffCallback()) {
     private lateinit var context: Context
     inner class HeaderViewHolder(private val binding: HomeRowHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -24,7 +28,21 @@ class HomeAdapter(private val buttonCallback: () -> Unit): ListAdapter<HomeRow, 
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HomeRow.List) {
             binding.apply {
-
+                val (_, product_name, _, _, _, product_price) = item.product
+                if (price.bfrDiscPrice.isVisible) {
+                    price.bfrDiscPrice.apply {
+                        paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        text = Utilities.convertPrice(product_price.toString())
+                    }
+                }
+                price.price.text = Utilities.convertPrice(product_price.toString())
+                title.text = product_name
+                root.setOnClickListener {
+                    buttonCallback.invoke(item.product)
+                }
+                btnAdd.setOnClickListener {
+                    buttonCallback.invoke(item.product)
+                }
             }
         }
     }
@@ -78,16 +96,17 @@ class HomeAdapter(private val buttonCallback: () -> Unit): ListAdapter<HomeRow, 
             is HomeRow.Header -> (holder as HeaderViewHolder).bind(homeRow)
         }
     }
+
+    override fun getItemViewType(position: Int): Int =
+        getItem(position).rowType.ordinal
 }
 
 sealed class HomeRow(val rowType: HomeAdapterType) {
-    data class List(val string: String) :
-        HomeRow(HomeAdapterType.Header)
-
-    data class Header(val title: String) : HomeRow(HomeAdapterType.List)
+    data class List(val product: Product) : HomeRow(HomeAdapterType.List)
+    data class Header(val title: String) : HomeRow(HomeAdapterType.Header)
 }
 
 enum class HomeAdapterType {
-    Header,
-    List
+    List,
+    Header
 }
