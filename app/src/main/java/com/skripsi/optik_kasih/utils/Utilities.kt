@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
 import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -12,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.optik_kasih.OptikKasihApp
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.SplashScreen
@@ -20,9 +24,12 @@ import com.skripsi.optik_kasih.vo.User
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.util.*
 
 object Utilities {
-    fun com.skripsi.optik_kasih.fragment.User.toUser(accessToken: String) = User(
+    fun com.skripsi.optik_kasih.fragment.Customer.toUser(accessToken: String) = User(
         id,
         customer_name,
         customer_gender,
@@ -38,6 +45,41 @@ object Utilities {
             this.toFloat(),
             Resources.getSystem().displayMetrics
         )
+
+    fun TextInputLayout.validate(
+        type: TextFieldType,
+        errorText: String
+    ): Boolean {
+        when (type) {
+            TextFieldType.EMAIL -> return if (!editText?.text.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(editText?.text.toString()).matches()) {
+                error = null
+                true
+            } else {
+                error = errorText
+                false
+            }
+            TextFieldType.OTHER -> return if (!editText?.text.isNullOrBlank()) {
+                error = null
+                true
+            } else {
+                error = errorText
+                false
+            }
+        }
+    }
+
+    fun TextInputLayout.registerClearText() {
+        val clearTextChangedListener = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                error = null
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        }
+        editText?.addTextChangedListener(clearTextChangedListener)
+    }
 
     fun initToolbar(
         activity: AppCompatActivity,
@@ -168,7 +210,53 @@ object Utilities {
         dialog.show()
     }
 
+    fun formatToDateISO8601(dateSrc: String): Date? {
+        return try {
+            Date.from(Instant.parse(dateSrc))
+        } catch (e: java.lang.Exception) {
+            null
+        }
+    }
+
+    fun formatToDateString(dateSrc: String, dateType: DateType = DateType.API): String? {
+        return try {
+            val dateFormat = SimpleDateFormat(when (dateType) {
+                DateType.API -> "yyyy-MM-dd"
+                DateType.VIEW -> "EEEE, d MMMM yyyy"
+            }, Locale.getDefault())
+            dateFormat.format(Date.from(Instant.parse(dateSrc)))
+        } catch (e: java.lang.Exception) {
+            null
+        }
+    }
+
+    fun formatToDateString(date: Date, dateType: DateType = DateType.API): String? {
+        return try {
+            val dateFormat = SimpleDateFormat(when (dateType) {
+                DateType.API -> "yyyy-MM-dd"
+                DateType.VIEW -> "EEEE, d MMMM yyyy"
+            }, Locale.getDefault())
+            dateFormat.format(date)
+        } catch (e: java.lang.Exception) {
+            null
+        }
+    }
+
+    fun List<Boolean>.validateAll(callbackIfAllValid: () -> Unit) {
+        if (all { it }) {
+            callbackIfAllValid.invoke()
+        }
+    }
+
     enum class ToastType {
         ERROR, SUCCESS, WARNING, OTHER
+    }
+
+    enum class TextFieldType {
+        EMAIL, OTHER
+    }
+
+    enum class DateType {
+        API, VIEW
     }
 }

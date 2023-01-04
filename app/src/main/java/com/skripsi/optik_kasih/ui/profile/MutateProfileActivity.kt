@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.skripsi.optik_kasih.R
 
-class EditProfileActivity : AppCompatActivity() {
+class MutateProfileActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
     }
 }

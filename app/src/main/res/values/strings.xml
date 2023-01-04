@@ -75,4 +75,6 @@
     <string name="something_wrong_msg">Terjadi kesalahan, refresh untuk memuat ulang</string>
     <string name="no_data">Tidak ada data</string>
     <string name="logout">Logout</string>
+    <string name="next">Berikutnya</string>
+    <string name="password_not_same">Password tidak sama</string>
 </resources>

@@ -1,4 +1,4 @@
-fragment User on Customer {
+fragment Customer on Customer {
     id
     customer_name
     customer_gender

@@ -3,7 +3,7 @@ mutation Login($loginParam: LoginParam!) {
         login(input: $loginParam) {
             token
             customer {
-                ...User
+                ...Customer
             }
         }
     }

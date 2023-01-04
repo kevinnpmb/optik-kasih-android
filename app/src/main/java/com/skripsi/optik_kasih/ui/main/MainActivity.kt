@@ -20,7 +20,6 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.vpMain.apply {
-            isUserInputEnabled = false
             adapter = MainViewPagerAdapter(this@MainActivity)
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {

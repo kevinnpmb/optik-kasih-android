@@ -15,6 +15,7 @@ android {
     defaultConfig {
         applicationId AppId
         minSdk 21
+        multiDexEnabled true
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -22,6 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "BASE_URL", '"http://192.168.18.13:8080/query"'
+
     }
 
     buildTypes {
@@ -34,6 +36,7 @@ android {
         viewBinding true
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -47,7 +50,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"

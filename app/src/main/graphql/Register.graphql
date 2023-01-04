@@ -1,0 +1,7 @@
+mutation Register($newCustomer: NewCustomer!) {
+    customer {
+        customer_create(input: $newCustomer) {
+            ...Customer
+        }
+    }
+}

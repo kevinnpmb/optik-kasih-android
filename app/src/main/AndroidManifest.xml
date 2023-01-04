@@ -51,7 +51,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.profile.EditProfileActivity"
+            android:name=".ui.profile.MutateProfileActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

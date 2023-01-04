@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment() {
                         }
                         Status.ERROR -> {
                             srlHome.isRefreshing = false
-                            Utilities.showToast(requireActivity(), binding.root, it.message)
+                            Utilities.showToast(requireActivity(), binding.root, it.message, Utilities.ToastType.ERROR)
                         }
                         Status.LOADING -> {}
                         Status.UNAUTHORIZED -> {

@@ -22,31 +22,4 @@ class LoginViewModel @Inject constructor(
             userRepository.loginUser(email, password, loginMutableLiveData)
         }
     }
-
-    fun validate(
-        type: TextFieldType, text: String, textInputLayout: TextInputLayout,
-        errorText: String
-    ): Boolean {
-        when (type) {
-            TextFieldType.EMAIL -> return if (text.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
-                textInputLayout.error = null
-                true
-            } else {
-                textInputLayout.error = errorText
-                false
-            }
-            TextFieldType.OTHER -> return if (text.isNotEmpty()) {
-                textInputLayout.error = null
-                true
-            } else {
-                textInputLayout.error = errorText
-                false
-            }
-        }
-    }
-
-    enum class TextFieldType {
-        EMAIL,
-        OTHER
-    }
 }

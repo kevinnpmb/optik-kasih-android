@@ -70,7 +70,7 @@ class DetailActivity : BaseActivity() {
                         }
                         Status.ERROR -> {
                             srlDetail.isRefreshing = false
-                            Utilities.showToast(this@DetailActivity, binding.root, it.message)
+                            Utilities.showToast(this@DetailActivity, binding.root, it.message, Utilities.ToastType.ERROR)
                         }
                         Status.LOADING -> {}
                         Status.UNAUTHORIZED -> {

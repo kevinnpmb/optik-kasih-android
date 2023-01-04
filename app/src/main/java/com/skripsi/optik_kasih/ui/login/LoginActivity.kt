@@ -13,6 +13,8 @@ import com.skripsi.optik_kasih.ui.main.MainActivity
 import com.skripsi.optik_kasih.utils.PreferencesHelper
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.toUser
+import com.skripsi.optik_kasih.utils.Utilities.validate
+import com.skripsi.optik_kasih.utils.Utilities.validateAll
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -39,31 +41,18 @@ class LoginActivity : BaseActivity() {
                 }
                 val validationList: MutableList<Boolean> = arrayListOf()
                 validationList.add(
-                    viewModel.validate(
-                        LoginViewModel.TextFieldType.EMAIL,
-                        tilEmail.editText?.text.toString(),
-                        tilEmail,
+                    tilEmail.validate(
+                        Utilities.TextFieldType.EMAIL,
                         getString(R.string.email_invalid)
                     )
                 )
-
                 validationList.add(
-                    viewModel.validate(
-                        LoginViewModel.TextFieldType.OTHER,
-                        tilPassword.editText?.text.toString(),
-                        tilPassword,
+                    tilPassword.validate(
+                        Utilities.TextFieldType.OTHER,
                         getString(R.string.password_invalid)
                     )
                 )
-
-                var isAllValid = true
-                for (i in 0 until validationList.size) {
-                    if (!validationList[i]) {
-                        isAllValid = false
-                        break
-                    }
-                }
-                if (isAllValid) {
+                validationList.validateAll {
                     //post api
                     btnLogin.isEnabled = false
                     viewModel.login(
@@ -83,14 +72,19 @@ class LoginActivity : BaseActivity() {
                     Status.SUCCESS -> {
                         loadingDialog.dismiss()
                         it.data?.customer?.login?.let { (token, user) ->
-                            preferencesHelper.saveAccount(user.user.toUser(token))
+                            preferencesHelper.saveAccount(user.customer.toUser(token))
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         }
                     }
                     Status.ERROR -> {
                         loadingDialog.dismiss()
-                        Utilities.showToast(this@LoginActivity, binding.root, it.message)
+                        Utilities.showToast(
+                            this@LoginActivity,
+                            binding.root,
+                            it.message,
+                            Utilities.ToastType.ERROR
+                        )
                     }
                     Status.LOADING -> {
                         loadingDialog.show()
