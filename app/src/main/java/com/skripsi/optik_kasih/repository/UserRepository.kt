@@ -3,10 +3,12 @@ package com.skripsi.optik_kasih.repository
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
+import com.skripsi.optik_kasih.EditProfileMutation
 import com.skripsi.optik_kasih.LoginMutation
 import com.skripsi.optik_kasih.RegisterMutation
 //import com.skripsi.optik_kasih.LoginQuery
 import com.skripsi.optik_kasih.api.NetworkResource
+import com.skripsi.optik_kasih.type.EditCustomer
 import com.skripsi.optik_kasih.type.LoginParam
 import com.skripsi.optik_kasih.type.NewCustomer
 import com.skripsi.optik_kasih.utils.PreferencesHelper
@@ -50,14 +52,43 @@ class UserRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             networkResource.processMutationResponse(
                 apolloClient,
-                RegisterMutation(NewCustomer(
-                    name,
-                    gender,
-                    Utilities.formatToDateString(birthDate) ?: "",
-                    phoneNumber,
-                    Optional.present(email),
-                    Optional.present(password),
-                )),
+                RegisterMutation(
+                    NewCustomer(
+                        name,
+                        gender,
+                        Utilities.formatToDateString(birthDate) ?: "",
+                        phoneNumber,
+                        Optional.present(email),
+                        Optional.present(password),
+                    )
+                ),
+                liveData
+            )
+        }
+    }
+
+    suspend fun editUser(
+        id: String,
+        name: String,
+        birthDate: Date,
+        gender: Int,
+        phoneNumber: String,
+        liveData: MutableLiveData<Resource<EditProfileMutation.Data>>
+    ) {
+        withContext(Dispatchers.IO) {
+            networkResource.processMutationResponse(
+                apolloClient,
+                EditProfileMutation(
+                    EditCustomer(
+                        id,
+                        name,
+                        gender,
+                        Utilities.formatToDateString(birthDate) ?: "",
+                        phoneNumber,
+                        Optional.presentIfNotNull(null),
+                        Optional.presentIfNotNull(null),
+                    )
+                ),
                 liveData
             )
         }

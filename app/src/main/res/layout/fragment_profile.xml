@@ -45,12 +45,14 @@
                     tools:text="Erdio Wu" />
 
                 <TextView
+                    android:id="@+id/profileEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="test123@gmail.com" />
             </LinearLayout>
 
             <ImageButton
+                android:id="@+id/editProfile"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"

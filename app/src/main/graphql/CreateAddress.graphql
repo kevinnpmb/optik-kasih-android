@@ -1,0 +1,7 @@
+mutation CreateAddress($newAddress: NewAddress!) {
+    address {
+        address_create(address: $newAddress) {
+            ...Address
+        }
+    }
+}

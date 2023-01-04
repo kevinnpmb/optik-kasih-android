@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -187,7 +190,7 @@ object Utilities {
     fun showInvalidApiKeyAlert(activity: Activity) {
         val pref = PreferencesHelper(activity)
         pref.signOut()
-        (activity.application as OptikKasihApp).initializeApplication()
+        (activity.application as OptikKasihApp).setAccessTokenToHeader()
         val dialog: android.app.AlertDialog
         val builder = android.app.AlertDialog.Builder(activity)
         builder.setTitle(activity.resources.getString(R.string.alert))
@@ -223,6 +226,7 @@ object Utilities {
             val dateFormat = SimpleDateFormat(when (dateType) {
                 DateType.API -> "yyyy-MM-dd"
                 DateType.VIEW -> "EEEE, d MMMM yyyy"
+                DateType.SIMPLE -> "dd-MM-yyyy"
             }, Locale.getDefault())
             dateFormat.format(Date.from(Instant.parse(dateSrc)))
         } catch (e: java.lang.Exception) {
@@ -230,13 +234,14 @@ object Utilities {
         }
     }
 
-    fun formatToDateString(date: Date, dateType: DateType = DateType.API): String? {
+    fun formatToDateString(date: Date?, dateType: DateType = DateType.API): String? {
         return try {
             val dateFormat = SimpleDateFormat(when (dateType) {
                 DateType.API -> "yyyy-MM-dd"
                 DateType.VIEW -> "EEEE, d MMMM yyyy"
+                DateType.SIMPLE -> "dd-MM-yyyy"
             }, Locale.getDefault())
-            dateFormat.format(date)
+            date?.let { dateFormat.format(date) }
         } catch (e: java.lang.Exception) {
             null
         }
@@ -248,6 +253,11 @@ object Utilities {
         }
     }
 
+    inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+        SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+    }
+
     enum class ToastType {
         ERROR, SUCCESS, WARNING, OTHER
     }
@@ -257,6 +267,6 @@ object Utilities {
     }
 
     enum class DateType {
-        API, VIEW
+        API, VIEW, SIMPLE
     }
 }

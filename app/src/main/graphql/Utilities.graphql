@@ -19,3 +19,17 @@ fragment Product on Product {
     supplier_id
     isShown
 }
+
+fragment Address on Address {
+    id
+    label
+    address
+    kecamatan
+    kelurahan
+    postal
+    created_at
+    updated_at
+    customer {
+        ...Customer
+    }
+}

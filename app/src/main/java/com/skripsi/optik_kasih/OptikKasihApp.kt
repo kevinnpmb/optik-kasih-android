@@ -19,10 +19,10 @@ class OptikKasihApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        initializeApplication()
+        setAccessTokenToHeader()
     }
 
-    fun initializeApplication() {
+    fun setAccessTokenToHeader() {
         //load the current access token into all requests
         requestHeaders.accessToken = preferencesHelper.user?.accessToken ?: ""
     }

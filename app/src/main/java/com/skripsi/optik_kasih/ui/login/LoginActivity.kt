@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.util.Patterns
 import androidx.activity.viewModels
 import com.skripsi.optik_kasih.BuildConfig
+import com.skripsi.optik_kasih.OptikKasihApp
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.databinding.ActivityLoginBinding
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.main.MainActivity
+import com.skripsi.optik_kasih.ui.register.RegisterActivity
 import com.skripsi.optik_kasih.utils.PreferencesHelper
 import com.skripsi.optik_kasih.utils.Utilities
+import com.skripsi.optik_kasih.utils.Utilities.registerClearText
 import com.skripsi.optik_kasih.utils.Utilities.toUser
 import com.skripsi.optik_kasih.utils.Utilities.validate
 import com.skripsi.optik_kasih.utils.Utilities.validateAll
@@ -28,6 +31,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        registerClearText()
         initObserver()
         initListener()
     }
@@ -36,7 +40,7 @@ class LoginActivity : BaseActivity() {
         binding.apply {
             btnLogin.setOnClickListener {
                 if (BuildConfig.DEBUG && tilEmail.editText?.text!!.isEmpty()) {
-                    tilEmail.editText?.setText("erdio@gmail.com")
+                    tilEmail.editText?.setText("kevin@gmail.com")
                     tilPassword.editText?.setText("test12345")
                 }
                 val validationList: MutableList<Boolean> = arrayListOf()
@@ -61,6 +65,17 @@ class LoginActivity : BaseActivity() {
                     )
                 }
             }
+
+            register.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
+        }
+    }
+
+    private fun registerClearText() {
+        binding.apply {
+            tilEmail.registerClearText()
+            tilPassword.registerClearText()
         }
     }
 
@@ -73,6 +88,7 @@ class LoginActivity : BaseActivity() {
                         loadingDialog.dismiss()
                         it.data?.customer?.login?.let { (token, user) ->
                             preferencesHelper.saveAccount(user.customer.toUser(token))
+                            (application as OptikKasihApp).setAccessTokenToHeader()
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         }

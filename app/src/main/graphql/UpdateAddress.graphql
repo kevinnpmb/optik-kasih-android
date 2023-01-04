@@ -1,0 +1,7 @@
+mutation UpdateAddress($editAddress: EditAddress!) {
+    address {
+        address_update(address: $editAddress) {
+            ...Address
+        }
+    }
+}

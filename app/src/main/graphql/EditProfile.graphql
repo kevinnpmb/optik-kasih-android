@@ -1,0 +1,7 @@
+mutation EditProfile($editCustomer: EditCustomer!) {
+    customer {
+        customer_update(input: $editCustomer) {
+            ...Customer
+        }
+    }
+}

@@ -1,0 +1,7 @@
+mutation DeleteAddress($addressId: ID!) {
+    address {
+        address_delete(id: $addressId) {
+            message
+        }
+    }
+}
