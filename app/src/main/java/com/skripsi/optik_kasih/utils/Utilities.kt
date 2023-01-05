@@ -1,6 +1,8 @@
 package com.skripsi.optik_kasih.utils
 
 import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
@@ -23,6 +25,8 @@ import com.skripsi.optik_kasih.OptikKasihApp
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.SplashScreen
 import com.skripsi.optik_kasih.databinding.ToastBinding
+import com.skripsi.optik_kasih.fragment.Address
+import com.skripsi.optik_kasih.ui.address.AddEditAddressActivity
 import com.skripsi.optik_kasih.vo.User
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -32,6 +36,20 @@ import java.time.Instant
 import java.util.*
 
 object Utilities {
+    fun Address.toEditAddress() = AddEditAddressActivity.EditAddress(
+        id, label, address, kecamatan, kelurahan, postal
+    )
+
+    val Address.addressDetail get() = (if (address.isNotBlank()) "$address," else "") +
+            (if (kelurahan.isNotBlank()) " $kelurahan," else "") +
+            (if (kecamatan.isNotBlank()) " $kecamatan," else "") +
+            if (postal.isNotBlank()) " $postal" else ""
+
+    val AddEditAddressActivity.EditAddress.addressDetail get() = (if (address.isNotBlank()) "$address," else "") +
+            (if (kelurahan.isNotBlank()) " $kelurahan," else "") +
+            (if (kecamatan.isNotBlank()) " $kecamatan," else "") +
+            if (postal.isNotBlank()) " $postal" else ""
+
     fun com.skripsi.optik_kasih.fragment.Customer.toUser(accessToken: String) = User(
         id,
         customer_name,
@@ -55,6 +73,13 @@ object Utilities {
     ): Boolean {
         when (type) {
             TextFieldType.EMAIL -> return if (!editText?.text.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(editText?.text.toString()).matches()) {
+                error = null
+                true
+            } else {
+                error = errorText
+                false
+            }
+            TextFieldType.PHONE -> return if (!editText?.text.isNullOrBlank() && Patterns.PHONE.matcher(editText?.text.toString()).matches()) {
                 error = null
                 true
             } else {
@@ -221,7 +246,54 @@ object Utilities {
         }
     }
 
-    fun formatToDateString(dateSrc: String, dateType: DateType = DateType.API): String? {
+    fun formatToDate(dateSrc: String): Date? {
+        return try {
+            val df = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).apply {
+                timeZone = TimeZone.getTimeZone("Asia/Jakarta")
+            }
+            df.parse(dateSrc)
+        } catch (e: java.lang.Exception) {
+            null
+        }
+    }
+
+    fun showSimpleAlertDialog(
+        activity: Activity,
+        title: String?,
+        msg: String?,
+        positiveMessage: String = activity.getString(android.R.string.ok),
+        positiveListener: DialogInterface.OnClickListener? = null,
+        negativeMessage: String = activity.getString(android.R.string.cancel),
+        negativeListener: DialogInterface.OnClickListener? = null,
+        isCancelable: Boolean = true
+    ) {
+        val dialog: android.app.AlertDialog
+        val builder = android.app.AlertDialog.Builder(activity)
+        if (title != null) {
+            builder.setTitle(title)
+        }
+        builder.setMessage(msg)
+            .setCancelable(false)
+            .setIcon(R.drawable.ic_launcher_foreground)
+        if (positiveListener != null) {
+            builder.setPositiveButton(positiveMessage, positiveListener)
+        } else  {
+            builder.setPositiveButton(positiveMessage) { dialog, _ -> dialog.dismiss() }
+        }
+        if (negativeListener != null) {
+            builder.setNegativeButton(negativeMessage, negativeListener)
+        } else {
+            builder.setNegativeButton(negativeMessage) { dialog, _ -> dialog.dismiss() }
+        }
+        dialog = builder.create()
+        dialog.setCancelable(isCancelable)
+        dialog.setCanceledOnTouchOutside(isCancelable)
+        if (!activity.isFinishing) {
+            dialog.show()
+        }
+    }
+
+    fun formatISO8601ToDateString(dateSrc: String, dateType: DateType = DateType.API): String? {
         return try {
             val dateFormat = SimpleDateFormat(when (dateType) {
                 DateType.API -> "yyyy-MM-dd"
@@ -258,12 +330,17 @@ object Utilities {
         else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
     }
 
+    inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+        SDK_INT >= 33 -> getParcelable(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+    }
+
     enum class ToastType {
         ERROR, SUCCESS, WARNING, OTHER
     }
 
     enum class TextFieldType {
-        EMAIL, OTHER
+        EMAIL, PHONE, OTHER
     }
 
     enum class DateType {

@@ -12,24 +12,19 @@ import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.databinding.ActivityMutateProfileBinding
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.login.LoginActivity
-import com.skripsi.optik_kasih.ui.main.MainActivity
-import com.skripsi.optik_kasih.utils.PreferencesHelper
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.parcelable
 import com.skripsi.optik_kasih.utils.Utilities.registerClearText
-import com.skripsi.optik_kasih.utils.Utilities.toUser
 import com.skripsi.optik_kasih.utils.Utilities.validate
 import com.skripsi.optik_kasih.utils.Utilities.validateAll
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MutateProfileActivity : BaseActivity() {
     private lateinit var binding: ActivityMutateProfileBinding
-    private var birthDate: Date? = null
     private val viewModel: MutateProfileViewModel by viewModels()
     private val datePicker = MaterialDatePicker.Builder.datePicker()
         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -50,15 +45,9 @@ class MutateProfileActivity : BaseActivity() {
         )
         .build().apply {
             addOnPositiveButtonClickListener {
-                birthDate = Calendar.getInstance().apply {
+                viewModel.birthDateMutableLiveData.postValue(Calendar.getInstance().apply {
                     timeInMillis = selection ?: MaterialDatePicker.todayInUtcMilliseconds()
-                }.time
-                binding.tilBirthDate.editText?.setText(
-                    Utilities.formatToDateString(
-                        birthDate,
-                        Utilities.DateType.SIMPLE
-                    )
-                )
+                }.time)
             }
             addOnNegativeButtonClickListener {
                 dismiss()
@@ -127,7 +116,7 @@ class MutateProfileActivity : BaseActivity() {
                     )
                     add(
                         tilPhoneNumber.validate(
-                            Utilities.TextFieldType.OTHER,
+                            Utilities.TextFieldType.PHONE,
                             getString(R.string.invalid_phone_number)
                         )
                     )
@@ -135,7 +124,7 @@ class MutateProfileActivity : BaseActivity() {
                     when (viewModel.mutateType) {
                         MutateType.EDIT -> {
                             viewModel.mutateProfileData.value?.let {
-                                birthDate?.let { date ->
+                                viewModel.birthDate?.let { date ->
                                     viewModel.editProfile(
                                         preferencesHelper.user?.id!!,
                                         tilName.editText?.text.toString(),
@@ -152,7 +141,7 @@ class MutateProfileActivity : BaseActivity() {
                         }
                         MutateType.CREATE -> {
                             viewModel.mutateProfileData.value?.let {
-                                birthDate?.let { date ->
+                                viewModel.birthDate?.let { date ->
                                     viewModel.register(
                                         tilName.editText?.text.toString(),
                                         date,
@@ -191,7 +180,7 @@ class MutateProfileActivity : BaseActivity() {
                     }
                     tilPhoneNumber.editText?.setText(phoneNumber)
                     tilName.editText?.setText(name)
-                    this@MutateProfileActivity.birthDate = birthDate
+                    viewModel.birthDateMutableLiveData.postValue(birthDate)
                     tilBirthDate.editText?.setText(
                         Utilities.formatToDateString(
                             birthDate,
@@ -246,11 +235,12 @@ class MutateProfileActivity : BaseActivity() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             loadingDialog.dismiss()
-                            Toast.makeText(
+                            Utilities.showToast(
                                 this@MutateProfileActivity,
+                                binding.root,
                                 getString(R.string.sucess_edit_profile),
-                                Toast.LENGTH_LONG
-                            ).show()
+                                Utilities.ToastType.SUCCESS
+                            )
                             it.data?.customer?.customer_update?.customer?.let { customer ->
                                 preferencesHelper.user?.let { user ->
                                     preferencesHelper.saveAccount(user.copy(
@@ -263,13 +253,6 @@ class MutateProfileActivity : BaseActivity() {
                                     ))
                                 }
                             }
-                            startActivity(
-                                Intent(
-                                    this@MutateProfileActivity,
-                                    MainActivity::class.java
-                                )
-                            )
-                            finish()
                         }
                         Status.ERROR -> {
                             loadingDialog.dismiss()
@@ -288,6 +271,15 @@ class MutateProfileActivity : BaseActivity() {
                         }
                     }
                 }
+            }
+
+            birthDateMutableLiveData.observe(this@MutateProfileActivity) {
+                binding.tilBirthDate.editText?.setText(
+                    Utilities.formatToDateString(
+                        it,
+                        Utilities.DateType.SIMPLE
+                    )
+                )
             }
         }
     }

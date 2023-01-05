@@ -16,6 +16,8 @@ import javax.inject.Inject
 class MutateProfileViewModel @Inject constructor(
     var userRepository: UserRepository,
 ) : ViewModel() {
+    val birthDateMutableLiveData = MutableLiveData<Date>()
+    val birthDate: Date? get() = birthDateMutableLiveData.value
     val mutateProfileData = MutableLiveData<MutateProfileActivity.MutateProfileData>()
     val mutateType: MutateProfileActivity.MutateType? get() = mutateProfileData.value?.mutateType
     val registerMutableLiveData = MutableLiveData<Resource<RegisterMutation.Data>>()

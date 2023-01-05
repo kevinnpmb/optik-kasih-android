@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.databinding.FragmentProfileBinding
+import com.skripsi.optik_kasih.ui.address.MyAddressActivity
 import com.skripsi.optik_kasih.ui.main.MainActivity
 import com.skripsi.optik_kasih.utils.PreferencesHelper
 import com.skripsi.optik_kasih.utils.Utilities
@@ -30,13 +31,17 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUser()
+        initListener()
+    }
+
+    private fun setUser() {
         preferencesHelper.user?.let {
             binding.apply {
                 profileUserName.text = it.name
                 profileEmail.text = it.email
             }
         }
-        initListener()
     }
 
     private fun initListener() {
@@ -54,7 +59,7 @@ class ProfileFragment : Fragment() {
                             email,
                             null,
                             name,
-                            Utilities.formatToDateISO8601(birthday),
+                            Utilities.formatToDate(birthday),
                             gender,
                             phone_number,
                             MutateProfileActivity.MutateType.EDIT
@@ -62,6 +67,15 @@ class ProfileFragment : Fragment() {
                     }
                 })
             }
+
+            savedAddress.setOnClickListener {
+                startActivity(Intent(requireContext(), MyAddressActivity::class.java))
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setUser()
     }
 }

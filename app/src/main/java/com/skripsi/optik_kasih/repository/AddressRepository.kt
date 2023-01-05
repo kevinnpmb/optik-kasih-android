@@ -21,13 +21,13 @@ class AddressRepository @Inject constructor(
     var networkResource: NetworkResource,
     var apolloClient: ApolloClient,
 ) {
-    suspend fun getListProducts(
-        liveData: MutableLiveData<Resource<GetProductsQuery.Data>>
+    suspend fun getSavedAddress(
+        liveData: MutableLiveData<Resource<GetSavedAddressQuery.Data>>
     ) {
         withContext(Dispatchers.IO) {
             networkResource.processQueryResponse(
                 apolloClient,
-                GetProductsQuery(),
+                GetSavedAddressQuery(),
                 liveData
             )
         }

@@ -54,7 +54,7 @@ class RegisterActivity : AppCompatActivity() {
                 validationList.add(
                     when {
                         tilConfirmPassword.editText?.text.toString().isBlank() -> {
-                            tilConfirmPassword.error = getString(R.string.confirm_password_invalid)
+                            tilConfirmPassword.error = getString(R.string.invalid_confirm_password)
                             false
                         }
                         tilConfirmPassword.editText?.text.toString() != tilPassword.editText?.text.toString() -> {

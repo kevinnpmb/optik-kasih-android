@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:textAllCaps="true"
                     android:textColor="@color/primaryColor"
-                    android:textSize="18sp"
+                    android:textSize="28sp"
                     android:textStyle="bold"
                     tools:text="Erdio Wu" />
 
@@ -72,26 +72,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings"
                 android:textAllCaps="true"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/primaryColor"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/savedAddress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:paddingVertical="8dp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="16dp"
                     android:text="@string/saved_address"
                     app:drawableEndCompat="@drawable/ic_baseline_arrow_forward"
                     app:drawableTint="@android:color/tab_indicator_text" />
@@ -100,18 +105,23 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
                 android:alpha="0.2"
                 android:background="@color/black" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/changePassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:paddingVertical="8dp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="16dp"
                     android:text="@string/change_password"
                     app:drawableEndCompat="@drawable/ic_baseline_arrow_forward"
                     app:drawableTint="@android:color/tab_indicator_text" />

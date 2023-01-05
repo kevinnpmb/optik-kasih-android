@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.skripsi.optik_kasih.CreateAddressMutation
 import com.skripsi.optik_kasih.GetProductQuery
 import com.skripsi.optik_kasih.UpdateAddressMutation
+import com.skripsi.optik_kasih.fragment.Address
 import com.skripsi.optik_kasih.repository.AddressRepository
 import com.skripsi.optik_kasih.repository.ProductsRepository
 import com.skripsi.optik_kasih.vo.Resource
@@ -19,7 +20,9 @@ class AddressViewModel @Inject constructor(
     var addressRepository: AddressRepository
 ) : ViewModel() {
     val addAddressMutableLiveData = MutableLiveData<Resource<CreateAddressMutation.Data>>()
-    suspend fun createAddress(
+    val addressDataForEdit = MutableLiveData<AddEditAddressActivity.EditAddress>()
+    val addressEdit: AddEditAddressActivity.EditAddress? get() = addressDataForEdit.value
+    fun createAddress(
         label: String,
         address: String,
         kecamatan: String,
@@ -39,7 +42,7 @@ class AddressViewModel @Inject constructor(
     }
 
     val editAddressMutableLiveData = MutableLiveData<Resource<UpdateAddressMutation.Data>>()
-    suspend fun editAddress(
+    fun editAddress(
         id: String,
         label: String,
         address: String,

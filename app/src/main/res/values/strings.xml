@@ -63,6 +63,9 @@
     <string name="sub_district">Kecamatan</string>
     <string name="post_code">Kode Pos</string>
     <string name="phone_number">Nomor Telepon</string>
+    <string name="my_address">Alamat Saya</string>
+    <string name="address_detail">Detail Alamat</string>
+    <string name="add_address">Tambah Alamat</string>
 
     // connection resources
     <string name="try_again">Mohon Coba Lagi</string>
@@ -75,13 +78,24 @@
     <string name="no_data">Tidak ada data</string>
     <string name="logout">Logout</string>
     <string name="next">Berikutnya</string>
-    <string name="password_not_same">Kata Sandi tidak sama</string>
     <string name="select_dates">Pilih Tanggal</string>
-    <string name="invalid_name">Nama tidak valid</string>
-    <string name="confirm_password_invalid">Konfirmasi Kata Sandi Invalid</string>
-    <string name="invalid_birth_date">Tanggal Lahir tidak valid</string>
-    <string name="invalid_phone_number">Nomor Telepon tidak valid</string>
     <string name="edit_profile">Edit Profil</string>
     <string name="success_add_account">Sukses Menambah Akun</string>
     <string name="sucess_edit_profile">Berhasil menyunting profil</string>
+
+    // invalid
+    <string name="password_not_same">Kata Sandi tidak sama</string>
+    <string name="invalid_name">Nama tidak valid</string>
+    <string name="invalid_confirm_password">Konfirmasi Kata Sandi Invalid</string>
+    <string name="invalid_birth_date">Tanggal Lahir tidak valid</string>
+    <string name="invalid_phone_number">Nomor Telepon tidak valid</string>
+    <string name="invalid_address_label">Label Alamat tidak valid</string>
+    <string name="invalid_address">Alamat tidak valid</string>
+    <string name="invalid_neighbourhood">Kelurahan / Desa tidak valid</string>
+    <string name="invalid_sub_district">Kecamatan tidak valid</string>
+    <string name="invalid_post_code">Kode Pos tidak valid</string>
+    <string name="add_address_success">Berhasil menambahkan alamat</string>
+    <string name="edit_address_success">Berhasil menyunting alamat</string>
+    <string name="delete_address_msg">Apakah kamu yakin ingin menghapus alamat ini?</string>
+    <string name="delete_address_success">Berhasil menghapus alamat</string>
 </resources>

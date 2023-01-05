@@ -24,6 +24,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/makePrimaryAddress"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
             app:iconTint="@color/black" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/editAddress"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,6 +57,7 @@
             app:iconTint="@color/black" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteAddress"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

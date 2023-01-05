@@ -51,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
+                    android:enabled="false"
                     android:paddingVertical="12dp"
                     android:textSize="12sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -235,16 +236,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/phone_number"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPhoneNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -259,17 +250,7 @@
                 app:expandedHintEnabled="false"
                 app:hintEnabled="false"
                 app:suffixTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                app:suffixTextColor="@color/primaryColor">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPhoneNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/phone_number"
-                    android:inputType="text"
-                    android:paddingVertical="12dp"
-                    android:textSize="12sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                app:suffixTextColor="@color/primaryColor"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"

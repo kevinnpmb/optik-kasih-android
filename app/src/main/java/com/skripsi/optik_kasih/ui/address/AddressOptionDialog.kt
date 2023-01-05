@@ -1,59 +1,108 @@
 package com.skripsi.optik_kasih.ui.address
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import com.skripsi.optik_kasih.R
+import com.skripsi.optik_kasih.adapter.AddressAdapter
+import com.skripsi.optik_kasih.databinding.FragmentAddressOptionDialogBinding
+import com.skripsi.optik_kasih.ui.common.BaseBottomSheetDialogFragment
+import com.skripsi.optik_kasih.ui.common.BaseFragment
+import com.skripsi.optik_kasih.utils.Utilities
+import com.skripsi.optik_kasih.utils.Utilities.parcelable
+import com.skripsi.optik_kasih.vo.Status
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddressOptionDialog.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AddressOptionDialog : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+@AndroidEntryPoint
+class AddressOptionDialog : BaseBottomSheetDialogFragment() {
+    private lateinit var binding: FragmentAddressOptionDialogBinding
+    val viewModel: MyAddressViewModel by activityViewModels()
+    private lateinit var address: AddEditAddressActivity.EditAddress
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            address = it.parcelable(ADDRESS_DATA)!!
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_address_option_dialog, container, false)
+    ): View {
+        binding = FragmentAddressOptionDialogBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initListener()
+        initObserver()
+    }
+
+    private fun initObserver() {
+        viewModel.apply {
+            deleteAddressMutableLiveData.observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Utilities.showToast(requireActivity(), binding.root, getString(R.string.delete_address_success), Utilities.ToastType.SUCCESS)
+                        dismiss()
+                    }
+                    Status.ERROR -> {
+                        Utilities.showToast(
+                            requireActivity(),
+                            binding.root,
+                            it.message,
+                            Utilities.ToastType.ERROR
+                        )
+                    }
+                    Status.LOADING -> {}
+                    Status.UNAUTHORIZED -> {
+                        Utilities.showInvalidApiKeyAlert(requireActivity())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initListener() {
+        binding.apply {
+            makePrimaryAddress.setOnClickListener {
+
+            }
+
+            editAddress.setOnClickListener {
+                startActivity(Intent(requireContext(), AddEditAddressActivity::class.java).apply {
+                    putExtra(AddEditAddressActivity.EDIT_ADDRESS_DATA, address)
+                })
+            }
+
+            deleteAddress.setOnClickListener {
+                Utilities.showSimpleAlertDialog(
+                    requireActivity(),
+                    getString(R.string.delete_address),
+                    getString(R.string.delete_address_msg),
+                    positiveListener = { dialog, _ ->
+                        viewModel.deleteAddress(address.id)
+                        dialog.dismiss()
+                    }
+                )
+            }
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddressOptionDialog.
-         */
-        // TODO: Rename and change types and number of parameters
+        private const val ADDRESS_DATA = "ADDRESS_DATA"
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(address: AddEditAddressActivity.EditAddress) =
             AddressOptionDialog().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putParcelable(ADDRESS_DATA, address)
                 }
             }
     }

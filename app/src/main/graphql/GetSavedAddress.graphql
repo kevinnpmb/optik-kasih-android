@@ -1,0 +1,7 @@
+query GetSavedAddress {
+    address {
+        addressList {
+            ...Address
+        }
+    }
+}
