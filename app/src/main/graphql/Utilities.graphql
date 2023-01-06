@@ -14,6 +14,7 @@ fragment Product on Product {
     product_brand
     product_description
     product_price
+    discount
     product_stock
     supplier_id
     isShown

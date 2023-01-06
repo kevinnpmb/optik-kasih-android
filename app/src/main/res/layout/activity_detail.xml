@@ -78,6 +78,28 @@
                             android:padding="24dp">
 
                             <TextView
+                                android:id="@+id/pricePerItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="Rp. 10.000"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/priceBfrDiscount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:textColor="@color/grey"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="@id/pricePerItem"
+                                app:layout_constraintStart_toEndOf="@id/pricePerItem"
+                                app:layout_constraintTop_toTopOf="@+id/pricePerItem"
+                                tools:text="Rp. 12.000" />
+
+                            <TextView
                                 android:id="@+id/textView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -86,7 +108,7 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toBottomOf="@id/pricePerItem" />
 
                             <TextView
                                 android:id="@+id/description"

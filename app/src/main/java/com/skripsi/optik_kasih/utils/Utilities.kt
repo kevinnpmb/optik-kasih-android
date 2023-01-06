@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.optik_kasih.OptikKasihApp
@@ -26,7 +27,9 @@ import com.skripsi.optik_kasih.SplashScreen
 import com.skripsi.optik_kasih.databinding.ToastBinding
 import com.skripsi.optik_kasih.fragment.Address
 import com.skripsi.optik_kasih.fragment.Customer
+import com.skripsi.optik_kasih.fragment.Product
 import com.skripsi.optik_kasih.vo.AddressPref
+import com.skripsi.optik_kasih.vo.Cart
 import com.skripsi.optik_kasih.vo.User
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -36,6 +39,9 @@ import java.time.Instant
 import java.util.*
 
 object Utilities {
+    fun Product.toCart(quantity: Int) = Cart(
+        id, product_name, null, product_price, discount, product_description, quantity
+    )
     fun Address.toAddressPref() = AddressPref(
         id, label, address, kecamatan, kelurahan, postal
     )
@@ -240,8 +246,8 @@ object Utilities {
         val pref = PreferencesHelper(activity)
         pref.signOut()
         (activity.application as OptikKasihApp).setAccessTokenToHeader()
-        val dialog: android.app.AlertDialog
-        val builder = android.app.AlertDialog.Builder(activity)
+        val dialog: AlertDialog
+        val builder = MaterialAlertDialogBuilder(activity, R.style.MaterialAlertDialog_Rounded)
         builder.setTitle(activity.resources.getString(R.string.alert))
             .setMessage(activity.resources.getString(R.string.unauthorized))
             .setCancelable(false)
@@ -291,8 +297,8 @@ object Utilities {
         negativeListener: DialogInterface.OnClickListener? = null,
         isCancelable: Boolean = true
     ) {
-        val dialog: android.app.AlertDialog
-        val builder = android.app.AlertDialog.Builder(activity)
+        val dialog: AlertDialog
+        val builder = MaterialAlertDialogBuilder(activity, R.style.MaterialAlertDialog_Rounded)
         if (title != null) {
             builder.setTitle(title)
         }

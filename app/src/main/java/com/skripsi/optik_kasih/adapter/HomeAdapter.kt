@@ -28,19 +28,18 @@ class HomeAdapter(private val buttonCallback: (Product) -> Unit): ListAdapter<Ho
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HomeRow.List) {
             binding.apply {
-                val (_, product_name, _, _, _, product_price) = item.product
+                val (_, product_name, _, _, _, product_price, discount, product_stock) = item.product
+                price.bfrDiscPrice.isVisible = discount != null
+                emptyStock.isVisible = product_stock <= 0
                 if (price.bfrDiscPrice.isVisible) {
                     price.bfrDiscPrice.apply {
                         paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         text = Utilities.convertPrice(product_price.toString())
                     }
                 }
-                price.price.text = Utilities.convertPrice(product_price.toString())
+                price.price.text = Utilities.convertPrice((product_price - (discount ?: 0.0)).toString())
                 title.text = product_name
                 root.setOnClickListener {
-                    buttonCallback.invoke(item.product)
-                }
-                btnAdd.setOnClickListener {
                     buttonCallback.invoke(item.product)
                 }
             }

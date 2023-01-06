@@ -1,12 +1,14 @@
 package com.skripsi.optik_kasih.di
 
 import android.content.Context
+import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.google.gson.Gson
 import com.skripsi.optik_kasih.BuildConfig
 import com.skripsi.optik_kasih.api.NetworkResource
 import com.skripsi.optik_kasih.api.RequestInterceptor
+import com.skripsi.optik_kasih.database.OptikKasihDatabase
 import com.skripsi.optik_kasih.vo.RequestHeaders
 import dagger.Module
 import dagger.Provides
@@ -24,17 +26,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
-//    @Provides
-//    @Singleton
-//    fun provideJovaRestoDatabase(@ApplicationContext appContext: Context) = Room.databaseBuilder(
-//        appContext,
-//        JovaRestoDatabase::class.java,
-//        "jovaresto.db"
-//    ).fallbackToDestructiveMigration().build()
-//
-//    @Singleton
-//    @Provides
-//    fun provideAdminDao(database: JovaRestoDatabase) = database.adminDao()
+    @Provides
+    @Singleton
+    fun provideOptikKasihDatabase(@ApplicationContext appContext: Context) = Room.databaseBuilder(
+        appContext,
+        OptikKasihDatabase::class.java,
+        "optik_kasih.db"
+    ).fallbackToDestructiveMigration().build()
+
+    @Singleton
+    @Provides
+    fun provideCartDao(database: OptikKasihDatabase) = database.cartDao()
 
     @Provides
     @Singleton

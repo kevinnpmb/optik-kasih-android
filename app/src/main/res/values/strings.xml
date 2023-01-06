@@ -100,4 +100,5 @@
     <string name="delete_address_success">Berhasil menghapus alamat</string>
     <string name="primary_address">Alamat Primer</string>
     <string name="delete_primary_address">Hapus Alamat Primer</string>
+    <string name="stock_empty">Stok Habis</string>
 </resources>

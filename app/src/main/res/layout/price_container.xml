@@ -13,7 +13,7 @@
         android:layout_marginEnd="8dp"
         android:alpha="0.6"
         android:textStyle="bold"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:text="Rp. 10.000" />
 
     <TextView
@@ -21,6 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="14sp"
+        android:textSize="18sp"
         tools:text="Rp. 9.000" />
 </LinearLayout>

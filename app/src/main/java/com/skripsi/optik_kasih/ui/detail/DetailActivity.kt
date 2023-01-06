@@ -1,10 +1,12 @@
 package com.skripsi.optik_kasih.ui.detail
 
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.adapter.HomeAdapter
 import com.skripsi.optik_kasih.adapter.HomeRow
@@ -13,8 +15,13 @@ import com.skripsi.optik_kasih.fragment.Product
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.home.HomeViewModel
 import com.skripsi.optik_kasih.utils.Utilities
+import com.skripsi.optik_kasih.utils.Utilities.toCart
+import com.skripsi.optik_kasih.vo.Cart
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class DetailActivity : BaseActivity() {
@@ -33,8 +40,7 @@ class DetailActivity : BaseActivity() {
         Utilities.initToolbar(this, binding.toolbar.toolbar, "", hideBack = false, hideCart = true)
         initObserver()
         initListener()
-        viewModel.productId = intent.extras?.getString(PRODUCT_ID)
-        viewModel.getProduct()
+        viewModel.productIdMutableLiveData.value = intent.extras?.getString(PRODUCT_ID)
     }
 
 
@@ -51,11 +57,22 @@ class DetailActivity : BaseActivity() {
             qtyChanger.btnRemove.setOnClickListener {
                 viewModel.quantity.value = viewModel.quantity.value?.minus(1)
             }
+
+            btnAddToCart.setOnClickListener {
+                viewModel.product?.toCart(viewModel.quantity.value ?: 0)?.let { cart ->
+                    viewModel.insertToCart(cart)
+                    finish()
+                }
+            }
         }
     }
 
     private fun initObserver() {
         viewModel.apply {
+            productIdMutableLiveData.observe(this@DetailActivity) {
+                viewModel.getProduct()
+            }
+
             productMutableLiveData.observe(
                 this@DetailActivity
             ) {
@@ -66,6 +83,12 @@ class DetailActivity : BaseActivity() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             srlDetail.isRefreshing = false
+                            viewModel.viewModelScope.launch {
+                                val qty = withContext(Dispatchers.IO) {
+                                    viewModel.getCart(productId ?: "-1")?.quantity
+                                }
+                                quantity.value = qty ?: 0
+                            }
                             setView(it.data?.product?.product?.product)
                         }
                         Status.ERROR -> {
@@ -82,9 +105,9 @@ class DetailActivity : BaseActivity() {
 
             quantity.observe(this@DetailActivity) {
                 binding.apply {
-                    val price = (product?.product_price ?: 0.0) * it
+                    val price = ((product?.product_price ?: 0.0) - (product?.discount ?: 0.0)) * it
                     qtyChanger.quantity.text = it.toString()
-                    qtyChanger.btnAdd.isEnabled = it < 100
+                    qtyChanger.btnAdd.isEnabled = it < (product?.product_stock ?: 0)
                     qtyChanger.btnRemove.isEnabled = it > 0
                     subtotal.text = Utilities.convertPrice(
                         price.toString()
@@ -97,12 +120,23 @@ class DetailActivity : BaseActivity() {
 
     private fun setView(product: Product?) {
         binding.apply {
+            val isStockEmpty = (product?.product_stock ?: 0) <= 0
             brand.text = product?.product_brand ?: "-"
             description.text = product?.product_description ?: "-"
+            priceBfrDiscount.isVisible = product?.discount != null
+            if (priceBfrDiscount.isVisible) {
+                priceBfrDiscount.apply {
+                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    text = Utilities.convertPrice((product?.product_price ?: 0.0).toString())
+                }
+            }
+            pricePerItem.text = Utilities.convertPrice(((product?.product_price ?: 0.0) - (product?.discount ?: 0.0)).toString())
             subtotal.text = Utilities.convertPrice(
                 ((product?.product_price ?: 0.0) * (viewModel.quantity.value ?: 0)).toString()
             )
             toolbar.toolbar.title = product?.product_name ?: "-"
+            btnAddToCart.isEnabled = isStockEmpty
+            btnAddToCart.text = getString(if (isStockEmpty) R.string.stock_empty else R.string.add)
         }
     }
 
