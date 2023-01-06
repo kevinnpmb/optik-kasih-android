@@ -103,7 +103,9 @@ class HomeFragment : BaseFragment() {
                             srlHome.isRefreshing = false
                             Utilities.showToast(requireActivity(), binding.root, it.message, Utilities.ToastType.ERROR)
                         }
-                        Status.LOADING -> {}
+                        Status.LOADING -> {
+                            rvHome.isVisible = false
+                        }
                         Status.UNAUTHORIZED -> {
                             Utilities.showInvalidApiKeyAlert(requireActivity())
                         }

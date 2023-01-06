@@ -98,4 +98,6 @@
     <string name="edit_address_success">Berhasil menyunting alamat</string>
     <string name="delete_address_msg">Apakah kamu yakin ingin menghapus alamat ini?</string>
     <string name="delete_address_success">Berhasil menghapus alamat</string>
+    <string name="primary_address">Alamat Primer</string>
+    <string name="delete_primary_address">Hapus Alamat Primer</string>
 </resources>

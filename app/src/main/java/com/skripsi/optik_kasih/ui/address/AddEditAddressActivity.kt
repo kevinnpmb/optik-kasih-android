@@ -4,9 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.apollographql.apollo3.api.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.optik_kasih.BuildConfig
 import com.skripsi.optik_kasih.OptikKasihApp
 import com.skripsi.optik_kasih.R
@@ -22,6 +25,7 @@ import com.skripsi.optik_kasih.utils.Utilities.registerClearText
 import com.skripsi.optik_kasih.utils.Utilities.toUser
 import com.skripsi.optik_kasih.utils.Utilities.validate
 import com.skripsi.optik_kasih.utils.Utilities.validateAll
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -39,13 +43,13 @@ class AddEditAddressActivity : BaseActivity() {
             hideBack = false,
             hideCart = true
         )
-        intent.parcelable<EditAddress>(EDIT_ADDRESS_DATA)?.let { address ->
+        intent.parcelable<AddressPref>(EDIT_ADDRESS_DATA)?.let { address ->
             binding.toolbar.toolbar.title = getString(R.string.address_detail)
             viewModel.addressDataForEdit.postValue(address)
         } ?: run {
             binding.toolbar.toolbar.title = getString(R.string.add_address)
         }
-        registerClearText()
+        registerTextChangeListener()
         initObserver()
         initListener()
     }
@@ -110,27 +114,60 @@ class AddEditAddressActivity : BaseActivity() {
         }
     }
 
-    private fun registerClearText() {
+    private fun registerTextChangeListener() {
         binding.apply {
             tilAddressLabel.registerClearText()
-            tilAddress.registerClearText()
-            tilNeighbourhood.registerClearText()
-            tilSubDistrict.registerClearText()
-            tilPostCode.registerClearText()
+            tilAddress.changeAddressDetailListener {
+                setAddressDetail(it, tilNeighbourhood.editText?.text.toString(), tilSubDistrict.editText?.text.toString(), tilPostCode.editText?.text.toString())
+            }
+            tilNeighbourhood.changeAddressDetailListener {
+                setAddressDetail(tilAddress.editText?.text.toString(), it, tilSubDistrict.editText?.text.toString(), tilPostCode.editText?.text.toString())
+            }
+            tilSubDistrict.changeAddressDetailListener {
+                setAddressDetail(tilAddress.editText?.text.toString(), tilNeighbourhood.editText?.text.toString(), it, tilPostCode.editText?.text.toString())
+            }
+            tilPostCode.changeAddressDetailListener {
+                setAddressDetail(tilAddress.editText?.text.toString(), tilNeighbourhood.editText?.text.toString(), tilSubDistrict.editText?.text.toString(), it)
+            }
         }
+    }
+
+    private fun setAddressDetail(address: String?, kelurahan: String?, kecamatan: String?, postal: String?) {
+        viewModel.addressDetailMutableLiveData.postValue((if (!address.isNullOrBlank()) "$address," else "") +
+                (if (!kelurahan.isNullOrBlank()) " $kelurahan," else "") +
+                (if (!kecamatan.isNullOrBlank()) " $kecamatan," else "") +
+                if (!postal.isNullOrBlank()) " $postal" else "")
+    }
+
+    private fun TextInputLayout.changeAddressDetailListener(callback: (String) -> Unit) {
+        val clearTextChangedListener = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                callback.invoke(p0.toString())
+                error = null
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        }
+        editText?.addTextChangedListener(clearTextChangedListener)
     }
 
     private fun initObserver() {
         viewModel.apply {
             addressDataForEdit.observe(this@AddEditAddressActivity) { address ->
                 binding.apply {
-                    tilAddressDetail.editText?.setText(address.addressDetail)
+                    viewModel.addressDetailMutableLiveData.postValue(address.addressDetail)
                     tilAddressLabel.editText?.setText(address.label)
                     tilAddress.editText?.setText(address.address)
                     tilNeighbourhood.editText?.setText(address.kelurahan)
                     tilSubDistrict.editText?.setText(address.kecamatan)
                     tilPostCode.editText?.setText(address.postal)
                 }
+            }
+
+            viewModel.addressDetailMutableLiveData.observe(this@AddEditAddressActivity) {
+                binding.tilAddressDetail.editText?.setText(it)
             }
 
             addAddressMutableLiveData.observe(this@AddEditAddressActivity) {
@@ -198,14 +235,4 @@ class AddEditAddressActivity : BaseActivity() {
     companion object {
         const val EDIT_ADDRESS_DATA = "EDIT_ADDRESS_DATA"
     }
-
-    @Parcelize
-    data class EditAddress(
-        val id: String,
-        val label: String,
-        val address: String,
-        val kecamatan: String,
-        val kelurahan: String,
-        val postal: String,
-    ) : Parcelable
 }

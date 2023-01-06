@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.skripsi.optik_kasih.R
@@ -15,6 +16,8 @@ import com.skripsi.optik_kasih.ui.common.BaseBottomSheetDialogFragment
 import com.skripsi.optik_kasih.ui.common.BaseFragment
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.parcelable
+import com.skripsi.optik_kasih.utils.Utilities.toAddress
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddressOptionDialog : BaseBottomSheetDialogFragment() {
     private lateinit var binding: FragmentAddressOptionDialogBinding
     val viewModel: MyAddressViewModel by activityViewModels()
-    private lateinit var address: AddEditAddressActivity.EditAddress
+    private lateinit var address: AddressPref
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,39 +43,26 @@ class AddressOptionDialog : BaseBottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.makePrimaryAddress.text = getString(
+            if (address == baseActivity.preferencesHelper.primaryAddress)
+                R.string.delete_primary_address else R.string.to_primary
+        )
+        binding.makePrimaryAddress.icon = ContextCompat.getDrawable(requireContext(), if (address == baseActivity.preferencesHelper.primaryAddress)
+            R.drawable.ic_star else R.drawable.star)
         initListener()
-        initObserver()
-    }
-
-    private fun initObserver() {
-        viewModel.apply {
-            deleteAddressMutableLiveData.observe(viewLifecycleOwner) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        Utilities.showToast(requireActivity(), binding.root, getString(R.string.delete_address_success), Utilities.ToastType.SUCCESS)
-                        dismiss()
-                    }
-                    Status.ERROR -> {
-                        Utilities.showToast(
-                            requireActivity(),
-                            binding.root,
-                            it.message,
-                            Utilities.ToastType.ERROR
-                        )
-                    }
-                    Status.LOADING -> {}
-                    Status.UNAUTHORIZED -> {
-                        Utilities.showInvalidApiKeyAlert(requireActivity())
-                    }
-                }
-            }
-        }
     }
 
     private fun initListener() {
         binding.apply {
             makePrimaryAddress.setOnClickListener {
-
+                if ((address == baseActivity.preferencesHelper.primaryAddress)) {
+                    baseActivity.preferencesHelper.primaryAddress = null
+                    viewModel.primaryAddressMutableLiveData.postValue(null)
+                } else {
+                    baseActivity.preferencesHelper.primaryAddress = address
+                    viewModel.primaryAddressMutableLiveData.postValue(address.toAddress(baseActivity.preferencesHelper))
+                }
+                dismiss()
             }
 
             editAddress.setOnClickListener {
@@ -88,6 +78,9 @@ class AddressOptionDialog : BaseBottomSheetDialogFragment() {
                     getString(R.string.delete_address_msg),
                     positiveListener = { dialog, _ ->
                         viewModel.deleteAddress(address.id)
+                        if (address == baseActivity.preferencesHelper.primaryAddress) {
+                            baseActivity.preferencesHelper.primaryAddress = null
+                        }
                         dialog.dismiss()
                     }
                 )
@@ -99,7 +92,7 @@ class AddressOptionDialog : BaseBottomSheetDialogFragment() {
         private const val ADDRESS_DATA = "ADDRESS_DATA"
 
         @JvmStatic
-        fun newInstance(address: AddEditAddressActivity.EditAddress) =
+        fun newInstance(address: AddressPref) =
             AddressOptionDialog().apply {
                 arguments = Bundle().apply {
                     putParcelable(ADDRESS_DATA, address)

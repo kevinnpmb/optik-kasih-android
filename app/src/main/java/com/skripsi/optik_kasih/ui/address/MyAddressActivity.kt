@@ -1,10 +1,7 @@
 package com.skripsi.optik_kasih.ui.address
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Telephony.Mms.Addr
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -13,7 +10,8 @@ import com.skripsi.optik_kasih.adapter.AddressAdapter
 import com.skripsi.optik_kasih.databinding.ActivityMyAddressBinding
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.utils.Utilities
-import com.skripsi.optik_kasih.utils.Utilities.toEditAddress
+import com.skripsi.optik_kasih.utils.Utilities.toAddress
+import com.skripsi.optik_kasih.utils.Utilities.toAddressPref
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +23,8 @@ class MyAddressActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMyAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Utilities.initToolbar(this, binding.toolbar.toolbar, getString(R.string.my_address),
+        Utilities.initToolbar(
+            this, binding.toolbar.toolbar, getString(R.string.my_address),
             hideBack = false,
             hideCart = true
         )
@@ -36,10 +35,13 @@ class MyAddressActivity : BaseActivity() {
             )
         )
         binding.rvMyAddress.adapter = AddressAdapter {
-            AddressOptionDialog.newInstance(it.toEditAddress()).show(supportFragmentManager, "address-option-dialog")
+            AddressOptionDialog.newInstance(it.toAddressPref())
+                .show(supportFragmentManager, ADDRESS_DETAIL_TAG)
         }
         initObserver()
         initListener()
+        viewModel.primaryAddressMutableLiveData.value =
+            preferencesHelper.primaryAddress?.toAddress(preferencesHelper)
         viewModel.getSavedAddress()
     }
 
@@ -52,12 +54,11 @@ class MyAddressActivity : BaseActivity() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             srlMyAddress.isRefreshing = false
-                            val savedAddresses = it.data?.address?.addressList?.map { it.address }.orEmpty()
+                            val savedAddresses =
+                                it.data?.address?.addressList?.map { it.address }.orEmpty()
                             rvMyAddress.isVisible = savedAddresses.isNotEmpty()
                             empty.root.isVisible = !rvMyAddress.isVisible
-                            if (savedAddresses.isNotEmpty()) {
-                                (rvMyAddress.adapter as AddressAdapter).submitList(savedAddresses)
-                            }
+                            (rvMyAddress.adapter as AddressAdapter).submitList(savedAddresses)
                         }
                         Status.ERROR -> {
                             srlMyAddress.isRefreshing = false
@@ -68,12 +69,45 @@ class MyAddressActivity : BaseActivity() {
                                 Utilities.ToastType.ERROR
                             )
                         }
-                        Status.LOADING -> {}
+                        Status.LOADING -> {
+                            rvMyAddress.isVisible = false
+                        }
                         Status.UNAUTHORIZED -> {
                             Utilities.showInvalidApiKeyAlert(this@MyAddressActivity)
                         }
                     }
                 }
+            }
+
+            deleteAddressMutableLiveData.observe(this@MyAddressActivity) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Utilities.showToast(
+                            this@MyAddressActivity,
+                            binding.root,
+                            getString(R.string.delete_address_success),
+                            Utilities.ToastType.SUCCESS
+                        )
+                        getSavedAddress()
+                        (supportFragmentManager.findFragmentByTag(ADDRESS_DETAIL_TAG) as AddressOptionDialog).dismiss()
+                    }
+                    Status.ERROR -> {
+                        Utilities.showToast(
+                            this@MyAddressActivity,
+                            binding.root,
+                            it.message,
+                            Utilities.ToastType.ERROR
+                        )
+                    }
+                    Status.LOADING -> {}
+                    Status.UNAUTHORIZED -> {
+                        Utilities.showInvalidApiKeyAlert(this@MyAddressActivity)
+                    }
+                }
+            }
+
+            primaryAddressMutableLiveData.observe(this@MyAddressActivity) {
+                (binding.rvMyAddress.adapter as AddressAdapter).setPrimaryAddress(it)
             }
         }
     }
@@ -93,5 +127,9 @@ class MyAddressActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.getSavedAddress()
+    }
+
+    companion object {
+        const val ADDRESS_DETAIL_TAG = "address-option-dialog"
     }
 }

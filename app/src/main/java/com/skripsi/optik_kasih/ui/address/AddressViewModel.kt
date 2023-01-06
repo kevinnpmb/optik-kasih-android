@@ -9,6 +9,7 @@ import com.skripsi.optik_kasih.UpdateAddressMutation
 import com.skripsi.optik_kasih.fragment.Address
 import com.skripsi.optik_kasih.repository.AddressRepository
 import com.skripsi.optik_kasih.repository.ProductsRepository
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,8 +21,9 @@ class AddressViewModel @Inject constructor(
     var addressRepository: AddressRepository
 ) : ViewModel() {
     val addAddressMutableLiveData = MutableLiveData<Resource<CreateAddressMutation.Data>>()
-    val addressDataForEdit = MutableLiveData<AddEditAddressActivity.EditAddress>()
-    val addressEdit: AddEditAddressActivity.EditAddress? get() = addressDataForEdit.value
+    val addressDetailMutableLiveData = MutableLiveData<String>()
+    val addressDataForEdit = MutableLiveData<AddressPref>()
+    val addressEdit: AddressPref? get() = addressDataForEdit.value
     fun createAddress(
         label: String,
         address: String,

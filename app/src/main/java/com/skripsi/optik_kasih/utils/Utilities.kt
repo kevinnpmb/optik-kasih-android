@@ -1,7 +1,6 @@
 package com.skripsi.optik_kasih.utils
 
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
@@ -26,7 +25,8 @@ import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.SplashScreen
 import com.skripsi.optik_kasih.databinding.ToastBinding
 import com.skripsi.optik_kasih.fragment.Address
-import com.skripsi.optik_kasih.ui.address.AddEditAddressActivity
+import com.skripsi.optik_kasih.fragment.Customer
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.User
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -36,19 +36,32 @@ import java.time.Instant
 import java.util.*
 
 object Utilities {
-    fun Address.toEditAddress() = AddEditAddressActivity.EditAddress(
+    fun Address.toAddressPref() = AddressPref(
         id, label, address, kecamatan, kelurahan, postal
     )
 
-    val Address.addressDetail get() = (if (address.isNotBlank()) "$address," else "") +
-            (if (kelurahan.isNotBlank()) " $kelurahan," else "") +
-            (if (kecamatan.isNotBlank()) " $kecamatan," else "") +
-            if (postal.isNotBlank()) " $postal" else ""
+    fun AddressPref.toAddress(preferencesHelper: PreferencesHelper) = Address(
+        id, label, address, kecamatan, kelurahan, postal, Address.Customer(
+            "Customer",
+            preferencesHelper.user!!.run {
+                Customer(
+                    id, name, gender, birthday, phone_number, email
+                )
+            }
+        )
+    )
 
-    val AddEditAddressActivity.EditAddress.addressDetail get() = (if (address.isNotBlank()) "$address," else "") +
-            (if (kelurahan.isNotBlank()) " $kelurahan," else "") +
-            (if (kecamatan.isNotBlank()) " $kecamatan," else "") +
-            if (postal.isNotBlank()) " $postal" else ""
+    val Address.addressDetail
+        get() = (if (address.isNotBlank()) "$address," else "") +
+                (if (kelurahan.isNotBlank()) " $kelurahan," else "") +
+                (if (kecamatan.isNotBlank()) " $kecamatan," else "") +
+                if (postal.isNotBlank()) " $postal" else ""
+
+    val AddressPref.addressDetail
+        get() = (if (address.isNotBlank()) "$address," else "") +
+                (if (kelurahan.isNotBlank()) " $kelurahan," else "") +
+                (if (kecamatan.isNotBlank()) " $kecamatan," else "") +
+                if (postal.isNotBlank()) " $postal" else ""
 
     fun com.skripsi.optik_kasih.fragment.Customer.toUser(accessToken: String) = User(
         id,
@@ -72,14 +85,20 @@ object Utilities {
         errorText: String
     ): Boolean {
         when (type) {
-            TextFieldType.EMAIL -> return if (!editText?.text.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(editText?.text.toString()).matches()) {
+            TextFieldType.EMAIL -> return if (!editText?.text.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(
+                    editText?.text.toString()
+                ).matches()
+            ) {
                 error = null
                 true
             } else {
                 error = errorText
                 false
             }
-            TextFieldType.PHONE -> return if (!editText?.text.isNullOrBlank() && Patterns.PHONE.matcher(editText?.text.toString()).matches()) {
+            TextFieldType.PHONE -> return if (!editText?.text.isNullOrBlank() && Patterns.PHONE.matcher(
+                    editText?.text.toString()
+                ).matches()
+            ) {
                 error = null
                 true
             } else {
@@ -119,7 +138,12 @@ object Utilities {
     ) {
         activity.setSupportActionBar(toolbar as Toolbar)
         toolbar.menu.findItem(R.id.cart).isVisible = !hideCart
-        toolbar.setTitleTextColor(ContextCompat.getColor(activity, if (hideBack) R.color.primaryColor else R.color.black))
+        toolbar.setTitleTextColor(
+            ContextCompat.getColor(
+                activity,
+                if (hideBack) R.color.primaryColor else R.color.black
+            )
+        )
         if (onBackPressedListener == null) {
             toolbar.setNavigationOnClickListener {
                 activity.onBackPressedDispatcher.onBackPressed()
@@ -277,7 +301,7 @@ object Utilities {
             .setIcon(R.drawable.ic_launcher_foreground)
         if (positiveListener != null) {
             builder.setPositiveButton(positiveMessage, positiveListener)
-        } else  {
+        } else {
             builder.setPositiveButton(positiveMessage) { dialog, _ -> dialog.dismiss() }
         }
         if (negativeListener != null) {
@@ -295,11 +319,13 @@ object Utilities {
 
     fun formatISO8601ToDateString(dateSrc: String, dateType: DateType = DateType.API): String? {
         return try {
-            val dateFormat = SimpleDateFormat(when (dateType) {
-                DateType.API -> "yyyy-MM-dd"
-                DateType.VIEW -> "EEEE, d MMMM yyyy"
-                DateType.SIMPLE -> "dd-MM-yyyy"
-            }, Locale.getDefault())
+            val dateFormat = SimpleDateFormat(
+                when (dateType) {
+                    DateType.API -> "yyyy-MM-dd"
+                    DateType.VIEW -> "EEEE, d MMMM yyyy"
+                    DateType.SIMPLE -> "dd-MM-yyyy"
+                }, Locale.getDefault()
+            )
             dateFormat.format(Date.from(Instant.parse(dateSrc)))
         } catch (e: java.lang.Exception) {
             null
@@ -308,11 +334,13 @@ object Utilities {
 
     fun formatToDateString(date: Date?, dateType: DateType = DateType.API): String? {
         return try {
-            val dateFormat = SimpleDateFormat(when (dateType) {
-                DateType.API -> "yyyy-MM-dd"
-                DateType.VIEW -> "EEEE, d MMMM yyyy"
-                DateType.SIMPLE -> "dd-MM-yyyy"
-            }, Locale.getDefault())
+            val dateFormat = SimpleDateFormat(
+                when (dateType) {
+                    DateType.API -> "yyyy-MM-dd"
+                    DateType.VIEW -> "EEEE, d MMMM yyyy"
+                    DateType.SIMPLE -> "dd-MM-yyyy"
+                }, Locale.getDefault()
+            )
             date?.let { dateFormat.format(date) }
         } catch (e: java.lang.Exception) {
             null

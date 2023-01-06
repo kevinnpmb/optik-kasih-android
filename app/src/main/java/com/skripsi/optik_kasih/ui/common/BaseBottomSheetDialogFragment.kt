@@ -7,7 +7,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.skripsi.optik_kasih.R
 
 open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
-    var isJustCreated: Boolean = true
     lateinit var baseActivity: BaseActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +18,5 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        isJustCreated = true
     }
 }

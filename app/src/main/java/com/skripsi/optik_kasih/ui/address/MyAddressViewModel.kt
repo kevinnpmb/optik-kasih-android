@@ -17,6 +17,8 @@ import javax.inject.Inject
 class MyAddressViewModel @Inject constructor(
     var addressRepository: AddressRepository
 ) : ViewModel() {
+    val primaryAddressMutableLiveData = MutableLiveData<Address>()
+    val primaryAddress: Address? = primaryAddressMutableLiveData.value
     val addressMutableLiveData = MutableLiveData<Resource<GetSavedAddressQuery.Data>>()
     fun getSavedAddress() {
         viewModelScope.launch {
