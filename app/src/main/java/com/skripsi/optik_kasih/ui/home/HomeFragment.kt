@@ -15,6 +15,7 @@ import com.skripsi.optik_kasih.adapter.HomeAdapter
 import com.skripsi.optik_kasih.adapter.HomeAdapterType
 import com.skripsi.optik_kasih.adapter.HomeRow
 import com.skripsi.optik_kasih.databinding.FragmentHomeBinding
+import com.skripsi.optik_kasih.ui.cart.CartActivity
 import com.skripsi.optik_kasih.ui.common.BaseFragment
 import com.skripsi.optik_kasih.ui.detail.DetailActivity
 import com.skripsi.optik_kasih.utils.GridSpacesItemDecoration
@@ -37,6 +38,10 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.toolbar.menu.findItem(R.id.cart).setOnMenuItemClickListener {
+            startActivity(Intent(requireContext(), CartActivity::class.java))
+            true
+        }
         binding.srlHome.setColorSchemeColors(
             ContextCompat.getColor(
                 requireContext(),

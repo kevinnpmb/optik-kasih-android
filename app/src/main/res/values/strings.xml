@@ -66,6 +66,7 @@
     <string name="my_address">Alamat Saya</string>
     <string name="address_detail">Detail Alamat</string>
     <string name="add_address">Tambah Alamat</string>
+    <string name="item_quantity">%1$d Barang</string>
 
     // connection resources
     <string name="try_again">Mohon Coba Lagi</string>
