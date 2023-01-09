@@ -10,6 +10,7 @@ import com.skripsi.optik_kasih.adapter.AddressAdapter
 import com.skripsi.optik_kasih.databinding.ActivityMyAddressBinding
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.utils.Utilities
+import com.skripsi.optik_kasih.utils.Utilities.parcelable
 import com.skripsi.optik_kasih.utils.Utilities.toAddress
 import com.skripsi.optik_kasih.utils.Utilities.toAddressPref
 import com.skripsi.optik_kasih.vo.Status
@@ -19,30 +20,44 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyAddressActivity : BaseActivity() {
     private lateinit var binding: ActivityMyAddressBinding
     private val viewModel: MyAddressViewModel by viewModels()
+    private var isForSelectAddress: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Utilities.initToolbar(
-            this, binding.toolbar.toolbar, getString(R.string.my_address),
-            hideBack = false,
-            hideCart = true
-        )
-        binding.srlMyAddress.setColorSchemeColors(
-            ContextCompat.getColor(
-                this,
-                R.color.primaryColor
-            )
-        )
-        binding.rvMyAddress.adapter = AddressAdapter {
-            AddressOptionDialog.newInstance(it.toAddressPref())
-                .show(supportFragmentManager, ADDRESS_DETAIL_TAG)
-        }
+        isForSelectAddress = intent.getBooleanExtra(IS_FOR_SELECT_ADDRESS, false)
+        setView()
         initObserver()
         initListener()
         viewModel.primaryAddressMutableLiveData.value =
             preferencesHelper.primaryAddress?.toAddress(preferencesHelper)
         viewModel.getSavedAddress()
+    }
+
+    private fun setView() {
+        binding.apply {
+            Utilities.initToolbar(
+                this@MyAddressActivity, toolbar.toolbar, getString(R.string.my_address),
+                hideBack = false,
+                hideCart = true
+            )
+            srlMyAddress.setColorSchemeColors(
+                ContextCompat.getColor(
+                    this@MyAddressActivity,
+                    R.color.primaryColor
+                )
+            )
+            rvMyAddress.adapter = AddressAdapter {
+                if (isForSelectAddress) {
+                    (rvMyAddress.adapter as AddressAdapter).selectedAddressSetter(it)
+                } else {
+                    AddressOptionDialog.newInstance(it.toAddressPref())
+                        .show(supportFragmentManager, ADDRESS_DETAIL_TAG)
+                }
+            }
+            fabAddAddress.isVisible = !isForSelectAddress
+            btnSelectAddress.isVisible = isForSelectAddress
+        }
     }
 
     private fun initObserver() {
@@ -121,6 +136,12 @@ class MyAddressActivity : BaseActivity() {
             srlMyAddress.setOnRefreshListener {
                 viewModel.getSavedAddress()
             }
+
+            btnSelectAddress.setOnClickListener {
+                setResult(RESULT_OK, Intent().apply {
+                    putExtra(SELECTED_ADDRESS, (binding.rvMyAddress.adapter as AddressAdapter).selectedAddress?.toAddressPref())
+                })
+            }
         }
     }
 
@@ -131,5 +152,7 @@ class MyAddressActivity : BaseActivity() {
 
     companion object {
         const val ADDRESS_DETAIL_TAG = "address-option-dialog"
+        const val IS_FOR_SELECT_ADDRESS = "is-for-select-address"
+        const val SELECTED_ADDRESS = "selected_address"
     }
 }

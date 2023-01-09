@@ -7,18 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.skripsi.optik_kasih.R
+import com.skripsi.optik_kasih.database.OptikKasihDatabase
 import com.skripsi.optik_kasih.databinding.FragmentProfileBinding
 import com.skripsi.optik_kasih.ui.address.MyAddressActivity
 import com.skripsi.optik_kasih.ui.main.MainActivity
 import com.skripsi.optik_kasih.utils.PreferencesHelper
 import com.skripsi.optik_kasih.utils.Utilities
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
     @Inject
     lateinit var preferencesHelper: PreferencesHelper
+    @Inject
+    lateinit var database: OptikKasihDatabase
     private lateinit var binding: FragmentProfileBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +54,9 @@ class ProfileFragment : Fragment() {
         binding.apply {
             btnLogout.setOnClickListener {
                 preferencesHelper.signOut()
+                CoroutineScope(Dispatchers.IO).launch {
+                    database.clearAllTables()
+                }
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finish()
             }
@@ -70,6 +79,10 @@ class ProfileFragment : Fragment() {
 
             savedAddress.setOnClickListener {
                 startActivity(Intent(requireContext(), MyAddressActivity::class.java))
+            }
+
+            changePassword.setOnClickListener {
+                startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
             }
         }
     }

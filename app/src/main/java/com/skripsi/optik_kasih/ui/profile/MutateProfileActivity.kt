@@ -235,12 +235,11 @@ class MutateProfileActivity : BaseActivity() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             loadingDialog.dismiss()
-                            Utilities.showToast(
+                            Toast.makeText(
                                 this@MutateProfileActivity,
-                                binding.root,
                                 getString(R.string.sucess_edit_profile),
-                                Utilities.ToastType.SUCCESS
-                            )
+                                Toast.LENGTH_SHORT
+                            ).show()
                             it.data?.customer?.customer_update?.customer?.let { customer ->
                                 preferencesHelper.user?.let { user ->
                                     preferencesHelper.saveAccount(user.copy(
@@ -253,6 +252,7 @@ class MutateProfileActivity : BaseActivity() {
                                     ))
                                 }
                             }
+                            finish()
                         }
                         Status.ERROR -> {
                             loadingDialog.dismiss()

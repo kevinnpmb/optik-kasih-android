@@ -12,6 +12,7 @@ import com.skripsi.optik_kasih.fragment.Product
 import com.skripsi.optik_kasih.repository.CartRepository
 import com.skripsi.optik_kasih.repository.ProductsRepository
 import com.skripsi.optik_kasih.repository.UserRepository
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Cart
 import com.skripsi.optik_kasih.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,9 @@ import javax.inject.Inject
 class CheckoutViewModel @Inject constructor(
     var cartRepository: CartRepository
 ) : ViewModel() {
+    val selectedAddressMutableLiveData = MutableLiveData<AddressPref>()
+    val selectedAddress: AddressPref? get() = selectedAddressMutableLiveData.value
+
     val cartListMutableLiveData = MutableLiveData<List<Cart>>()
     fun getCartList() {
         viewModelScope.launch {

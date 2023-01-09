@@ -17,11 +17,21 @@ import com.skripsi.optik_kasih.utils.Utilities.dpToPx
 class AddressAdapter(private val buttonCallback: (Address) -> Unit) :
     ListAdapter<Address, AddressAdapter.AddressViewHolder>(DiffCallback()) {
     private var primaryAddress: Address? = null
+    var selectedAddress: Address? = null
     fun setPrimaryAddress(address: Address?) {
         val oldPrimaryAddress: Address? = primaryAddress
         primaryAddress = address
         oldPrimaryAddress?.let {
             notifyItemChanged(currentList.indexOf(oldPrimaryAddress))
+        }
+        notifyItemChanged(currentList.indexOf(address))
+    }
+
+    fun selectedAddressSetter(address: Address?) {
+        val oldSelectedAddress: Address? = selectedAddress
+        selectedAddress = address
+        oldSelectedAddress?.let {
+            notifyItemChanged(currentList.indexOf(oldSelectedAddress))
         }
         notifyItemChanged(currentList.indexOf(address))
     }
@@ -33,6 +43,7 @@ class AddressAdapter(private val buttonCallback: (Address) -> Unit) :
         fun bind(item: Address) {
             val isPrimary = item == primaryAddress
             binding.apply {
+                root.isChecked = selectedAddress != null && item == selectedAddress
                 addressName.text = item.label
                 addressUserName.text = item.customer.customer.customer_name
                 addressPhoneNumber.text = item.customer.customer.phone_number
@@ -49,14 +60,7 @@ class AddressAdapter(private val buttonCallback: (Address) -> Unit) :
                         if (isPrimary) R.color.primaryColor else android.R.color.tab_indicator_text
                     )
                 )
-                root.strokeWidth = if (isPrimary) 2.dpToPx.toInt() else 0
                 primaryStatus.isVisible = isPrimary
-                if (isPrimary) {
-                    root.strokeColor = ContextCompat.getColor(
-                        context,
-                        R.color.primaryColor
-                    )
-                }
             }
         }
     }

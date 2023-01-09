@@ -232,7 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/post_code"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:paddingVertical="12dp"
                     android:textSize="12sp" />
             </com.google.android.material.textfield.TextInputLayout>

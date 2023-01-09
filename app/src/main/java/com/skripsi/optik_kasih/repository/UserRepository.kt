@@ -3,11 +3,13 @@ package com.skripsi.optik_kasih.repository
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
+import com.skripsi.optik_kasih.ChangePasswordMutation
 import com.skripsi.optik_kasih.EditProfileMutation
 import com.skripsi.optik_kasih.LoginMutation
 import com.skripsi.optik_kasih.RegisterMutation
 //import com.skripsi.optik_kasih.LoginQuery
 import com.skripsi.optik_kasih.api.NetworkResource
+import com.skripsi.optik_kasih.type.ChangePasswordParam
 import com.skripsi.optik_kasih.type.EditCustomer
 import com.skripsi.optik_kasih.type.LoginParam
 import com.skripsi.optik_kasih.type.NewCustomer
@@ -35,6 +37,20 @@ class UserRepository @Inject constructor(
             networkResource.processMutationResponse(
                 apolloClient,
                 LoginMutation(LoginParam(email, password)),
+                liveData
+            )
+        }
+    }
+
+    suspend fun changePassword(
+        oldPassword: String,
+        newPassword: String,
+        liveData: MutableLiveData<Resource<ChangePasswordMutation.Data>>
+    ) {
+        withContext(Dispatchers.IO) {
+            networkResource.processMutationResponse(
+                apolloClient,
+                ChangePasswordMutation(ChangePasswordParam(oldPassword, newPassword)),
                 liveData
             )
         }

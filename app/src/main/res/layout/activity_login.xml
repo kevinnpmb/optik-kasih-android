@@ -109,6 +109,7 @@
                 app:boxCornerRadiusTopStart="16dp"
                 app:expandedHintEnabled="false"
                 app:hintEnabled="false"
+                app:passwordToggleEnabled="true"
                 app:suffixTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 app:suffixTextColor="@color/primaryColor">
 

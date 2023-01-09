@@ -87,7 +87,7 @@
     // invalid
     <string name="password_not_same">Kata Sandi tidak sama</string>
     <string name="invalid_name">Nama tidak valid</string>
-    <string name="invalid_confirm_password">Konfirmasi Kata Sandi Invalid</string>
+    <string name="invalid_confirm_password">Konfirmasi Kata Sandi tidak valid</string>
     <string name="invalid_birth_date">Tanggal Lahir tidak valid</string>
     <string name="invalid_phone_number">Nomor Telepon tidak valid</string>
     <string name="invalid_address_label">Label Alamat tidak valid</string>
@@ -102,4 +102,13 @@
     <string name="primary_address">Alamat Primer</string>
     <string name="delete_primary_address">Hapus Alamat Primer</string>
     <string name="stock_empty">Stok Habis</string>
+    <string name="invalid_new_password">Password baru tidak valid</string>
+    <string name="invalid_old_password">Password lama tidak valid</string>
+    <string name="change_password_success">Berhasil Mengganti Kata Sandi</string>
+    <string name="delete">Hapus</string>
+    <string name="add_item_to_cart_success">Berhasil menambahkan item ke keranjang</string>
+    <string name="delete_item_cart_success">Berhasil menghapus item di keranjang</string>
+    <string name="no_address_selected">Tidak ada alamat yang terpilih</string>
+    <string name="select_address">Pilih Alamat</string>
+    <string name="choose_address">Pilih Alamat</string>
 </resources>

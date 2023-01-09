@@ -14,7 +14,7 @@ import com.skripsi.optik_kasih.databinding.ItemListBinding
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.vo.Cart
 
-class ItemAdapter(private val buttonCallback: (Cart) -> Unit) :
+class ItemAdapter() :
     ListAdapter<Cart, ItemAdapter.CartViewHolder>(DiffCallback()) {
 
     private lateinit var context: Context
@@ -32,9 +32,6 @@ class ItemAdapter(private val buttonCallback: (Cart) -> Unit) :
                 }
                 price.price.text = Utilities.convertPrice((item.basePrice - (item.discount ?: 0.0)).toString())
                 quantity.text = context.getString(R.string.item_quantity, item.quantity)
-                root.setOnClickListener {
-                    buttonCallback.invoke(item)
-                }
             }
         }
     }

@@ -19,24 +19,26 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.vpMain.apply {
-            adapter = MainViewPagerAdapter(this@MainActivity)
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    when (position) {
-                        MainViewPagerAdapter.MainBottomMenu.HOME.ordinal -> {
-                            binding.bottomNavigationView.menu.findItem(R.id.home).isChecked = true
-                        }
-                        MainViewPagerAdapter.MainBottomMenu.HISTORY.ordinal -> {
-                            binding.bottomNavigationView.menu.findItem(R.id.history).isChecked = true
-                        }
-                        MainViewPagerAdapter.MainBottomMenu.PROFILE.ordinal -> {
-                            binding.bottomNavigationView.menu.findItem(R.id.profile).isChecked = true
+        binding.apply {
+            vpMain.apply {
+                adapter = MainViewPagerAdapter(this@MainActivity)
+                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        when (position) {
+                            MainViewPagerAdapter.MainBottomMenu.HOME.ordinal -> {
+                                binding.bottomNavigationView.menu.findItem(R.id.home).isChecked = true
+                            }
+                            MainViewPagerAdapter.MainBottomMenu.HISTORY.ordinal -> {
+                                binding.bottomNavigationView.menu.findItem(R.id.history).isChecked = true
+                            }
+                            MainViewPagerAdapter.MainBottomMenu.PROFILE.ordinal -> {
+                                binding.bottomNavigationView.menu.findItem(R.id.profile).isChecked = true
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
         }
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
@@ -45,9 +47,13 @@ class MainActivity : BaseActivity() {
                     true
                 }
                 R.id.history -> {
-                    binding.vpMain.currentItem = 1
-                    invalidateOptionsMenu()
-                    true
+                    if (preferencesHelper.isLogin) {
+                        binding.vpMain.currentItem = 1
+                        true
+                    } else {
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                        false
+                    }
                 }
                 R.id.profile -> {
                     if (preferencesHelper.isLogin) {

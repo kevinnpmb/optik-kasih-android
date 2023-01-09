@@ -1,7 +1,9 @@
 package com.skripsi.optik_kasih.ui.detail
 
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -14,6 +16,7 @@ import com.skripsi.optik_kasih.databinding.ActivityDetailBinding
 import com.skripsi.optik_kasih.fragment.Product
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.home.HomeViewModel
+import com.skripsi.optik_kasih.ui.login.LoginActivity
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.toCart
 import com.skripsi.optik_kasih.vo.Cart
@@ -59,9 +62,26 @@ class DetailActivity : BaseActivity() {
             }
 
             btnAddToCart.setOnClickListener {
-                viewModel.product?.toCart(viewModel.quantity.value ?: 0)?.let { cart ->
-                    viewModel.insertToCart(cart)
-                    finish()
+                if (preferencesHelper.isLogin) {
+                    viewModel.product?.toCart(viewModel.quantity.value ?: 0)?.let { cart ->
+                        viewModel.insertToCart(cart)
+                        Toast.makeText(this@DetailActivity, getString(R.string.add_item_to_cart_success), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                } else {
+                    startActivity(Intent(this@DetailActivity, LoginActivity::class.java))
+                }
+            }
+
+            btnDeleteCart.setOnClickListener {
+                if (preferencesHelper.isLogin) {
+                    viewModel.product?.toCart(viewModel.quantity.value ?: 0)?.let { cart ->
+                        viewModel.deleteCart(cart.id)
+                        Toast.makeText(this@DetailActivity, getString(R.string.delete_item_cart_success), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                } else {
+                    startActivity(Intent(this@DetailActivity, LoginActivity::class.java))
                 }
             }
         }
@@ -84,10 +104,10 @@ class DetailActivity : BaseActivity() {
                         Status.SUCCESS -> {
                             srlDetail.isRefreshing = false
                             viewModel.viewModelScope.launch {
-                                val qty = withContext(Dispatchers.IO) {
-                                    viewModel.getCart(productId ?: "-1")?.quantity
+                                viewModel.availableCart = withContext(Dispatchers.IO) {
+                                    viewModel.getCart(productId ?: "-1")
                                 }
-                                quantity.value = qty ?: 0
+                                quantity.value = viewModel.availableCart?.quantity ?: 0
                             }
                             setView(it.data?.product?.product?.product)
                         }
@@ -112,7 +132,9 @@ class DetailActivity : BaseActivity() {
                     subtotal.text = Utilities.convertPrice(
                         price.toString()
                     )
-                    btnAddToCart.isEnabled = it != 0
+                    btnDeleteCart.isVisible = it <= 0 && viewModel.isCartDataAvailable
+                    btnAddToCart.isVisible = it >= 0 && !btnDeleteCart.isVisible
+                    btnAddToCart.isEnabled = it > 0
                 }
             }
         }
