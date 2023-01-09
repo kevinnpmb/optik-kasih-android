@@ -14,9 +14,17 @@ import com.skripsi.optik_kasih.fragment.Address
 import com.skripsi.optik_kasih.utils.Utilities.addressDetail
 import com.skripsi.optik_kasih.utils.Utilities.dpToPx
 
-class AddressAdapter(private val buttonCallback: (Address) -> Unit) :
+class AddressAdapter:
     ListAdapter<Address, AddressAdapter.AddressViewHolder>(DiffCallback()) {
     private var primaryAddress: Address? = null
+    private var rootCallback: ((Address) -> Unit)? = null
+    fun setRootCallback(callback: (Address) -> Unit) {
+        rootCallback = callback
+    }
+    private var optionCallback: ((Address) -> Unit)? = null
+    fun setOptionCallback(callback: (Address) -> Unit) {
+        optionCallback = callback
+    }
     var selectedAddress: Address? = null
     fun setPrimaryAddress(address: Address?) {
         val oldPrimaryAddress: Address? = primaryAddress
@@ -28,10 +36,14 @@ class AddressAdapter(private val buttonCallback: (Address) -> Unit) :
     }
 
     fun selectedAddressSetter(address: Address?) {
-        val oldSelectedAddress: Address? = selectedAddress
-        selectedAddress = address
-        oldSelectedAddress?.let {
-            notifyItemChanged(currentList.indexOf(oldSelectedAddress))
+        if (selectedAddress == address) {
+            selectedAddress = null
+        } else {
+            val oldSelectedAddress: Address? = selectedAddress
+            selectedAddress = address
+            oldSelectedAddress?.let {
+                notifyItemChanged(currentList.indexOf(oldSelectedAddress))
+            }
         }
         notifyItemChanged(currentList.indexOf(address))
     }
@@ -49,10 +61,10 @@ class AddressAdapter(private val buttonCallback: (Address) -> Unit) :
                 addressPhoneNumber.text = item.customer.customer.phone_number
                 address.text = item.addressDetail
                 root.setOnClickListener {
-                    buttonCallback.invoke(item)
+                    rootCallback?.invoke(item)
                 }
                 btnOption.setOnClickListener {
-                    buttonCallback.invoke(item)
+                    optionCallback?.invoke(item)
                 }
                 addressName.setTextColor(
                     ContextCompat.getColor(

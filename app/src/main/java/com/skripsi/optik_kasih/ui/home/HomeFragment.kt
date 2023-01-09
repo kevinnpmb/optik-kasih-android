@@ -18,6 +18,7 @@ import com.skripsi.optik_kasih.databinding.FragmentHomeBinding
 import com.skripsi.optik_kasih.ui.cart.CartActivity
 import com.skripsi.optik_kasih.ui.common.BaseFragment
 import com.skripsi.optik_kasih.ui.detail.DetailActivity
+import com.skripsi.optik_kasih.ui.login.LoginActivity
 import com.skripsi.optik_kasih.utils.GridSpacesItemDecoration
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.dpToPx
@@ -39,7 +40,7 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.toolbar.menu.findItem(R.id.cart).setOnMenuItemClickListener {
-            startActivity(Intent(requireContext(), CartActivity::class.java))
+            startActivity(Intent(requireContext(), if (baseActivity.preferencesHelper.isLogin) CartActivity::class.java else LoginActivity::class.java))
             true
         }
         binding.srlHome.setColorSchemeColors(

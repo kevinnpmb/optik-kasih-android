@@ -29,7 +29,7 @@ class HomeAdapter(private val buttonCallback: (Product) -> Unit): ListAdapter<Ho
         fun bind(item: HomeRow.List) {
             binding.apply {
                 val (_, product_name, _, _, _, product_price, discount, product_stock) = item.product
-                price.bfrDiscPrice.isVisible = discount != null
+                price.bfrDiscPrice.isVisible = discount != null && discount > 0
                 emptyStock.isVisible = product_stock <= 0
                 if (price.bfrDiscPrice.isVisible) {
                     price.bfrDiscPrice.apply {

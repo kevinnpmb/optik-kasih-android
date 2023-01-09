@@ -13,6 +13,7 @@ import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.parcelable
 import com.skripsi.optik_kasih.utils.Utilities.toAddress
 import com.skripsi.optik_kasih.utils.Utilities.toAddressPref
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,16 +48,29 @@ class MyAddressActivity : BaseActivity() {
                     R.color.primaryColor
                 )
             )
-            rvMyAddress.adapter = AddressAdapter {
-                if (isForSelectAddress) {
-                    (rvMyAddress.adapter as AddressAdapter).selectedAddressSetter(it)
-                } else {
+            rvMyAddress.adapter = AddressAdapter().apply {
+                setRootCallback {
+                    if (isForSelectAddress) {
+                        (rvMyAddress.adapter as AddressAdapter).apply {
+                            selectedAddressSetter(it)
+                            btnSelectAddress.isEnabled = selectedAddress != null
+                        }
+                    } else {
+                        AddressOptionDialog.newInstance(it.toAddressPref())
+                            .show(supportFragmentManager, ADDRESS_DETAIL_TAG)
+                    }
+                }
+                setOptionCallback {
                     AddressOptionDialog.newInstance(it.toAddressPref())
                         .show(supportFragmentManager, ADDRESS_DETAIL_TAG)
                 }
             }
+            intent.parcelable<AddressPref>(SELECTED_ADDRESS)?.let {
+                (binding.rvMyAddress.adapter as AddressAdapter).selectedAddressSetter(it.toAddress(preferencesHelper))
+            }
             fabAddAddress.isVisible = !isForSelectAddress
             btnSelectAddress.isVisible = isForSelectAddress
+            btnSelectAddress.isEnabled = (rvMyAddress.adapter as AddressAdapter).selectedAddress != null
         }
     }
 
@@ -139,8 +153,9 @@ class MyAddressActivity : BaseActivity() {
 
             btnSelectAddress.setOnClickListener {
                 setResult(RESULT_OK, Intent().apply {
-                    putExtra(SELECTED_ADDRESS, (binding.rvMyAddress.adapter as AddressAdapter).selectedAddress?.toAddressPref())
+                    putExtra(SELECTED_ADDRESS_RESULT, (binding.rvMyAddress.adapter as AddressAdapter).selectedAddress?.toAddressPref())
                 })
+                finish()
             }
         }
     }
@@ -153,6 +168,7 @@ class MyAddressActivity : BaseActivity() {
     companion object {
         const val ADDRESS_DETAIL_TAG = "address-option-dialog"
         const val IS_FOR_SELECT_ADDRESS = "is-for-select-address"
+        const val SELECTED_ADDRESS_RESULT = "selected_address_result"
         const val SELECTED_ADDRESS = "selected_address"
     }
 }

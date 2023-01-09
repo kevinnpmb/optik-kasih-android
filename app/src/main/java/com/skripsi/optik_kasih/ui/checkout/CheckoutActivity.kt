@@ -15,6 +15,7 @@ import com.skripsi.optik_kasih.databinding.ActivityCheckoutBinding
 import com.skripsi.optik_kasih.ui.address.MyAddressActivity
 import com.skripsi.optik_kasih.ui.address.MyAddressActivity.Companion.IS_FOR_SELECT_ADDRESS
 import com.skripsi.optik_kasih.ui.address.MyAddressActivity.Companion.SELECTED_ADDRESS
+import com.skripsi.optik_kasih.ui.address.MyAddressActivity.Companion.SELECTED_ADDRESS_RESULT
 import com.skripsi.optik_kasih.ui.cart.CartViewModel
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.detail.DetailActivity
@@ -31,7 +32,7 @@ class CheckoutActivity : BaseActivity() {
     private val resultLauncherChooseAddress = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-            data?.extras?.parcelable<AddressPref>(SELECTED_ADDRESS)?.let {
+            data?.extras?.parcelable<AddressPref>(SELECTED_ADDRESS_RESULT)?.let {
                 viewModel.selectedAddressMutableLiveData.postValue(it)
             }
         }
@@ -53,6 +54,7 @@ class CheckoutActivity : BaseActivity() {
         }
         initObserver()
         initListener()
+        viewModel.selectedAddressMutableLiveData.postValue(preferencesHelper.primaryAddress)
         viewModel.getCartList()
     }
 
@@ -62,6 +64,21 @@ class CheckoutActivity : BaseActivity() {
                 resultLauncherChooseAddress.launch(Intent(this@CheckoutActivity, MyAddressActivity::class.java).apply {
                     putExtra(IS_FOR_SELECT_ADDRESS, true)
                 })
+            }
+
+            selectedAddress.btnChangeAddress.setOnClickListener {
+                resultLauncherChooseAddress.launch(Intent(this@CheckoutActivity, MyAddressActivity::class.java).apply {
+                    putExtra(IS_FOR_SELECT_ADDRESS, true)
+                    putExtra(SELECTED_ADDRESS, viewModel.selectedAddress)
+                })
+            }
+
+            btnCheckout.setOnClickListener {
+                if (viewModel.selectedAddress == null) {
+                    Utilities.showToast(this@CheckoutActivity, binding.root, getString(R.string.no_address_selected), Utilities.ToastType.ERROR)
+                } else {
+
+                }
             }
         }
     }

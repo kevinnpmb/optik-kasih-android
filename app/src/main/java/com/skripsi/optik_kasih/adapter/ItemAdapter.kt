@@ -26,7 +26,7 @@ class ItemAdapter() :
                 itemName.text = item.name
                 totalPrice.text = Utilities.convertPrice(((item.basePrice - (item.discount ?: 0.0)) * item.quantity).toString())
                 price.bfrDiscPrice.apply {
-                    isVisible = item.discount != null
+                    isVisible = item.discount != null && item.discount > 0
                     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                     text = Utilities.convertPrice((item.basePrice).toString())
                 }
@@ -60,9 +60,5 @@ class ItemAdapter() :
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         holder.bind(getItem(position))
-    }
-
-    enum class Type {
-        INCREMENT, DECREMENT
     }
 }
