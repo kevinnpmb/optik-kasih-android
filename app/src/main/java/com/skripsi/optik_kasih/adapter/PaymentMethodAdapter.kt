@@ -3,15 +3,19 @@ package com.skripsi.optik_kasih.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.databinding.PaymentMethodRowHeaderBinding
 import com.skripsi.optik_kasih.databinding.PaymentMethodRowListBinding
 import com.skripsi.optik_kasih.fragment.Address
+import com.skripsi.optik_kasih.utils.Utilities.dpToPx
 import com.skripsi.optik_kasih.vo.PaymentMethod
 
-class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit): ListAdapter<PaymentMethodRow, RecyclerView.ViewHolder>(DiffCallback()) {
+class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit) :
+    ListAdapter<PaymentMethodRow, RecyclerView.ViewHolder>(DiffCallback()) {
     private lateinit var context: Context
     var selectedPaymentMethod: PaymentMethod? = null
     fun selectedPaymentMethodSetter(paymentMethod: PaymentMethod?) {
@@ -21,11 +25,14 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit):
             val oldSelectedPaymentMethod: PaymentMethod? = selectedPaymentMethod
             selectedPaymentMethod = paymentMethod
             oldSelectedPaymentMethod?.let {
-                notifyItemChanged(currentList.indexOf(currentList.find { it -> it.rowType == PaymentMethodAdapterType.List && == oldSelectedPaymentMethod..id }))
+                notifyItemChanged(currentList.indexOfFirst { item -> item.rowType == PaymentMethodAdapterType.List && (item as PaymentMethodRow.List).paymentMethod.id == it.id })
             }
         }
-        notifyItemChanged(currentList.indexOf(address))
+        paymentMethod?.let {
+            notifyItemChanged(currentList.indexOfFirst { item -> item.rowType == PaymentMethodAdapterType.List && (item as PaymentMethodRow.List).paymentMethod.id == it.id })
+        }
     }
+
     inner class HeaderViewHolder(private val binding: PaymentMethodRowHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PaymentMethodRow.Header) {
@@ -39,8 +46,11 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PaymentMethodRow.List) {
             binding.apply {
-                val (_, image, group, name) = item.paymentMethod
+                val (id, image, group, name) = item.paymentMethod
+                val isSelected = selectedPaymentMethod?.id == id
                 itemImg.setImageResource(image)
+                root.strokeWidth = if (isSelected) 2.dpToPx.toInt() else 0
+                root.strokeColor = ContextCompat.getColor(context, R.color.primaryColor)
                 this.name.text = name
                 type.text = group
                 root.setOnClickListener {
@@ -51,7 +61,10 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit):
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<PaymentMethodRow>() {
-        override fun areItemsTheSame(oldItem: PaymentMethodRow, newItem: PaymentMethodRow) : Boolean {
+        override fun areItemsTheSame(
+            oldItem: PaymentMethodRow,
+            newItem: PaymentMethodRow
+        ): Boolean {
             return when {
                 oldItem is PaymentMethodRow.List && newItem is PaymentMethodRow.List -> {
                     oldItem == newItem
@@ -64,7 +77,10 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit):
         }
 
 
-        override fun areContentsTheSame(oldItem: PaymentMethodRow, newItem: PaymentMethodRow) : Boolean {
+        override fun areContentsTheSame(
+            oldItem: PaymentMethodRow,
+            newItem: PaymentMethodRow
+        ): Boolean {
             return when {
                 oldItem is PaymentMethodRow.List && newItem is PaymentMethodRow.List -> {
                     oldItem == newItem
@@ -81,7 +97,11 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit):
         context = parent.context
         return when (PaymentMethodAdapterType.values()[viewType]) {
             PaymentMethodAdapterType.List -> ListViewHolder(
-                PaymentMethodRowListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                PaymentMethodRowListBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
             )
             PaymentMethodAdapterType.Header -> HeaderViewHolder(
                 PaymentMethodRowHeaderBinding.inflate(
@@ -105,7 +125,9 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit):
 }
 
 sealed class PaymentMethodRow(val rowType: PaymentMethodAdapterType) {
-    data class List(val paymentMethod: PaymentMethod) : PaymentMethodRow(PaymentMethodAdapterType.List)
+    data class List(val paymentMethod: PaymentMethod) :
+        PaymentMethodRow(PaymentMethodAdapterType.List)
+
     data class Header(val title: String) : PaymentMethodRow(PaymentMethodAdapterType.Header)
 }
 

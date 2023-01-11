@@ -14,7 +14,7 @@ import com.skripsi.optik_kasih.databinding.ItemListBinding
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.vo.Cart
 
-class ItemAdapter() :
+class ItemAdapter :
     ListAdapter<Cart, ItemAdapter.CartViewHolder>(DiffCallback()) {
 
     private lateinit var context: Context
@@ -24,6 +24,7 @@ class ItemAdapter() :
         fun bind(item: Cart) {
             binding.apply {
                 itemName.text = item.name
+                Utilities.loadImageUrl(item.image, ivItem)
                 totalPrice.text = Utilities.convertPrice(((item.basePrice - (item.discount ?: 0.0)) * item.quantity).toString())
                 price.bfrDiscPrice.apply {
                     isVisible = item.discount != null && item.discount > 0

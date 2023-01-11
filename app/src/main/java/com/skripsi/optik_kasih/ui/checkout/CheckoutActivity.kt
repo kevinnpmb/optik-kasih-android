@@ -19,10 +19,14 @@ import com.skripsi.optik_kasih.ui.address.MyAddressActivity.Companion.SELECTED_A
 import com.skripsi.optik_kasih.ui.cart.CartViewModel
 import com.skripsi.optik_kasih.ui.common.BaseActivity
 import com.skripsi.optik_kasih.ui.detail.DetailActivity
+import com.skripsi.optik_kasih.ui.payment.PaymentMethodActivity
 import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.addressDetail
 import com.skripsi.optik_kasih.utils.Utilities.parcelable
 import com.skripsi.optik_kasih.vo.AddressPref
+import com.skripsi.optik_kasih.vo.countDiscount
+import com.skripsi.optik_kasih.vo.countSubtotal
+import com.skripsi.optik_kasih.vo.countTotal
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -77,7 +81,7 @@ class CheckoutActivity : BaseActivity() {
                 if (viewModel.selectedAddress == null) {
                     Utilities.showToast(this@CheckoutActivity, binding.root, getString(R.string.no_address_selected), Utilities.ToastType.ERROR)
                 } else {
-
+                    startActivity(Intent(this@CheckoutActivity, PaymentMethodActivity::class.java))
                 }
             }
         }
@@ -110,12 +114,12 @@ class CheckoutActivity : BaseActivity() {
                         return@observe
                     }
                     (orderedItems.adapter as ItemAdapter).submitList(it)
-                    val discountAmount = it.sumOf { cart -> (cart.discount ?: 0.0) * cart.quantity }
-                    val subTotalAmount = it.sumOf { cart -> cart.basePrice * cart.quantity }
+                    val discountAmount = it.countDiscount()
+                    val subTotalAmount = it.countSubtotal()
                     discount.text = Utilities.convertPrice(discountAmount.toString())
                     subtotal.text = Utilities.convertPrice(subTotalAmount.toString())
                     total.text =
-                        Utilities.convertPrice((subTotalAmount - discountAmount).toString())
+                        Utilities.convertPrice(it.countTotal().toString())
                 }
             }
         }

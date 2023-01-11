@@ -7,6 +7,41 @@ fragment Customer on Customer {
     customer_email
 }
 
+fragment Order on Order {
+    id
+    order_date
+    po
+    facet
+    order_status
+    finished_facet
+    order_received
+    subtotal
+    discount
+    grand_total
+    order_payment {
+        ...OrderPayment
+    }
+    order_products {
+        ...OrderProduct
+    }
+}
+
+fragment OrderPayment on OrderPayment {
+    id
+    paid
+    remain
+    status
+}
+
+fragment OrderProduct on OrderProduct {
+    id
+    qty
+    total
+    order_id
+    product_id
+    discount
+}
+
 fragment Product on Product {
     id
     product_name
@@ -14,6 +49,7 @@ fragment Product on Product {
     product_brand
     product_description
     product_price
+    product_image
     discount
     product_stock
     supplier_id

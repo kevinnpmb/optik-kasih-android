@@ -143,6 +143,7 @@ class DetailActivity : BaseActivity() {
     private fun setView(product: Product?) {
         binding.apply {
             val isStockEmpty = (product?.product_stock ?: 0) <= 0
+            Utilities.loadImageUrl(product?.product_image, itemImg)
             brand.text = product?.product_brand ?: "-"
             description.text = product?.product_description ?: "-"
             priceBfrDiscount.isVisible = product?.discount != null

@@ -111,4 +111,6 @@
     <string name="no_address_selected">Tidak ada alamat yang terpilih</string>
     <string name="select_address">Pilih Alamat</string>
     <string name="choose_address">Pilih Alamat</string>
+    <string name="order_success_msg">Berhasil membuat orderan</string>
+    <string name="payment_method">Metode Pembayaran</string>
 </resources>

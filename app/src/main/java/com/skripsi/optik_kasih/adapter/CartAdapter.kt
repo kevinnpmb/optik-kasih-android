@@ -21,9 +21,11 @@ class CartAdapter(private val buttonCallback: (Type, Cart, qty: Int) -> Unit) :
         fun bind(item: Cart) {
             binding.apply {
                 var quantity = item.quantity
+                Utilities.loadImageUrl(item.image, ivItem)
                 cartItemName.text = item.name
                 qtyChanger.quantity.text = item.quantity.toString()
-                price.price.text = Utilities.convertPrice((item.basePrice - (item.discount ?: 0.0)).toString())
+                price.price.text =
+                    Utilities.convertPrice((item.basePrice - (item.discount ?: 0.0)).toString())
                 price.bfrDiscPrice.isVisible = item.discount != null
                 price.bfrDiscPrice.text = Utilities.convertPrice((item.basePrice).toString())
                 qtyChanger.btnAdd.setOnClickListener {

@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -31,6 +32,7 @@ import com.skripsi.optik_kasih.fragment.Product
 import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Cart
 import com.skripsi.optik_kasih.vo.User
+import com.squareup.picasso.Picasso
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -42,6 +44,7 @@ object Utilities {
     fun Product.toCart(quantity: Int) = Cart(
         id, product_name, null, product_price, discount, product_description, quantity
     )
+
     fun Address.toAddressPref() = AddressPref(
         id, label, address, kecamatan, kelurahan, postal
     )
@@ -350,6 +353,14 @@ object Utilities {
             date?.let { dateFormat.format(date) }
         } catch (e: java.lang.Exception) {
             null
+        }
+    }
+
+    fun loadImageUrl(url: String?, iv: ImageView) {
+        if (url != null && url != "") {
+            Picasso.get().load(url).error(R.drawable.ic_no_images).into(iv)
+        } else {
+            iv.setImageResource(R.drawable.ic_no_images)
         }
     }
 

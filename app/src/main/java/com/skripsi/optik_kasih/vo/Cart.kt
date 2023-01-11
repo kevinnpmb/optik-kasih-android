@@ -17,3 +17,11 @@ data class Cart(
     val description: String? = null,
     val quantity: Int = 0
 ) : Parcelable
+
+fun List<Cart>.countDiscount() = sumOf { cart -> (cart.discount ?: 0.0) * cart.quantity }
+
+fun List<Cart>.countSubtotal() = sumOf { cart -> cart.basePrice * cart.quantity }
+
+fun List<Cart>.countTotalQty() = sumOf { cart -> cart.quantity }
+
+fun List<Cart>.countTotal() = countSubtotal() - countDiscount()

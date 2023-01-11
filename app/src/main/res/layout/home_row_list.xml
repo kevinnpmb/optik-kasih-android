@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/jumbotron"
+            android:background="@color/grey"
             android:scaleType="centerCrop"
             android:contentDescription="Item Image"
             app:layout_constraintDimensionRatio="H, 5:7"
@@ -48,14 +49,16 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:textAlignment="center"
             android:textColor="@color/primaryColor"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintBottom_toTopOf="@+id/price"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Gagang" />
 
