@@ -81,7 +81,9 @@ class CheckoutActivity : BaseActivity() {
                 if (viewModel.selectedAddress == null) {
                     Utilities.showToast(this@CheckoutActivity, binding.root, getString(R.string.no_address_selected), Utilities.ToastType.ERROR)
                 } else {
-                    startActivity(Intent(this@CheckoutActivity, PaymentMethodActivity::class.java))
+                    startActivity(Intent(this@CheckoutActivity, PaymentMethodActivity::class.java).apply {
+                        putExtra(PaymentMethodActivity.ADDRESS_FOR_ORDER, viewModel.selectedAddress)
+                    })
                 }
             }
         }

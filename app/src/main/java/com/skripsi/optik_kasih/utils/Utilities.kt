@@ -42,7 +42,7 @@ import java.util.*
 
 object Utilities {
     fun Product.toCart(quantity: Int) = Cart(
-        id, product_name, null, product_price, discount, product_description, quantity
+        id, product_name, product_image, product_price, discount, product_description, quantity
     )
 
     fun Address.toAddressPref() = AddressPref(
@@ -363,6 +363,11 @@ object Utilities {
             iv.setImageResource(R.drawable.ic_no_images)
         }
     }
+
+    fun zeroPadding(id: Int) = (if (id < 10) "00"
+    else {
+        if (id < 100) "0" else ""
+    }) + id
 
     fun List<Boolean>.validateAll(callbackIfAllValid: () -> Unit) {
         if (all { it }) {

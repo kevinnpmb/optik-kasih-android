@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "3315ccf2-c8e8-4de5-9261-585a9f73d997",
+		"name": "CRM SUITE API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "2645999"
+	},
+	"item": [
+		{
+			"name": "Get Access Token",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "6128b4db-a3e3-2bed-c2a1-62e1fd174ffe",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "jovasoftware",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/access_token"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjI5ZDA4OTFkZWY1ZjExNzZlMjM5YmNkZDcyZjU5N2E1Njk2ZGVlOWE4NGYzMWQzMzExZDQzY2ZhMTNiZWYxZjVmZmRlZTcwMzk5OWZlZDAwIn0.eyJhdWQiOiI4NTYzZGU1OS0zZjYyLTU1ZWItMzg3ZS02MmRhNGRmOWMwOTgiLCJqdGkiOiIyOWQwODkxZGVmNWYxMTc2ZTIzOWJjZGQ3MmY1OTdhNTY5NmRlZTlhODRmMzFkMzMxMWQ0M2NmYTEzYmVmMWY1ZmZkZWU3MDM5OTlmZWQwMCIsImlhdCI6MTY1ODcxMTYxOCwibmJmIjoxNjU4NzExNjE4LCJleHAiOjE2NTg3MTUyMTgsInN1YiI6IiIsInNjb3BlcyI6W119.hY-JCG-G6YJ1bmHQcdxCREdYnygw-4o3M1HCEQi9QvZgDbtPbXy3yh7FAVcREzAdYHIJOdPE5uy5tCK2ykbFyHzZax-FroYsU1GEkWNoQfJg7NFkV2LfmWeQjYJOtp_Ixj6WpVopoPzTtVmh3LZt0MApTPxQoY7yz2ubYAThwF9HiJrqFSTPzyBLe5d6vJJqPaVmLqyx2VibSycDb4Wy69kJCNK-ysg-SV7pYmxWSUUcvFPcngxmQS60znTSQVIn6myUgYPBxpIVqLmkSb5RoOc9dJT8FJ3Wc3iKhUrHjfWw7cmreZTJQMW_DRurURXJlSYIbTuqZcyhiWlb-EXaIg"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": "https://crm.laladock.xyz/Api/V8/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Contacts",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZlOWYzOWI0NWZkZmQxYWM4NTVlYTUwMjYxZjgyOTYzMjMwYTUyYjNmZWFhNTU3YjZjOTdkM2M1OWJmYTNiNzFmYzAyYjc4Mzc0OTAwODI4In0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiI2ZTlmMzliNDVmZGZkMWFjODU1ZWE1MDI2MWY4Mjk2MzIzMGE1MmIzZmVhYTU1N2I2Yzk3ZDNjNTliZmEzYjcxZmMwMmI3ODM3NDkwMDgyOCIsImlhdCI6MTY2NzgwNDI2MiwibmJmIjoxNjY3ODA0MjYyLCJleHAiOjE2Njc4MDc4NjIsInN1YiI6IiIsInNjb3BlcyI6W119.vHrxETr12TWb4m7o4UofiYFiu4fAhKYDpNX16l5Cjqp2Vu39dM8KPq30ARr2WcwIpg9HfsqjZlShQBsGNtg-XiaFS2VlFumBMGvMM5IigEIai77eT3fLmf1v2AE5cq7yUqnYMloU-dHHEhRwe91Ql-9YWslQP-512CprtVocnbQUSxKuzjs5lvlqVBW76Rwu_LfpuSPOp066tt46QPek62GhxIzj6uzL2JlbtH14zveFzvL1fcikWZAeWu5ZPyi8VcOKsCB9MwEW0ouJA4Xijlk_KU3zxpQq4-nYtk7B_V1cD32PHwFyEaIrSqJyDoMaznaqjPH7aDFPMtO_15WCdg"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Contacts?filter[Account]=4fe97a04-dbde-6b51-339b-60e2791c5819",
+					"protocol": "https",
+					"host": [
+						"crm8904",
+						"pmberjaya",
+						"com"
+					],
+					"path": [
+						"Api",
+						"index.php",
+						"V8",
+						"module",
+						"Contacts"
+					],
+					"query": [
+						{
+							"key": "filter[Account]",
+							"value": "4fe97a04-dbde-6b51-339b-60e2791c5819"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Accounts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijk0MjQ5MWE1YjIxNGJiZGM1NDYwZWZmNWEwZDA1ZDUwZTA4YzE0N2FiZjU1NGM4YmYzM2U3YmY5ODJhN2FmNmFhYjc1YWI2NjU2MDQ4MDRlIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiI5NDI0OTFhNWIyMTRiYmRjNTQ2MGVmZjVhMGQwNWQ1MGUwOGMxNDdhYmY1NTRjOGJmMzNlN2JmOTgyYTdhZjZhYWI3NWFiNjY1NjA0ODA0ZSIsImlhdCI6MTY2MzcyMzMzOSwibmJmIjoxNjYzNzIzMzM5LCJleHAiOjE2NjM3MjY5MzksInN1YiI6IiIsInNjb3BlcyI6W119.pD6WVrMUh-Dj9PR6wksRz4-yKjW8yaItaTXMsIlPFQlOfhYEWH4TpP30EzUTur3_vWIvwROok1uT8FPkt5jJJjgH1rEJMSC5bWqI9RfTCadHxDUV0_ZWY0ZRpV3-cu8Z5P3E0sRZBWc4Koy42P6bj9I4H1KMsbPVtNp4YoYLLcyhn6IJNW_O9j6GQ474TJ4Yvxwmbu0zIUUu5G4cjcLeGISpUPbTGfuc6ttALoa8_dty8e18wzBIdysedtVOqPEpu_xhJBGYDpXtq_NoLpFn2MxFlkNWWXGReLJTuE6q4M8tSYOA861HzL45XRI2iOOJRkf5GbjE8KDJfo8lO18itQ"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Account"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Project",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQzZjZhMDY3ZTk3ODI0MWIxZTQyNmUyZDlkMzJhZjg3ZTkwODU2MTA5ZDE1NmVkNDdiZTY2ZmQzMDhjMDIwZjU2MTM4MWE0ZDk1OWNiMmUwIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiJkM2Y2YTA2N2U5NzgyNDFiMWU0MjZlMmQ5ZDMyYWY4N2U5MDg1NjEwOWQxNTZlZDQ3YmU2NmZkMzA4YzAyMGY1NjEzODFhNGQ5NTljYjJlMCIsImlhdCI6MTY2NzgwNzI5MywibmJmIjoxNjY3ODA3MjkzLCJleHAiOjE2Njc4MTA4OTMsInN1YiI6IiIsInNjb3BlcyI6W119.kLrkah9hexetpUYokTVVDdldvgiLKsCN6qoR8AUWpG55g2r-h--c_ZgQci9VtHVo8wH5lY3e9m9_7blRsqQmedTi9Sk1PMInx25fuQEsYq2MXz4GKCeCqzzZTzhpBCbr_U5zuHrrnn30i7W9p5dSLD-ps-ymydzwZl9zHiuIjBZggl7oQfX-whg6wlYiUkCDW2ByPeoY3QkkW3_2ctWBqJu6DazxWeftZj3gFudC8LYoNwt4y0tch_-ywRZK5nlFA-3hwumAGSEo7EWa7NPXqYcZC_IulHxixMx68M4AHv_Pa52eJc8oZxd5uSsIliLZmR201YVmGzvpxOc6r9-D9A"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Project"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Modules",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQyZDAwZjBiY2QwNGQ2NmRmZDdlYzI5Nzc2NWE1ZmRkNTQ3Nzk4YmQwODUwYWQ3Y2UwYTgxNjA2ZDU1YzEzMTM5OWRkYjc1YTZmZjcyMWViIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiI0MmQwMGYwYmNkMDRkNjZkZmQ3ZWMyOTc3NjVhNWZkZDU0Nzc5OGJkMDg1MGFkN2NlMGE4MTYwNmQ1NWMxMzEzOTlkZGI3NWE2ZmY3MjFlYiIsImlhdCI6MTY3MzQ5MzQ5MSwibmJmIjoxNjczNDkzNDkxLCJleHAiOjE2NzM0OTcwOTEsInN1YiI6IiIsInNjb3BlcyI6W119.QM_msPvW9FgnCqeyO8RVOaZoF7_Iizs7ermywrZPcLcKKBR__dNaUn9QvTC9PgGBR9UQJu6tzI98jcyR_CCwKtFeZJd64w_4JGlHyo3-q4rBYo5GzxruGJo0PD8IVR4jKDeYeYGRZAmpKurVUYEHogVp0yibH9zCty5qT-qCkGonxdNfy0RX9aG5gQtiKCfqBkCEbY67lHWb6VPHVnnUFrIHN1vlGB5ZrDqivhoSy7F5Yt5V1o4f0irVH9hnLAU7UQZayYkIbQgF11NkQOzsSFUH5k2VISO_fWqB0u9o6mTCzc1EL1aBkgwUEHOP7WWOkMsNnEhIE8xFpzE8H6jOXw"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/meta/modules"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Cases",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNiYmZhMDcyMTBkMGI3ZDRiZTgyZTc5MDMwZjRhODlkZTkxNTM3MGNkM2RmZDljMzQzZTY0MTgxODNiMDkzNjM3ODNkNmI3NGFiYzFiZGZkIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiJjYmJmYTA3MjEwZDBiN2Q0YmU4MmU3OTAzMGY0YTg5ZGU5MTUzNzBjZDNkZmQ5YzM0M2U2NDE4MTgzYjA5MzYzNzgzZDZiNzRhYmMxYmRmZCIsImlhdCI6MTY2Mzc1MDgxNCwibmJmIjoxNjYzNzUwODE0LCJleHAiOjE2NjM3NTQ0MTQsInN1YiI6IiIsInNjb3BlcyI6W119.JXFgkMxWU4xlbocS41F4zzlVQb5YYqundl8G4ds6hiixjbWIgEpRjwFkj-FhCFcMsKlAr1n2BpOmfm-GEBJTrDlBHyuBPzhOg4I0VX624WwpkflbTpBwsP3F7NdKE3Bl4T1m-1IgR0XBXmGETBfrWd4xJfavkRIIioOmG5izN3DRUAY9KniUNJ5Ek6ax8NO71CYZ5gsK_L4WtTxg6b6NUVhz3hsn9HoUu0XXmDX5tX2EKmyhydrt9HbWwEdX9QKcOU_7XBwLdPzBhDLaaN62KTn94TmGoX7WIhIWXofTkzk2ylPtwBn-PJVJKOwgSZu4xTJ_D0_T920Fl-1Nb1GcgQ"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Cases"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Details Module",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImRlOGI1NjI1M2E2M2ZkYWMwNDg5YjA5NDI3N2IzZWM5OWU1OTI3N2JkMTA4YmI0MzQ1NmMzMzJkYmYwMWQ4ZWFkN2Y4NjlhNDlhMTc3YTk3In0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiJkZThiNTYyNTNhNjNmZGFjMDQ4OWIwOTQyNzdiM2VjOTllNTkyNzdiZDEwOGJiNDM0NTZjMzMyZGJmMDFkOGVhZDdmODY5YTQ5YTE3N2E5NyIsImlhdCI6MTY2MzEzOTg2MiwibmJmIjoxNjYzMTM5ODYyLCJleHAiOjE2NjMxNDM0NjIsInN1YiI6IiIsInNjb3BlcyI6W119.P9hkm9QVbNKdWJq95roazvq7FV25eTZhGn-4xFnm6-VDAUgoXlPRvjYdWuDqwnW_5jmaCAPTxncRufVOb9JVyMy9_ixHN34L0aLqkdLpYlOjzYt5TF5MYRYSfTSn_0uG3NpysD0lR3lramnU4PEXp8ScnTvKgcAh4AW6OGKYeLM7_5hqz9qxxuCeJcQ_bBWxrksDvlYFVv8DgTajCpnH0xSzUkOapM5IruIAeBHLmbDNtpHwlt8GjuxJr0PH1O3kOhzoB5tHbu3gQ4_TWaul4DfROA0dspcrvaGwqHxVFncex7GZl7dnyZKE9jHeJBLyRcKxP9oHl4duhcSjp4x_-Q"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Project/66547dd7-92f6-d24f-dd1e-6285b01b429f"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Cases",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjAzODExNzQ1M2I1Y2Q0OTczMWY4NmM4YThkNTYxZmQyOWFjZGRjMzJiOGM4OGRkNjYyMzMwMGY3OTZiYWY1ZjE1NDI3YjU3MTg1NmQ1ZGZhIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiIwMzgxMTc0NTNiNWNkNDk3MzFmODZjOGE4ZDU2MWZkMjlhY2RkYzMyYjhjODhkZDY2MjMzMDBmNzk2YmFmNWYxNTQyN2I1NzE4NTZkNWRmYSIsImlhdCI6MTY2MjcxMzU3NSwibmJmIjoxNjYyNzEzNTc1LCJleHAiOjE2NjI3MTcxNzUsInN1YiI6IiIsInNjb3BlcyI6W119.UUone5V25S7m6bfAIp3BJ85uWkUG57fE_29acUnSmZRu7W2aYftz_9Lmu8sQ107Bev0ruqxHArh_d2Q4l587twD2sIBZudnw-6UIXUcarz2ZYpSc7s7oRdGSdET75k38xQSuRxG9Om7ZQPP3jla2dBNZrQT5k9taJx6BOXyxGqCUx-UT5-GH3gGcI_P88lD-2ULZHXQgh5_dPU7kfvAcxTYarnq8u2_csdTG2j_oHhL1MS-itnuxAvH8buaim0Cof_1m706LmSKfh7fitN3_W2sWPTe0rxosi4RY6Wn4ayDwbPsy36B1gZKO5WdiCj-5zplNbkV2LwlsJuVuLvX40w"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Cases?filter[account_id][eq]=4fe97a04-dbde-6b51-339b-60e2791c5819&filter[operator]=and&fields[Project]=name",
+					"protocol": "https",
+					"host": [
+						"crm8904",
+						"pmberjaya",
+						"com"
+					],
+					"path": [
+						"Api",
+						"index.php",
+						"V8",
+						"module",
+						"Cases"
+					],
+					"query": [
+						{
+							"key": "filter[account_id][eq]",
+							"value": "4fe97a04-dbde-6b51-339b-60e2791c5819"
+						},
+						{
+							"key": "filter[operator]",
+							"value": "and"
+						},
+						{
+							"key": "fields[Project]",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Project Relationship Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjM5MTg5ZGY1Y2IxZGE4Zjc2MTExN2Y1MzI0YWEwZDAxODg5ZTdhYTVmNTM0ZDU0M2M1MGI0NGE1OWYzODg5NjVlNDEzZWZmMjhhNDI1MGQ4In0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiIzOTE4OWRmNWNiMWRhOGY3NjExMTdmNTMyNGFhMGQwMTg4OWU3YWE1ZjUzNGQ1NDNjNTBiNDRhNTlmMzg4OTY1ZTQxM2VmZjI4YTQyNTBkOCIsImlhdCI6MTY2MzcyNjk0NywibmJmIjoxNjYzNzI2OTQ3LCJleHAiOjE2NjM3MzA1NDcsInN1YiI6IiIsInNjb3BlcyI6W119.Hcir2WmLr9M8qYhV3ctHVo5WFVeBLCJUr5pLq7n24VA65C4U7MMMHfjPCBNAvglHY8awJ2AEyrBGGvoHLTjBvhgrkrpZgbqS7hG7b-_yHnhd5YfFCJP9qMdwBj0n-eZi9UhZXNV5mPpyke9vQsNg86zeLepsZqv60NV_jaOu9Wk9V1BEEq10oo2lW9Feh0m8P2YD582HD2Xl6r-O52IGM9uuLLO871KjWkKwoe3MJ8rHf1uY_VDQuPU6aY9h-p5YLuXjRH4oZ2YYpojTxCOa_yKhTyRDW7oEuZl2WAPi4mHDc30zeMrTKi2hebWkCkwGiUhcoa73kKsM9zxcutwf4A"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Project/8366c5b3-b57b-cd34-24c3-62679e7d5afe/relationships/contacts"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account Relationship Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU3YzhlMDM3MjdmZTE3MjUzMTlmODFhNDhhYWRjZWI1Y2Q2NDBjYWZjOTc1NmYzY2FmYTg4YzkxZTBjNmI2NmJhOTQzZmZhODQ3NWUyMjc1In0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiI1N2M4ZTAzNzI3ZmUxNzI1MzE5ZjgxYTQ4YWFkY2ViNWNkNjQwY2FmYzk3NTZmM2NhZmE4OGM5MWUwYzZiNjZiYTk0M2ZmYTg0NzVlMjI3NSIsImlhdCI6MTY2NzgxMTU5MCwibmJmIjoxNjY3ODExNTkwLCJleHAiOjE2Njc4MTUxODksInN1YiI6IiIsInNjb3BlcyI6W119.03msP7CdEaKE7Am7ZonhZ5sKba8A1Uf-I7K0YardPkviZhuLHiiWn7ZSyFryzm7RILCb6A8zvUQ-jfjtLB9y81evZKMts2pgKOxWbFq8pF0ayZdzBTyA4oVneS60ZlhFyCt-ZYaK6PPsN-3mlnD8nScOor49DH9lDoO9ZtosTxVEVMaZpj6zO5dhhGfT9n6WvMrqHwoDgeMpx2qDR5XcdNMo2ZsNCEnd9GXa7Sj0L3Ik2GEOQP-QFd1htGPxhrYvdwXbFKStcD6VYPE5_Z0MC6n5MVnM1yg3fxBMcw1tLNZXdVFMri-UNmu6R6zBXMdicxao2tg2MVVl3RCUsg4erA"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Account/a53eb62e-89c0-a297-fe90-62674fd04f3f/relationships/AOS_Quotes"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Quotes Based on Account id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI1NzA2ZjQ2MjAwYzc3NGFlYTMwZDIwMTAyMjEyODk2NDk1ZGIwNWY0N2Q2OTc5MjdjMzBhZTdjY2Q5OWZkOWM0ZDJiMjE4MDhkNzA4NmQ2In0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiJiNTcwNmY0NjIwMGM3NzRhZWEzMGQyMDEwMjIxMjg5NjQ5NWRiMDVmNDdkNjk3OTI3YzMwYWU3Y2NkOTlmZDljNGQyYjIxODA4ZDcwODZkNiIsImlhdCI6MTY2ODQ4NjMyMCwibmJmIjoxNjY4NDg2MzIwLCJleHAiOjE2Njg0ODk5MjAsInN1YiI6IiIsInNjb3BlcyI6W119.WdzdbLWbWHVXMZWecUbP0aBBdu85FdRi47wD-3LAM137tJlsBnocyKpHBEjcDiuK_TDxBt7ro93-XtJ6JSNbjTsEhu5_HLVbCeC-gv4Sfo3LKq229D940n6THpDGUt0yQpSzy_NV6JeseQikE6Vdg_xpCoaq9AO43O6xYkVL41nCAPDyCZ5QW7QDGkbW07x6ezIrLyGW9xvDtgBnTaWRA8mnLJ8tgayP0JSZEIEdX2k1nOjEB1psBkJcWoM4DK0Q1iOjh8-On_S7NlXM1ic0WI6zR2_wK0-DRVkR65Tnlenjot4HnZtbGRc_aV5Lx2AUL6Cm5lORwHV10XQ_exLQlg"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Quotes?filter[billing_account_id][eq]=a53eb62e-89c0-a297-fe90-62674fd04f3f",
+					"protocol": "https",
+					"host": [
+						"crm8904",
+						"pmberjaya",
+						"com"
+					],
+					"path": [
+						"Api",
+						"index.php",
+						"V8",
+						"module",
+						"Quotes"
+					],
+					"query": [
+						{
+							"key": "filter[billing_account_id][eq]",
+							"value": "a53eb62e-89c0-a297-fe90-62674fd04f3f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Quotes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjNjMGI4Y2JjMWEzMTBmMjIwYmFmOTMzNDNhMDlhODIwZTYxN2JhMmJkZDIwYzlkYjUwOTA5OTMyZTFiMWU5NTE4NGQxYzAxZWM2ODk3ZDRkIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiIzYzBiOGNiYzFhMzEwZjIyMGJhZjkzMzQzYTA5YTgyMGU2MTdiYTJiZGQyMGM5ZGI1MDkwOTkzMmUxYjFlOTUxODRkMWMwMWVjNjg5N2Q0ZCIsImlhdCI6MTY2OTEwODQ2MiwibmJmIjoxNjY5MTA4NDYyLCJleHAiOjE2NjkxMTIwNjIsInN1YiI6IiIsInNjb3BlcyI6W119.C20UqZoFchqPPsv0hU-VJVdGOJtGcNZA2a3LbM6LpEKu1yGlEhp-p9JVEGF3nT6PWBFoyv3yx3tAMtxoXlenSPqXOLlKhfrKfYxsbREAMIP07GPyyS8AApYhCxMwkZgq5JjdIY13zyGSStU3TEMdGr-s3D57kdcvRSs8C48PIkcGvS26F6MyUHGHrWyleedMCiJrtEsTY5hBLt01AS7VCaWFydII8lCCOeyxMPvPk6DCaMcDYe5Tm_mXnX6MQt0I9WLBLALt5lDVdITNLwps4BXIJ3xxkvSmysdguQRYUwdy-YAmPT8-4IEcUSQNf_wgxZMtYrkiwCu5delqPdNWfA"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Quotes?page[number]=1&page[size]=1000",
+					"protocol": "https",
+					"host": [
+						"crm8904",
+						"pmberjaya",
+						"com"
+					],
+					"path": [
+						"Api",
+						"index.php",
+						"V8",
+						"module",
+						"Quotes"
+					],
+					"query": [
+						{
+							"key": "page[number]",
+							"value": "1"
+						},
+						{
+							"key": "page[size]",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Quotes Based on Account",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQyZDAwZjBiY2QwNGQ2NmRmZDdlYzI5Nzc2NWE1ZmRkNTQ3Nzk4YmQwODUwYWQ3Y2UwYTgxNjA2ZDU1YzEzMTM5OWRkYjc1YTZmZjcyMWViIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiI0MmQwMGYwYmNkMDRkNjZkZmQ3ZWMyOTc3NjVhNWZkZDU0Nzc5OGJkMDg1MGFkN2NlMGE4MTYwNmQ1NWMxMzEzOTlkZGI3NWE2ZmY3MjFlYiIsImlhdCI6MTY3MzQ5MzQ5MSwibmJmIjoxNjczNDkzNDkxLCJleHAiOjE2NzM0OTcwOTEsInN1YiI6IiIsInNjb3BlcyI6W119.QM_msPvW9FgnCqeyO8RVOaZoF7_Iizs7ermywrZPcLcKKBR__dNaUn9QvTC9PgGBR9UQJu6tzI98jcyR_CCwKtFeZJd64w_4JGlHyo3-q4rBYo5GzxruGJo0PD8IVR4jKDeYeYGRZAmpKurVUYEHogVp0yibH9zCty5qT-qCkGonxdNfy0RX9aG5gQtiKCfqBkCEbY67lHWb6VPHVnnUFrIHN1vlGB5ZrDqivhoSy7F5Yt5V1o4f0irVH9hnLAU7UQZayYkIbQgF11NkQOzsSFUH5k2VISO_fWqB0u9o6mTCzc1EL1aBkgwUEHOP7WWOkMsNnEhIE8xFpzE8H6jOXw"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Quotes?filter[Account]=a53eb62e-89c0-a297-fe90-62674fd04f3f",
+					"protocol": "https",
+					"host": [
+						"crm8904",
+						"pmberjaya",
+						"com"
+					],
+					"path": [
+						"Api",
+						"index.php",
+						"V8",
+						"module",
+						"Quotes"
+					],
+					"query": [
+						{
+							"key": "filter[Account]",
+							"value": "a53eb62e-89c0-a297-fe90-62674fd04f3f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQzZjZhMDY3ZTk3ODI0MWIxZTQyNmUyZDlkMzJhZjg3ZTkwODU2MTA5ZDE1NmVkNDdiZTY2ZmQzMDhjMDIwZjU2MTM4MWE0ZDk1OWNiMmUwIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiJkM2Y2YTA2N2U5NzgyNDFiMWU0MjZlMmQ5ZDMyYWY4N2U5MDg1NjEwOWQxNTZlZDQ3YmU2NmZkMzA4YzAyMGY1NjEzODFhNGQ5NTljYjJlMCIsImlhdCI6MTY2NzgwNzI5MywibmJmIjoxNjY3ODA3MjkzLCJleHAiOjE2Njc4MTA4OTMsInN1YiI6IiIsInNjb3BlcyI6W119.kLrkah9hexetpUYokTVVDdldvgiLKsCN6qoR8AUWpG55g2r-h--c_ZgQci9VtHVo8wH5lY3e9m9_7blRsqQmedTi9Sk1PMInx25fuQEsYq2MXz4GKCeCqzzZTzhpBCbr_U5zuHrrnn30i7W9p5dSLD-ps-ymydzwZl9zHiuIjBZggl7oQfX-whg6wlYiUkCDW2ByPeoY3QkkW3_2ctWBqJu6DazxWeftZj3gFudC8LYoNwt4y0tch_-ywRZK5nlFA-3hwumAGSEo7EWa7NPXqYcZC_IulHxixMx68M4AHv_Pa52eJc8oZxd5uSsIliLZmR201YVmGzvpxOc6r9-D9A"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Account"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Quote Detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQyZDAwZjBiY2QwNGQ2NmRmZDdlYzI5Nzc2NWE1ZmRkNTQ3Nzk4YmQwODUwYWQ3Y2UwYTgxNjA2ZDU1YzEzMTM5OWRkYjc1YTZmZjcyMWViIn0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiI0MmQwMGYwYmNkMDRkNjZkZmQ3ZWMyOTc3NjVhNWZkZDU0Nzc5OGJkMDg1MGFkN2NlMGE4MTYwNmQ1NWMxMzEzOTlkZGI3NWE2ZmY3MjFlYiIsImlhdCI6MTY3MzQ5MzQ5MSwibmJmIjoxNjczNDkzNDkxLCJleHAiOjE2NzM0OTcwOTEsInN1YiI6IiIsInNjb3BlcyI6W119.QM_msPvW9FgnCqeyO8RVOaZoF7_Iizs7ermywrZPcLcKKBR__dNaUn9QvTC9PgGBR9UQJu6tzI98jcyR_CCwKtFeZJd64w_4JGlHyo3-q4rBYo5GzxruGJo0PD8IVR4jKDeYeYGRZAmpKurVUYEHogVp0yibH9zCty5qT-qCkGonxdNfy0RX9aG5gQtiKCfqBkCEbY67lHWb6VPHVnnUFrIHN1vlGB5ZrDqivhoSy7F5Yt5V1o4f0irVH9hnLAU7UQZayYkIbQgF11NkQOzsSFUH5k2VISO_fWqB0u9o6mTCzc1EL1aBkgwUEHOP7WWOkMsNnEhIE8xFpzE8H6jOXw"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/Quotes/b4354c45-de1c-d9fc-e0ef-6364d71f06c3/relationships/aos_line_item_groups"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Module Products",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjM4YjIyZTZkOGRlMjVlZGY5ODkxN2MwNzRkMGM3MzU5YjE3ZDU1ZTViOWFhNjRhZjc4YzBhMGFiNTE5ZTExZGVkYzU4NDQ0MWQxM2IxMjQ1In0.eyJhdWQiOiI2MTI4YjRkYi1hM2UzLTJiZWQtYzJhMS02MmUxZmQxNzRmZmUiLCJqdGkiOiIzOGIyMmU2ZDhkZTI1ZWRmOTg5MTdjMDc0ZDBjNzM1OWIxN2Q1NWU1YjlhYTY0YWY3OGMwYTBhYjUxOWUxMWRlZGM1ODQ0NDFkMTNiMTI0NSIsImlhdCI6MTY3MDAzODQzMiwibmJmIjoxNjcwMDM4NDMyLCJleHAiOjE2NzAwNDIwMzIsInN1YiI6IiIsInNjb3BlcyI6W119.z4VgxVF8o6r15HpEUg12TDfi0syvM-la-UXVOsO5KbvCSKTZtBSyW4jYoZitv5sLZNKU4FEf9V-lwlXhB2IoaauBHmUZvub8h0NlvVtECUs3EbM5GRiDwVOGBJbWJUnWFYCeXBjkuBIv8Yxoe2cG_nGQKrpPZDnOOlj0H3fGN_Sc5z65E4uwSgYPAPY_87VGLPMPjGqUi6WKY-8uZKNO6UTGA6EKyd-gwpkC0xqKgRFJRhyTcqx91rWYZ_2ta_enLG5qPg0Q22wtDfzG8A0JxCbjom7evHiFf1-34KtAMRkfVLvoUkpMtqtB6yEy49L4RYYHH-dUNBJ_LdmRwdHr0A"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://crm8904.pmberjaya.com/Api/index.php/V8/module/AOS_Products?page[number]=2&page[size]=1000",
+					"protocol": "https",
+					"host": [
+						"crm8904",
+						"pmberjaya",
+						"com"
+					],
+					"path": [
+						"Api",
+						"index.php",
+						"V8",
+						"module",
+						"AOS_Products"
+					],
+					"query": [
+						{
+							"key": "page[number]",
+							"value": "2"
+						},
+						{
+							"key": "page[size]",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

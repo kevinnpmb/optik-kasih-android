@@ -1,6 +1,7 @@
 package com.skripsi.optik_kasih.adapter
 
 import android.content.Context
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -26,8 +27,11 @@ class CartAdapter(private val buttonCallback: (Type, Cart, qty: Int) -> Unit) :
                 qtyChanger.quantity.text = item.quantity.toString()
                 price.price.text =
                     Utilities.convertPrice((item.basePrice - (item.discount ?: 0.0)).toString())
-                price.bfrDiscPrice.isVisible = item.discount != null
-                price.bfrDiscPrice.text = Utilities.convertPrice((item.basePrice).toString())
+                price.bfrDiscPrice.apply {
+                    isVisible = item.discount != null && item.discount > 0
+                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    text = Utilities.convertPrice((item.basePrice).toString())
+                }
                 qtyChanger.btnAdd.setOnClickListener {
                     buttonCallback.invoke(Type.INCREMENT, item, ++quantity)
                     qtyChanger.quantity.text = quantity.toString()

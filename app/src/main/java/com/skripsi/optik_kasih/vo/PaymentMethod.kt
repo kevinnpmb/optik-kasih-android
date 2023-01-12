@@ -5,9 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PaymentMethod(
-    val id: Int,
-    val image: Int,
+    val id: String,
+    val image: String?,
     val group: String,
-    val name: String,
+    val name: String?,
+    val virtualAccount: String?
 ): Parcelable
 

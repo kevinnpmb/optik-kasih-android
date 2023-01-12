@@ -1,17 +1,13 @@
 package com.skripsi.optik_kasih.ui.payment
 
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.optik_kasih.CreateOrderMutation
-import com.skripsi.optik_kasih.GetProductsQuery
-import com.skripsi.optik_kasih.LoginMutation
+import com.skripsi.optik_kasih.GetMethodPaymentQuery
 import com.skripsi.optik_kasih.repository.CartRepository
 import com.skripsi.optik_kasih.repository.OrderRepository
-import com.skripsi.optik_kasih.repository.ProductsRepository
-import com.skripsi.optik_kasih.repository.UserRepository
+import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Cart
 import com.skripsi.optik_kasih.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,14 +20,15 @@ import javax.inject.Inject
 class PaymentMethodViewModel @Inject constructor(
     var orderRepository: OrderRepository,
     var cartRepository: CartRepository,
-): ViewModel() {
+) : ViewModel() {
+    var address: AddressPref? = null
     val createOrderMutableLiveData = MutableLiveData<Resource<CreateOrderMutation.Data>>()
-    fun createOrder() {
+    fun createOrder(methodId: Int) {
         viewModelScope.launch {
             val list = withContext(Dispatchers.IO) {
                 cartRepository.getCart()
             }
-            orderRepository.createOrder(list, createOrderMutableLiveData)
+            orderRepository.createOrder(methodId, list, address, createOrderMutableLiveData)
         }
     }
 
@@ -39,6 +36,19 @@ class PaymentMethodViewModel @Inject constructor(
     fun getCartList() {
         viewModelScope.launch {
             cartListMutableLiveData.postValue(cartRepository.getCart())
+        }
+    }
+
+    fun deleteCart() {
+        viewModelScope.launch {
+            cartRepository.deleteAll()
+        }
+    }
+
+    val paymentMethodMutableLiveData = MutableLiveData<Resource<GetMethodPaymentQuery.Data>>()
+    fun getPaymentMethod() {
+        viewModelScope.launch {
+            orderRepository.getMethodPayment(paymentMethodMutableLiveData)
         }
     }
 }

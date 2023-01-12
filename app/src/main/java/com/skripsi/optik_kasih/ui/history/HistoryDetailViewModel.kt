@@ -1,11 +1,13 @@
-package com.skripsi.optik_kasih.ui.payment
+package com.skripsi.optik_kasih.ui.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skripsi.optik_kasih.GetOrderQuery
+import com.skripsi.optik_kasih.UpdateOrderStatusMutation
 import com.skripsi.optik_kasih.UpdatePaymentStatusMutation
 import com.skripsi.optik_kasih.repository.OrderRepository
+import com.skripsi.optik_kasih.vo.OrderStatus
 import com.skripsi.optik_kasih.vo.PaymentStatus
 import com.skripsi.optik_kasih.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentViewModel @Inject constructor(
-    var orderRepository: OrderRepository
+class HistoryDetailViewModel @Inject constructor(
+    var orderRepository: OrderRepository,
 ): ViewModel() {
     val orderIdMutableLiveData = MutableLiveData<String>()
     val orderId: String? get() = orderIdMutableLiveData.value
@@ -27,12 +29,11 @@ class PaymentViewModel @Inject constructor(
         }
     }
 
-
-    val makePaymentMutableLiveData = MutableLiveData<Resource<UpdatePaymentStatusMutation.Data>>()
-    fun makePayment() {
+    val finishOrderMutableLiveData = MutableLiveData<Resource<UpdateOrderStatusMutation.Data>>()
+    fun finishOrder() {
         viewModelScope.launch {
             orderId?.let {
-                orderRepository.updatePaymentStatus(it, PaymentStatus.Paid, makePaymentMutableLiveData)
+                orderRepository.updateOrderStatus(it, OrderStatus.Received, finishOrderMutableLiveData)
             }
         }
     }

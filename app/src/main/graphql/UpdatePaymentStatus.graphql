@@ -1,0 +1,5 @@
+mutation UpdatePaymentStatus($orderId: ID!, $paymentStatus: Int!) {
+    order {
+        update_payment_status(orderID: $orderId, paymentStatus: $paymentStatus)
+    }
+}

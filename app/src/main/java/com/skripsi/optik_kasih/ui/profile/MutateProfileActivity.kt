@@ -206,7 +206,10 @@ class MutateProfileActivity : BaseActivity() {
                                 Intent(
                                     this@MutateProfileActivity,
                                     LoginActivity::class.java
-                                )
+                                ).apply {
+                                    flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                }
                             )
                             finish()
                         }
@@ -242,14 +245,16 @@ class MutateProfileActivity : BaseActivity() {
                             ).show()
                             it.data?.customer?.customer_update?.customer?.let { customer ->
                                 preferencesHelper.user?.let { user ->
-                                    preferencesHelper.saveAccount(user.copy(
-                                        id = customer.id,
-                                        name = customer.customer_name,
-                                        gender = customer.customer_gender,
-                                        birthday = customer.customer_birthday.toString(),
-                                        phone_number = customer.phone_number,
-                                        email = customer.customer_email,
-                                    ))
+                                    preferencesHelper.saveAccount(
+                                        user.copy(
+                                            id = customer.id,
+                                            name = customer.customer_name,
+                                            gender = customer.customer_gender,
+                                            birthday = customer.customer_birthday.toString(),
+                                            phone_number = customer.phone_number,
+                                            email = customer.customer_email,
+                                        )
+                                    )
                                 }
                             }
                             finish()

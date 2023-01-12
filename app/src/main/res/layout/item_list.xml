@@ -28,19 +28,23 @@
 
             <ImageView
                 android:id="@+id/ivItem"
+                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/itemName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/primaryColor"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/price"
+            app:layout_constraintEnd_toStartOf="@+id/totalPrice"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Gagang" />
@@ -48,20 +52,20 @@
         <include
             android:id="@+id/price"
             layout="@layout/price_container"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/materialCardView3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/itemName" />
 
 
-
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:cardBackgroundColor="@color/primaryColor"
@@ -73,9 +77,9 @@
                 android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="2dp"
+                android:textColor="@color/white"
                 tools:text="2 Items" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -83,11 +87,11 @@
             android:id="@+id/totalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/black"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Rp. 18.000" />

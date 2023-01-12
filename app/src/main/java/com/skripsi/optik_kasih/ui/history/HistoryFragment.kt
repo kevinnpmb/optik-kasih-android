@@ -1,60 +1,107 @@
 package com.skripsi.optik_kasih.ui.history
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import com.skripsi.optik_kasih.R
+import com.skripsi.optik_kasih.adapter.HistoryAdapter
+import com.skripsi.optik_kasih.databinding.FragmentHistoryBinding
+import com.skripsi.optik_kasih.ui.common.BaseFragment
+import com.skripsi.optik_kasih.ui.home.HomeViewModel
+import com.skripsi.optik_kasih.utils.Utilities
+import com.skripsi.optik_kasih.vo.Status
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HistoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HistoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+@AndroidEntryPoint
+class HistoryFragment : BaseFragment() {
+    private lateinit var binding: FragmentHistoryBinding
+    private val viewModel: HistoryViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false)
+    ): View {
+        binding = FragmentHistoryBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HistoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HistoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Utilities.initToolbar(
+            requireActivity() as AppCompatActivity,
+            binding.toolbar.toolbar,
+            getString(R.string.history),
+            hideBack = true,
+            hideCart = true
+        )
+        binding.srlHistory.setColorSchemeColors(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.primaryColor
+            )
+        )
+        binding.rvHistory.apply {
+            adapter = HistoryAdapter {
+                startActivity(Intent(requireContext(), HistoryDetailActivity::class.java).apply {
+                    putExtra(HistoryDetailActivity.HISTORY_DETAIL_ID, it.id)
+                })
+            }
+        }
+        initObserver()
+        initListener()
+        viewModel.getMyOrders()
+    }
+
+    private fun initListener() {
+        binding.apply {
+            srlHistory.setOnRefreshListener {
+                viewModel.getMyOrders()
+            }
+        }
+    }
+
+    private fun initObserver() {
+        viewModel.apply {
+            ordersMutableLiveData.observe(
+                viewLifecycleOwner
+            ) {
+                binding.apply {
+                    loading.root.isVisible = it.status == Status.LOADING
+                    error.root.isVisible = it.status == Status.ERROR
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            srlHistory.isRefreshing = false
+                            val orders =
+                                it.data?.order?.orders_me?.mapNotNull { it?.order }.orEmpty()
+                            rvHistory.isVisible = orders.isNotEmpty()
+                            empty.root.isVisible = !rvHistory.isVisible
+                            (rvHistory.adapter as HistoryAdapter).submitList(
+                                orders
+                            )
+                        }
+                        Status.ERROR -> {
+                            srlHistory.isRefreshing = false
+                            Utilities.showToast(
+                                requireActivity(),
+                                binding.root,
+                                it.message,
+                                Utilities.ToastType.ERROR
+                            )
+                        }
+                        Status.LOADING -> {
+                            rvHistory.isVisible = false
+                        }
+                        Status.UNAUTHORIZED -> {
+                            Utilities.showInvalidApiKeyAlert(requireActivity())
+                        }
+                    }
                 }
             }
+        }
     }
 }

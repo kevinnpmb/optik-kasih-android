@@ -12,171 +12,229 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlHistoryDetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <LinearLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.card.MaterialCardView
+            <FrameLayout
+                android:id="@+id/background"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp">
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:translationZ="2dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TableLayout
+                <include
+                    android:id="@+id/error"
+                    layout="@layout/error_layout"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/loading"
+                    layout="@layout/loading_layout" />
+
+                <include
+                    android:id="@+id/empty"
+                    layout="@layout/empty_layout"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:stretchColumns="1">
+                    android:orientation="vertical">
 
-                    <TableRow android:paddingVertical="2dp">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
 
-                        <TextView android:text="@string/order_date" />
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:stretchColumns="1">
 
-                        <TextView
-                            android:id="@+id/orderDate"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            tools:text="Senin, 9 Agustus 2022" />
-                    </TableRow>
+                            <TableRow android:paddingVertical="2dp">
 
-                    <TableRow android:paddingVertical="2dp">
+                                <TextView android:text="@string/order_date" />
 
-                        <TextView android:text="@string/done_date" />
+                                <TextView
+                                    android:id="@+id/orderDate"
+                                    android:gravity="end"
+                                    android:textColor="@color/black"
+                                    tools:text="Senin, 9 Agustus 2022" />
+                            </TableRow>
 
-                        <TextView
-                            android:id="@+id/doneDate"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            tools:text="Senin, 9 Agustus 2022" />
-                    </TableRow>
+                            <TableRow android:paddingVertical="2dp">
 
-                    <TableRow android:paddingVertical="2dp">
+                                <TextView android:text="@string/done_date" />
 
-                        <TextView android:text="@string/payment_status" />
+                                <TextView
+                                    android:id="@+id/doneDate"
+                                    android:gravity="end"
+                                    android:textColor="@color/black"
+                                    tools:text="Senin, 9 Agustus 2022" />
+                            </TableRow>
 
-                        <TextView
-                            android:id="@+id/paymentStatus"
-                            android:gravity="end"
-                            android:textAllCaps="true"
-                            android:textColor="@color/black"
+                            <TableRow android:paddingVertical="2dp">
+
+                                <TextView android:text="@string/payment_status" />
+
+                                <TextView
+                                    android:id="@+id/paymentStatus"
+                                    android:gravity="end"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    tools:text="Sudah Dibayar" />
+                            </TableRow>
+
+                            <TableRow android:paddingVertical="2dp">
+
+                                <TextView android:text="@string/transaction_status" />
+
+                                <TextView
+                                    android:id="@+id/transactionStatus"
+                                    android:gravity="end"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    tools:text="Menunggu Pembayaran" />
+                            </TableRow>
+
+                        </TableLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:text="@string/ordered_items"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/orderedItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_list" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:stretchColumns="1">
+
+                            <TableRow android:paddingVertical="2dp">
+
+                                <TextView android:text="@string/subtotal" />
+
+                                <TextView
+                                    android:id="@+id/subtotal"
+                                    android:gravity="end"
+                                    android:textColor="@color/black"
+                                    tools:text="20.000" />
+                            </TableRow>
+
+                            <TableRow android:paddingVertical="2dp">
+
+                                <TextView android:text="@string/discount" />
+
+                                <TextView
+                                    android:id="@+id/discount"
+                                    android:gravity="end"
+                                    android:textColor="@color/black"
+                                    tools:text="0" />
+                            </TableRow>
+
+                            <View
+                                android:layout_height="1.5dp"
+                                android:layout_marginVertical="8dp"
+                                android:alpha="0.2"
+                                android:background="@color/black" />
+
+                            <TableRow android:paddingVertical="2dp">
+
+                                <TextView android:text="@string/total" />
+
+                                <TextView
+                                    android:id="@+id/total"
+                                    android:gravity="end"
+                                    android:textColor="@color/black"
+                                    tools:text="20.000" />
+                            </TableRow>
+
+                            <TableRow
+                                android:id="@+id/paidContainer"
+                                android:paddingVertical="2dp">
+
+                                <TextView android:text="@string/pay" />
+
+                                <TextView
+                                    android:id="@+id/paid"
+                                    android:gravity="end"
+                                    android:textColor="@color/black"
+                                    tools:text="20.000" />
+                            </TableRow>
+                        </TableLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="@string/make_payment"
                             android:textStyle="bold"
-                            tools:text="Sudah Dibayar" />
-                    </TableRow>
-
-                    <TableRow android:paddingVertical="2dp">
-
-                        <TextView android:text="@string/transaction_status" />
-
-                        <TextView
-                            android:id="@+id/transactionStatus"
-                            android:gravity="end"
-                            android:textAllCaps="true"
-                            android:textColor="@color/black"
+                            app:cornerRadius="16dp" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="@string/finish_order"
+                            android:visibility="gone"
                             android:textStyle="bold"
-                            tools:text="Menunggu Pembayaran" />
-                    </TableRow>
+                            app:cornerRadius="16dp" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
-                </TableLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/ordered_items"
-                android:textColor="@color/primaryColor"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/orderedItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_list" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp">
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:stretchColumns="1">
-
-                    <TableRow android:paddingVertical="2dp">
-
-                        <TextView android:text="@string/subtotal" />
-
-                        <TextView
-                            android:id="@+id/subtotal"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            tools:text="20.000" />
-                    </TableRow>
-
-                    <TableRow android:paddingVertical="2dp">
-
-                        <TextView android:text="@string/discount" />
-
-                        <TextView
-                            android:id="@+id/discount"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            tools:text="0" />
-                    </TableRow>
-
-                    <View
-                        android:layout_height="1.5dp"
-                        android:layout_marginVertical="8dp"
-                        android:alpha="0.2"
-                        android:background="@color/black" />
-
-                    <TableRow android:paddingVertical="2dp">
-
-                        <TextView android:text="@string/total" />
-
-                        <TextView
-                            android:id="@+id/total"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            tools:text="20.000" />
-                    </TableRow>
-
-                    <TableRow android:paddingVertical="2dp">
-
-                        <TextView android:text="@string/paid" />
-
-                        <TextView
-                            android:id="@+id/paid"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            tools:text="20.000" />
-                    </TableRow>
-                </TableLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="@string/finish_order"
-                android:textStyle="bold"
-                app:cornerRadius="16dp" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -1,0 +1,10 @@
+query GetMethodPayment {
+    payment_bank {
+        payment_banks {
+            id
+            bank_name
+            bank_number
+            bank_logo
+        }
+    }
+}

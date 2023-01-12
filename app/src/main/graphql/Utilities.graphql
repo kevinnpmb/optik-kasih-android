@@ -31,6 +31,13 @@ fragment OrderPayment on OrderPayment {
     paid
     remain
     status
+    expired_date
+    payment_bank {
+        id
+        bank_name
+        bank_logo
+        bank_number
+    }
 }
 
 fragment OrderProduct on OrderProduct {
@@ -38,6 +45,9 @@ fragment OrderProduct on OrderProduct {
     qty
     total
     order_id
+    product {
+        ...Product
+    }
     product_id
     discount
 }

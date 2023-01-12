@@ -147,6 +147,7 @@ class DetailActivity : BaseActivity() {
             brand.text = product?.product_brand ?: "-"
             description.text = product?.product_description ?: "-"
             priceBfrDiscount.isVisible = product?.discount != null
+            productStock.text = getString(R.string.product_stock, product?.product_stock ?: 0)
             if (priceBfrDiscount.isVisible) {
                 priceBfrDiscount.apply {
                     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

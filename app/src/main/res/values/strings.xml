@@ -17,7 +17,7 @@
     <string name="payment_status">Status Pembayaran</string>
     <string name="ordered_items">Barang yang diorder</string>
     <string name="discount">Diskon</string>
-    <string name="paid">Bayar</string>
+    <string name="pay">Bayar</string>
     <string name="total">Total</string>
     <string name="finish_order">Selesaikan Pesanan</string>
     <string name="change_address">Ganti Alamat</string>
@@ -113,4 +113,23 @@
     <string name="choose_address">Pilih Alamat</string>
     <string name="order_success_msg">Berhasil membuat orderan</string>
     <string name="payment_method">Metode Pembayaran</string>
+    <string name="total_item">Total (%1$s)</string>
+    <string name="product_stock">Stok : %1$d</string>
+    <string name="order_id_template">ORDER#%1$s</string>
+    <string name="waiting_for_payment">Menunggu Pembayaran</string>
+    <string name="processed">Diproses</string>
+    <string name="sent">Dikirim</string>
+    <string name="received">Pesanan Diterima</string>
+    <string name="cancel">Batal</string>
+    <string name="not_paid">Belum Dibayar</string>
+    <string name="paid">Sudah Dibayar</string>
+    <string name="make_payment">Lakukan Pembayaran</string>
+    <string name="hashtag">#%1$s</string>
+    <string name="va_copied">Virtual Account Disalin</string>
+    <string name="continue_shopping">Lanjut Belanja</string>
+    <string name="check_status_payment">Cek Status Pembayaran</string>
+    <string name="order_success">Order Sukses</string>
+    <string name="payment_failed">Pembayaran Gagal</string>
+    <string name="payment_success">Pembayaran Sukses</string>
+    <string name="payment">Pembayaran</string>
 </resources>

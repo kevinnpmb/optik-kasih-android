@@ -1,0 +1,7 @@
+query GetMyOrders {
+    order {
+        orders_me {
+            ...Order
+        }
+    }
+}

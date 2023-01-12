@@ -1,0 +1,7 @@
+mutation UpdateOrderStatus($orderId: ID!, $orderStatus: Int!) {
+    order {
+        update_order_status(orderID: $orderId, orderStatus: $orderStatus) {
+            ...Order
+        }
+    }
+}

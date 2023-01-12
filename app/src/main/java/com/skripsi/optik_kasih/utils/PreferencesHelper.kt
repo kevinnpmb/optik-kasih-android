@@ -40,6 +40,7 @@ class PreferencesHelper @Inject constructor(@ApplicationContext context: Context
 
     fun signOut() {
         pref.edit().putString(PREF_KEY_USER, null).apply()
+        pref.edit().putString(PREF_KEY_PRIMARY_ADDRESS, null).apply()
     }
 
 //    var adminId: String

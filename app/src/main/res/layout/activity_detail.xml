@@ -62,7 +62,7 @@
                         android:layout_marginBottom="-32dp"
                         android:contentDescription="Item Image"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/jumbotron"
+                        android:src="@drawable/ic_no_images"
                         app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
                         app:layout_constraintDimensionRatio="H, 3:4"
                         app:layout_constraintTop_toTopOf="parent"
@@ -71,20 +71,30 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:background="@drawable/gradient_background_dark_primary_color"
+                        android:background="@drawable/white_gradient"
                         app:layout_constraintBottom_toBottomOf="@+id/itemImg"
                         app:layout_constraintTop_toTopOf="@+id/itemImg" />
 
-                    <TextView
-                        android:id="@+id/productStock"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="16dp"
-                        android:textStyle="bold"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
                         app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:text="Stok : 20" />
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <TextView
+                            android:id="@+id/productStock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="4dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="Stok : 20" />
+                    </com.google.android.material.card.MaterialCardView>
 
                     <include
                         android:id="@+id/qtyChanger"
@@ -208,6 +218,7 @@
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintHorizontal_bias="0.5"
                                         app:layout_constraintStart_toEndOf="@+id/subtotal">
+
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/btnAddToCart"
                                             android:layout_width="wrap_content"
@@ -220,16 +231,17 @@
                                             app:cornerRadius="16dp"
                                             app:icon="@drawable/cart_outline"
                                             app:iconSize="24dp" />
+
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/btnDeleteCart"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
                                             android:insetTop="0dp"
                                             android:insetBottom="0dp"
                                             android:paddingHorizontal="24dp"
                                             android:text="@string/delete"
                                             android:textStyle="bold"
-                                            android:layout_gravity="end"
                                             android:visibility="gone"
                                             app:cornerRadius="16dp"
                                             app:icon="@drawable/ic_delete"

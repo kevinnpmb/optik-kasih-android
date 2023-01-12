@@ -3,6 +3,7 @@ package com.skripsi.optik_kasih.vo
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.skripsi.optik_kasih.fragment.OrderProduct
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -25,3 +26,22 @@ fun List<Cart>.countSubtotal() = sumOf { cart -> cart.basePrice * cart.quantity 
 fun List<Cart>.countTotalQty() = sumOf { cart -> cart.quantity }
 
 fun List<Cart>.countTotal() = countSubtotal() - countDiscount()
+
+fun OrderProduct.toCart(): Cart {
+    val (
+        id,
+        product_name,
+        product_type,
+        product_brand,
+        product_description,
+        product_price,
+        product_image,
+        discount,
+        product_stock,
+        supplier_id,
+        isShown,
+    ) = product?.product!!
+    return Cart(
+        product_id, product_name, product_image, product_price, discount, product_description, qty
+    )
+}

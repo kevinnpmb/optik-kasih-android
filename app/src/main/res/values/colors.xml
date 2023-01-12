@@ -8,6 +8,7 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="grey">#ababab</color>
+    <color name="darkGrey">#535353</color>
     <color name="success">#4CAF50</color>
     <color name="danger">#D23429</color>
     <color name="warning">#FFFDCC1E</color>

@@ -11,6 +11,7 @@ import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.databinding.PaymentMethodRowHeaderBinding
 import com.skripsi.optik_kasih.databinding.PaymentMethodRowListBinding
 import com.skripsi.optik_kasih.fragment.Address
+import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.dpToPx
 import com.skripsi.optik_kasih.vo.PaymentMethod
 
@@ -48,7 +49,7 @@ class PaymentMethodAdapter(private val buttonCallback: (PaymentMethod) -> Unit) 
             binding.apply {
                 val (id, image, group, name) = item.paymentMethod
                 val isSelected = selectedPaymentMethod?.id == id
-                itemImg.setImageResource(image)
+                Utilities.loadImageUrl(item.paymentMethod.image, itemImg)
                 root.strokeWidth = if (isSelected) 2.dpToPx.toInt() else 0
                 root.strokeColor = ContextCompat.getColor(context, R.color.primaryColor)
                 this.name.text = name
