@@ -158,7 +158,14 @@ class PaymentActivity : BaseActivity() {
                     else -> "payment_success.json"
                 }
             )
-            orderIcon.playAnimation()
+            orderIcon.scaleX = when (orderStatus) {
+                OrderStatus.Canceled, null -> 3.2F
+                else -> 2F
+            }
+            orderIcon.scaleY = when (orderStatus) {
+                OrderStatus.Canceled, null -> 3.2F
+                else -> 2F
+            }
             orderMessage.text = getString(
                 when (orderStatus) {
                     OrderStatus.WaitingForPayment -> R.string.order_success
