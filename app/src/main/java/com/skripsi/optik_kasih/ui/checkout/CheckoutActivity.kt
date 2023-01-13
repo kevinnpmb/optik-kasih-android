@@ -45,6 +45,7 @@ class CheckoutActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCheckoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel.setJsonToListCityInfo(this@CheckoutActivity)
         Utilities.initToolbar(
             this,
             binding.toolbar.toolbar,
@@ -81,9 +82,15 @@ class CheckoutActivity : BaseActivity() {
                 if (viewModel.selectedAddress == null) {
                     Utilities.showToast(this@CheckoutActivity, binding.root, getString(R.string.no_address_selected), Utilities.ToastType.ERROR)
                 } else {
-                    startActivity(Intent(this@CheckoutActivity, PaymentMethodActivity::class.java).apply {
-                        putExtra(PaymentMethodActivity.ADDRESS_FOR_ORDER, viewModel.selectedAddress)
-                    })
+                    viewModel.checkSelectedAddressPostalCodeAvailable {
+                        if (it) {
+                            startActivity(Intent(this@CheckoutActivity, PaymentMethodActivity::class.java).apply {
+                                putExtra(PaymentMethodActivity.ADDRESS_FOR_ORDER, viewModel.selectedAddress)
+                            })
+                        } else {
+                            Utilities.showToast(this@CheckoutActivity, binding.root, getString(R.string.address_not_in_delivery_range), Utilities.ToastType.ERROR)
+                        }
+                    }
                 }
             }
         }

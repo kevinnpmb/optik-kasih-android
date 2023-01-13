@@ -1,6 +1,7 @@
 package com.skripsi.optik_kasih.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
@@ -33,6 +34,7 @@ import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Cart
 import com.skripsi.optik_kasih.vo.User
 import com.squareup.picasso.Picasso
+import java.io.IOException
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -368,6 +370,17 @@ object Utilities {
     else {
         if (id < 100) "0" else ""
     }) + id
+
+    fun getJsonDataFromAsset(context: Context, fileName: String): String? {
+        val jsonString: String
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
+    }
 
     fun List<Boolean>.validateAll(callbackIfAllValid: () -> Unit) {
         if (all { it }) {
