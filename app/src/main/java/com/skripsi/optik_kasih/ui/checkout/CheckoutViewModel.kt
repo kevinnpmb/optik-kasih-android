@@ -24,6 +24,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +33,7 @@ class CheckoutViewModel @Inject constructor(
 ) : ViewModel() {
     var allowedPostalCode: List<String>? = null
     fun setJsonToListCityInfo(context: Context) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             allowedPostalCode = Gson().fromJson<List<CityInfo>>(
                 Utilities.getJsonDataFromAsset(
                     context,
