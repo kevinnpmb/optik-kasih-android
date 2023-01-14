@@ -146,7 +146,7 @@ class DetailActivity : BaseActivity() {
             Utilities.loadImageUrl(product?.product_image, itemImg)
             brand.text = product?.product_brand ?: "-"
             description.text = product?.product_description ?: "-"
-            priceBfrDiscount.isVisible = product?.discount != null
+            priceBfrDiscount.isVisible = product?.discount != null && product.discount > 0
             productStock.text = getString(R.string.product_stock, product?.product_stock ?: 0)
             if (priceBfrDiscount.isVisible) {
                 priceBfrDiscount.apply {

@@ -113,6 +113,9 @@ class PaymentActivity : BaseActivity() {
                                         viewModel.makePayment()
                                     }, 5000)
                                 }
+                                if (orderStatus != OrderStatus.WaitingForPayment){
+                                    countDownTimer.setOnCountdownEndListener(null)
+                                }
                                 virtualAccount.text = order.order_payment?.orderPayment?.payment_bank?.bank_number ?: "-"
                                 Utilities.loadImageUrl(order.order_payment?.orderPayment?.payment_bank?.bank_logo, bankImage)
                                 orderId.text = getString(
@@ -158,6 +161,7 @@ class PaymentActivity : BaseActivity() {
                     else -> "payment_success.json"
                 }
             )
+            orderIcon.playAnimation()
             orderIcon.scaleX = when (orderStatus) {
                 OrderStatus.Canceled, null -> 3.2F
                 else -> 2F

@@ -76,6 +76,7 @@ class UserRepository @Inject constructor(
                         phoneNumber,
                         Optional.present(email),
                         Optional.present(password),
+                        true,
                     )
                 ),
                 liveData
