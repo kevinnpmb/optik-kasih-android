@@ -4749,6 +4749,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "order_payment",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "NewOrderPayment",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": [],
@@ -6662,6 +6672,37 @@
                     "ofType": {
                       "kind": "SCALAR",
                       "name": "Int",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Order",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "order_update",
+              "description": null,
+              "args": [
+                {
+                  "name": "input",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "UpdateOrder",
                       "ofType": null
                     }
                   },
@@ -10807,6 +10848,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "order_payment",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "UpdateOrderPayment",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": [],
@@ -10870,20 +10921,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "Int",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "date",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Time",
                   "ofType": null
                 }
               },

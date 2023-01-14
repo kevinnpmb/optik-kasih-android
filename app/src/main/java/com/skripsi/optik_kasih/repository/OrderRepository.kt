@@ -95,7 +95,8 @@ class OrderRepository @Inject constructor(
                         Optional.absent(),
                         Optional.presentIfNotNull(address?.addressDetail),
                         true,
-                        Optional.present(methodId)
+                        Optional.present(methodId),
+                        Optional.absent()
                     )
                 ),
                 liveData
