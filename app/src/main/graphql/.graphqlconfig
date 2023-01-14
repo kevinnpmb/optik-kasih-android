@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "http://10.128.171.198:8080/query",
+        "url": "http://192.168.141.105:8080/query",
         "introspect": true
       }
     }

@@ -27,6 +27,7 @@ import java.util.*
 class PaymentActivity : BaseActivity() {
     private lateinit var binding: ActivityPaymentBinding
     private val viewModel: PaymentViewModel by viewModels()
+    private var isPaid: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentBinding.inflate(layoutInflater)
@@ -108,10 +109,11 @@ class PaymentActivity : BaseActivity() {
                             it.data?.order?.order?.order?.let { order ->
                                 val orderStatus = OrderStatus.fromValue(order.order_status)
                                 setView(orderStatus)
-                                if (order.order_payment?.orderPayment?.payment_bank?.id == "1") {
+                                if (order.order_payment?.orderPayment?.payment_bank?.id == "1" && !isPaid) {
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         viewModel.makePayment()
                                     }, 5000)
+                                    isPaid = true
                                 }
                                 if (orderStatus != OrderStatus.WaitingForPayment){
                                     countDownTimer.setOnCountdownEndListener(null)
