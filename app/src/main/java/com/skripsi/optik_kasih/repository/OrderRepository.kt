@@ -74,8 +74,8 @@ class OrderRepository @Inject constructor(
                 CreateOrderMutation(
                     NewOrder(
                         Utilities.formatToDateString(now.time)!!,
-                        Optional.present(0),
-                        Optional.present(0),
+                        Optional.present(2),
+                        Optional.present(2),
                         Optional.absent(),
                         Optional.absent(),
                         carts.countSubtotal(),
