@@ -94,4 +94,7 @@ dependencies {
 
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.8'
+
+    // Image Support
+    implementation 'io.github.nikartm:image-support:2.0.0'
 }

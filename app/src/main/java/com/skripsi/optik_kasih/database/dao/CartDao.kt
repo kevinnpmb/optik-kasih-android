@@ -24,6 +24,9 @@ interface CartDao {
     @Query("SELECT * FROM cart_table")
     suspend fun getCart(): List<Cart>
 
+    @Query("SELECT COUNT(*) FROM cart_table")
+    suspend fun getCartCount(): Int
+
     @Update
     suspend fun update(cartData: Cart)
 

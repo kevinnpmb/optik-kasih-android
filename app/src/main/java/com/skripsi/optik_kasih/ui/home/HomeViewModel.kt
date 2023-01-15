@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.optik_kasih.GetProductsQuery
 import com.skripsi.optik_kasih.LoginMutation
+import com.skripsi.optik_kasih.repository.CartRepository
 import com.skripsi.optik_kasih.repository.ProductsRepository
 import com.skripsi.optik_kasih.repository.UserRepository
 import com.skripsi.optik_kasih.vo.Resource
@@ -17,11 +18,19 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     var productsRepository: ProductsRepository,
+    var cartRepository: CartRepository,
 ): ViewModel() {
     val productsMutableLiveData = MutableLiveData<Resource<GetProductsQuery.Data>>()
     fun getProducts() {
         viewModelScope.launch {
             productsRepository.getListProducts(productsMutableLiveData)
+        }
+    }
+
+    val cartsCountMutableLiveData = MutableLiveData<Int>()
+    fun getCartCount() {
+        viewModelScope.launch {
+            cartsCountMutableLiveData.postValue(cartRepository.getCartCount())
         }
     }
 }

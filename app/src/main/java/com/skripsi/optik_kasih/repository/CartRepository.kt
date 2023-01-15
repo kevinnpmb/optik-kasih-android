@@ -37,6 +37,8 @@ class CartRepository @Inject constructor(
 
     suspend fun getCart() = cartDao.getCart()
 
+    suspend fun getCartCount() = cartDao.getCartCount()
+
     suspend fun update(cartData: Cart) = cartDao.update(cartData)
 
     suspend fun isCartDuplicate(id: String) = cartDao.isCartDuplicate(id)

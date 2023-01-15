@@ -24,6 +24,7 @@ import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.dpToPx
 import com.skripsi.optik_kasih.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
+import ru.nikartm.support.ImageBadgeView
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
@@ -39,9 +40,15 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.toolbar.menu.findItem(R.id.cart).setOnMenuItemClickListener {
-            startActivity(Intent(requireContext(), if (baseActivity.preferencesHelper.isLogin) CartActivity::class.java else LoginActivity::class.java))
-            true
+        val menuItem = binding.toolbar.toolbar.menu.findItem(R.id.cart)
+        val actionView = menuItem.actionView
+        actionView?.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    if (baseActivity.preferencesHelper.isLogin) CartActivity::class.java else LoginActivity::class.java
+                )
+            )
         }
         binding.srlHome.setColorSchemeColors(
             ContextCompat.getColor(
@@ -58,7 +65,9 @@ class HomeFragment : BaseFragment() {
             layoutManager = GridLayoutManager(context, 2).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return when (HomeAdapterType.values()[(adapter as HomeAdapter).getItemViewType(position)]) {
+                        return when (HomeAdapterType.values()[(adapter as HomeAdapter).getItemViewType(
+                            position
+                        )]) {
                             HomeAdapterType.List -> 1
                             HomeAdapterType.Header -> 2
                         }
@@ -69,15 +78,20 @@ class HomeFragment : BaseFragment() {
         }
         initObserver()
         initListener()
-        viewModel.getProducts()
+        getHomeData()
     }
 
     private fun initListener() {
         binding.apply {
             srlHome.setOnRefreshListener {
-                viewModel.getProducts()
+                getHomeData()
             }
         }
+    }
+
+    private fun getHomeData() {
+        viewModel.getCartCount()
+        viewModel.getProducts()
     }
 
     private fun initObserver() {
@@ -91,7 +105,9 @@ class HomeFragment : BaseFragment() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             srlHome.isRefreshing = false
-                            val products = it.data?.product?.products?.nodes?.filter { it.product.isShown == 1 }.orEmpty()
+                            val products =
+                                it.data?.product?.products?.nodes?.filter { it.product.isShown == 1 }
+                                    .orEmpty()
                             rvHome.isVisible = products.isNotEmpty()
                             empty.root.isVisible = !rvHome.isVisible
                             if (products.isNotEmpty()) {
@@ -107,7 +123,12 @@ class HomeFragment : BaseFragment() {
                         }
                         Status.ERROR -> {
                             srlHome.isRefreshing = false
-                            Utilities.showToast(requireActivity(), binding.root, it.message, Utilities.ToastType.ERROR)
+                            Utilities.showToast(
+                                requireActivity(),
+                                binding.root,
+                                it.message,
+                                Utilities.ToastType.ERROR
+                            )
                         }
                         Status.LOADING -> {
                             rvHome.isVisible = false
@@ -118,6 +139,18 @@ class HomeFragment : BaseFragment() {
                     }
                 }
             }
+
+            cartsCountMutableLiveData.observe(viewLifecycleOwner) {
+                val menuItem = binding.toolbar.toolbar.menu.findItem(R.id.cart)
+                val actionView = menuItem.actionView
+                val iconWithBadge = actionView?.findViewById<ImageBadgeView>(R.id.cart_with_badge)
+                iconWithBadge?.badgeValue = it
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getHomeData()
     }
 }
