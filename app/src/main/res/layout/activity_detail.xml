@@ -186,7 +186,7 @@
                                         tools:text="Lorem ipsum dolor sit amet, " />
 
                                     <TextView
-                                        android:id="@+id/textView2"
+                                        android:id="@+id/subTotalTextView"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="16dp"
@@ -207,7 +207,7 @@
                                         app:layout_constraintHorizontal_bias="0.5"
                                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                                         app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toBottomOf="@+id/textView2"
+                                        app:layout_constraintTop_toBottomOf="@+id/subTotalTextView"
                                         tools:text="Rp. 20.000" />
 
                                     <FrameLayout

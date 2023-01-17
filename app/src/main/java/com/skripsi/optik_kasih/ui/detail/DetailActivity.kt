@@ -43,6 +43,12 @@ class DetailActivity : BaseActivity() {
         Utilities.initToolbar(this, binding.toolbar.toolbar, "", hideBack = false, hideCart = true)
         initObserver()
         initListener()
+        binding.apply {
+            qtyChanger.root.isVisible = preferencesHelper.isLogin
+            subtotal.isVisible = preferencesHelper.isLogin
+            subTotalTextView.isVisible = preferencesHelper.isLogin
+            btnContainer.isVisible = preferencesHelper.isLogin
+        }
         viewModel.productIdMutableLiveData.value = intent.extras?.getString(PRODUCT_ID)
     }
 
