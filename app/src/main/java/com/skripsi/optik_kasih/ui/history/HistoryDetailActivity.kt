@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.google.gson.Gson
 import com.skripsi.optik_kasih.OptikKasihApp
 import com.skripsi.optik_kasih.R
 import com.skripsi.optik_kasih.adapter.ItemAdapter
@@ -16,6 +17,7 @@ import com.skripsi.optik_kasih.utils.Utilities
 import com.skripsi.optik_kasih.utils.Utilities.toUser
 import com.skripsi.optik_kasih.vo.*
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HistoryDetailActivity : BaseActivity() {
@@ -71,26 +73,27 @@ class HistoryDetailActivity : BaseActivity() {
                         Status.SUCCESS -> {
                             srlHistoryDetail.isRefreshing = false
                             it.data?.order?.order?.order?.let { order ->
-                                val orderStatus = OrderStatus.fromValue(order.order_status)
-                                toolbar.toolbar.title = getString(R.string.order_id_template, Utilities.zeroPadding(order.id.toInt()))
-                                paidContainer.isVisible = PaymentStatus.fromValue(order.order_payment?.orderPayment?.status) == PaymentStatus.Paid
+                                val snapshot = Gson().fromJson(order.snapshot, OrderSnapshot::class.java)
+                                val orderStatus = OrderStatus.fromValue(snapshot.orderStatus)
+                                toolbar.toolbar.title = getString(R.string.order_id_template, Utilities.zeroPadding(snapshot.id))
+                                paidContainer.isVisible = PaymentStatus.fromValue(snapshot.orderPayment?.status) == PaymentStatus.Paid
                                 btnPay.isVisible = orderStatus == OrderStatus.WaitingForPayment
                                 btnDone.isVisible = !btnPay.isVisible
                                 btnDone.isEnabled = orderStatus == OrderStatus.Sent
                                 orderDate.text =
-                                    Utilities.formatISO8601ToDateString(order.order_date.toString(), Utilities.DateType.VIEW)
+                                    Utilities.formatISO8601ToDateString(snapshot.orderDate.toString(), Utilities.DateType.VIEW)
                                 doneDate.text =
-                                    Utilities.formatISO8601ToDateString(order.order_received.toString(), Utilities.DateType.VIEW)
+                                    Utilities.formatISO8601ToDateString(snapshot.orderReceived.toString(), Utilities.DateType.VIEW)
                                         ?: "-"
-                                paymentStatus.text = PaymentStatus.fromValue(order.order_payment?.orderPayment?.status)?.label?.let {
+                                paymentStatus.text = PaymentStatus.fromValue(snapshot.orderPayment?.status)?.label?.let {
                                     getString(it)
                                 } ?: "-"
                                 transactionStatus.text =
                                     orderStatus?.label?.let {
                                         getString(it)
                                     } ?: "-"
-                                (orderedItems.adapter as ItemAdapter).submitList(order.order_products?.map {
-                                    it?.orderProduct?.toCart()
+                                (orderedItems.adapter as ItemAdapter).submitList(snapshot.orderProducts.map {
+                                    it.productSnapshot?.toCart(it.qty ?: 0)
                                 })
                                 subtotal.text = Utilities.convertPrice(
                                     (orderedItems.adapter as ItemAdapter).currentList.countSubtotal()
@@ -105,7 +108,7 @@ class HistoryDetailActivity : BaseActivity() {
                                         .toString()
                                 )
                                 if (paidContainer.isVisible) {
-                                    paid.text = Utilities.convertPrice(order.order_payment?.orderPayment?.paid.toString())
+                                    paid.text = Utilities.convertPrice(snapshot.orderPayment?.paid.toString())
                                 }
                             }
                         }

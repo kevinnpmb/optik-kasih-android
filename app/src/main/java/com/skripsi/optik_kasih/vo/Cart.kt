@@ -45,3 +45,8 @@ fun OrderProduct.toCart(): Cart {
         product_id, product_name, product_image, product_price, discount, product_description, qty
     )
 }
+
+
+fun ProductSnapshot.toCart(quantity: Int) = Cart(
+    id.toString(), productName, productImage, productPrice ?: 0.0, discount, productDescription, quantity
+)

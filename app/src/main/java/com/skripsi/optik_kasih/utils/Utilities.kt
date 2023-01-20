@@ -32,6 +32,7 @@ import com.skripsi.optik_kasih.fragment.Customer
 import com.skripsi.optik_kasih.fragment.Product
 import com.skripsi.optik_kasih.vo.AddressPref
 import com.skripsi.optik_kasih.vo.Cart
+import com.skripsi.optik_kasih.vo.ProductSnapshot
 import com.skripsi.optik_kasih.vo.User
 import com.squareup.picasso.Picasso
 import java.io.IOException

@@ -24,6 +24,7 @@ fragment Order on Order {
     order_products {
         ...OrderProduct
     }
+    snapshot
 }
 
 fragment OrderPayment on OrderPayment {
