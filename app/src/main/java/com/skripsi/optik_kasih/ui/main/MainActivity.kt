@@ -30,10 +30,23 @@ class MainActivity : BaseActivity() {
                                 binding.bottomNavigationView.menu.findItem(R.id.home).isChecked = true
                             }
                             MainViewPagerAdapter.MainBottomMenu.HISTORY.ordinal -> {
-                                binding.bottomNavigationView.menu.findItem(R.id.history).isChecked = true
+                                if (preferencesHelper.isLogin) {
+                                    binding.bottomNavigationView.menu.findItem(R.id.history).isChecked = true
+                                } else {
+                                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+//                                    binding.bottomNavigationView.menu.findItem(R.id.history).isChecked = false
+                                    currentItem = 0
+                                }
                             }
                             MainViewPagerAdapter.MainBottomMenu.PROFILE.ordinal -> {
-                                binding.bottomNavigationView.menu.findItem(R.id.profile).isChecked = true
+                                if (preferencesHelper.isLogin) {
+                                    binding.bottomNavigationView.menu.findItem(R.id.profile).isChecked = true
+                                } else {
+                                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+//                                    binding.bottomNavigationView.menu.findItem(R.id.profile).isChecked = false
+                                    currentItem = 0
+
+                                }
                             }
                         }
                     }

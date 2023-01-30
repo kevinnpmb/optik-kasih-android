@@ -39,10 +39,10 @@ class LoginActivity : BaseActivity() {
     private fun initListener() {
         binding.apply {
             btnLogin.setOnClickListener {
-                if (BuildConfig.DEBUG && tilEmail.editText?.text!!.isEmpty()) {
-                    tilEmail.editText?.setText("kevin@gmail.com")
-                    tilPassword.editText?.setText("test12345")
-                }
+//                if (BuildConfig.DEBUG && tilEmail.editText?.text!!.isEmpty()) {
+//                    tilEmail.editText?.setText("kevin@gmail.com")
+//                    tilPassword.editText?.setText("test12345")
+//                }
                 val validationList: MutableList<Boolean> = arrayListOf()
                 validationList.add(
                     tilEmail.validate(
